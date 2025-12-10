@@ -1,0 +1,24 @@
+.navbar {
+    background-color: #7e86ad;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    color: white;
+    font-family: 'Geist Sans', sans-serif;
+    font-size: 16px;
+}
+
+.navbar h1 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 50px;
+}
