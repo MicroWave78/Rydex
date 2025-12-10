@@ -1,29 +1,30 @@
-import "../styles/Navbar.css";
+import "@/app/styles/Navbar.css";
 import { House, CircleQuestionMark, UserRound, ReceiptText } from "lucide-react"
+import Link from "next/link";
 
 export default function Navbar() {
   return (
     <nav className="navbar">
-      <a href="/">
+      <Link href="/">
         <h1 className="navbar-logo">Rent a Car</h1>
-      </a>
+      </Link>
 
       <ul className="nav-links">
         <li>
             <House className="w-4 h-4 inline-block mb-1 mr-1"/>
-            <a href="/">Home</a>
+            <Link href="/">Home</Link>
         </li>
         <li>
             <CircleQuestionMark className="w-4 h-4 inline-block mb-1 mr-1"/>
-            <a href="/about">About</a>
+            <Link href="/about">About</Link>
         </li>
         <li>
             <ReceiptText className="w-4 h-4 inline-block mb-1 mr-1"/>
-            <a href="/contact">Contact</a>
+            <Link href="/contact">Contact</Link>
         </li>
         <li>
             <UserRound className="w-4 h-4 inline-block mb-1 mr-1"/>
-            <a href="/dashboard">Account</a>
+            <Link href="/dashboard">Account</Link>
         </li>
       </ul>
     </nav>
