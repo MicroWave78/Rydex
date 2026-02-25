@@ -10,22 +10,35 @@ export default function Navbar() {
       </Link>
 
       <ul className="nav-links">
+        
         <li>
-            <House className="w-4 h-4 inline-block mb-1 mr-1"/>
-            <Link href="/">Home</Link>
+            <Link href="/">
+              <House className="w-4 h-4 inline-block mb-1 mr-1"/>
+              Home
+            </Link>
         </li>
+
         <li>
-            <CircleQuestionMark className="w-4 h-4 inline-block mb-1 mr-1"/>
-            <Link href="/about">About</Link>
+            <Link href="/about">
+              <CircleQuestionMark className="w-4 h-4 inline-block mb-1 mr-1"/>
+              About
+            </Link>
         </li>
+
         <li>
-            <ReceiptText className="w-4 h-4 inline-block mb-1 mr-1"/>
-            <Link href="/contact">Contact</Link>
+            <Link href="/contact">
+              <ReceiptText className="w-4 h-4 inline-block mb-1 mr-1"/>
+              Contact
+            </Link>
         </li>
+
         <li>
-            <UserRound className="w-4 h-4 inline-block mb-1 mr-1"/>
-            <Link href="/dashboard">Account</Link>
+            <Link href="/dashboard">
+              <UserRound className="w-4 h-4 inline-block mb-1 mr-1"/>
+              Account
+            </Link>
         </li>
+
       </ul>
     </nav>
   );
