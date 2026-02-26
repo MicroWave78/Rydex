@@ -44,20 +44,55 @@ export default function Home() {
           <DrawerTrigger asChild>
             <Button variant="outline" size="lg" className="hero-button" >Browse Cars</Button>
           </DrawerTrigger>
-          <DrawerContent>
+          
+          <DrawerContent className={cn("drawer-content", "bg-[#31363F]", "text-[#EEEEEE]")}>
             <DrawerHeader>
               <DrawerTitle>Choose Style</DrawerTitle>
-              <DrawerDescription>Here you can select the style of car you want to rent.</DrawerDescription>
+              <DrawerDescription >Here you can select the style of car you want to rent.</DrawerDescription>
             </DrawerHeader>
+
+            <div className="drawer-content">
+              <Card className="car-card">
+                <CardHeader>
+                  <CardTitle>Standard</CardTitle>
+                  <CardDescription className="text-[#EEEEEE]">Perfect for city driving and daily commuting.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Image src="/images/test2.jpg" alt="Standard Car" width={400} height={300} className="car-image" />
+                </CardContent>
+                <CardFooter className="justify-center">
+                  <Button variant="default">Select</Button>
+                </CardFooter>
+              </Card>
+
+              <Card className="car-card">
+                <CardHeader>
+                  <CardTitle>SUV</CardTitle>
+                  <CardDescription className="text-[#EEEEEE]">Perfect for family trips and off-road adventures.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Image src="/images/test2.jpg" alt="SUV" width={400} height={300} className="car-image" />
+                </CardContent>
+                <CardFooter className="justify-center">
+                  <Button variant="default">Select</Button>
+                </CardFooter>
+              </Card>
+
+              <Card className="car-card">
+                <CardHeader>
+                  <CardTitle>Sports</CardTitle>
+                  <CardDescription className="text-[#EEEEEE]">Perfect for speed and performance. Or just for fun!</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Image src="/images/test2.jpg" alt="Sports Car" width={400} height={300} className="car-image" />
+                </CardContent>
+                <CardFooter className="justify-center">
+                  <Button variant="default">Select</Button>
+                </CardFooter>
+              </Card>
+            </div>
             
-            <DrawerFooter>
-              <DrawerClose asChild>
-                <Button variant="outline" className="hero-button">
-                  Cancel
-                </Button>
-              </DrawerClose>
-              <Button>Save</Button>
-            </DrawerFooter>
+            
           </DrawerContent>
         </Drawer>
       </div>

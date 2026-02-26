@@ -193,3 +193,18 @@
   border-radius: 10px;
   color: #EEEEEE;
 }
+
+.drawer-content {
+  display: flex;
+  justify-content: space-around;
+  font-size: 18px;
+}
+
+.car-card {
+  background-color: #31363F;
+  border-radius: 20px;
+  padding: 40px;
+  margin-bottom: 20px;
+  color: #EEEEEE;
+  border: none;
+}
