@@ -126,6 +126,10 @@ body {
   color: #EEEEEE;
 }
 
+::-webkit-scrollbar {
+  width: 0px;
+}
+
 .main-container {
   display: flex;
   align-items: center;
@@ -138,14 +142,12 @@ body {
 .hero-bg {
   position: fixed;
   top: 0;
-  text-align: center;
-  padding: 150px;
   background-image: url("/images/test2.jpg");
   width: 100%;
   height: 100%;
   background-size: cover;
-  background-position: 0% 180%;
-  z-index: -100;
+  background-position: 0% 190%;
+  z-index: -1;
 }
 
 .centered-content {
@@ -154,7 +156,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 15%;
+  margin-top: 7%;
 }
 
 .hero-title {
@@ -187,8 +189,7 @@ body {
 
 .content {
   background-color: #222831;
-  margin-top: 15%;
-  left: 0;
+  margin-top: 8%;
   padding: 40px;
   height: 5000px;
   width: 100%;
@@ -197,20 +198,9 @@ body {
   border-top-right-radius: 20px;
 }
 
-.drawer-content {
+.cars-carousel {
+  margin-top: 2%;
   display: flex;
-  justify-content: space-around;
-  font-size: 18px;
-  color: #EEEEEE;
-  background-color: #31363F;
-}
-
-.car-card {
-  background-color: #31363F;
-  border-radius: 20px;
-  padding: 40px;
-  margin-bottom: 20px;
-  color: #EEEEEE;
-  border: none;
-  box-shadow: none;
+  flex-direction: column;
+  align-items: center;
 }

@@ -1,4 +1,5 @@
 "use client"
+import "@/app/styles/BrowseCarsDrawer.css";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -23,15 +24,9 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-import { cn } from "@/lib/utils"
-
-var type = "";
-
 export default function BrowseCarsDrawer({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
     return (
         <Drawer open = {open} onOpenChange={setOpen}>
-          
-          
           <DrawerContent className="drawer-content">
             <DrawerHeader>
               <DrawerTitle className="relative text-center text-[#EEEEEE]">

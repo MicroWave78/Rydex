@@ -1,8 +1,9 @@
 "use client"
 import TitleSubtitle from "@/components/ui/TitleSubtitle"
 import { Button } from "@/components/ui/button";
-import BrowseCarsDrawer from "@/components/BrowseCarsDrawer";
+import BrowseCarsDrawer from "@/components/ui/BrowseCarsDrawer";
 import { useState } from "react";
+import CarsCarousel from "@/components/ui/CarsCarousel";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -18,11 +19,18 @@ export default function Home() {
       <Button variant="default" className="hero-button" onClick={() => setOpen(true)}>
         Browse Cars
       </Button>
+
       <BrowseCarsDrawer open={open} setOpen={setOpen} />
 
       <div className="content">
         <h2 className="content-title">Why Choose Us?</h2>
         <p className="content-description">We offer a wide selection of vehicles, competitive pricing, and exceptional customer service. Our easy-to-use platform allows you to book your car rental in just a few clicks.</p>
+        
+        <div className="cars-carousel">
+          <CarsCarousel /> 
+        </div>
+       
+
       </div>
     </div>
   );

@@ -1,0 +1,15 @@
+.drawer-content {
+  display: flex;
+  justify-content: space-around;
+  font-size: 18px;
+  color: #EEEEEE;
+  background-color: #31363F;
+}
+
+.car-card {
+  background-color: #31363F;
+  padding: 40px;
+  color: #EEEEEE;
+  border: none;
+  box-shadow: none;
+}
