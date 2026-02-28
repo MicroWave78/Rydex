@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -26,14 +27,12 @@ import { cn } from "@/lib/utils"
 
 var type = "";
 
-export default function BrowseCarsDrawer() {
+export default function BrowseCarsDrawer({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
     return (
-        <Drawer>
-          <DrawerTrigger asChild>
-            <Button variant="outline" size="lg" className="hero-button" >Browse Cars</Button>
-          </DrawerTrigger>
+        <Drawer open = {open} onOpenChange={setOpen}>
           
-          <DrawerContent className={cn("drawer-content", "bg-[#31363F]", "text-[#EEEEEE]")}>
+          
+          <DrawerContent className="drawer-content">
             <DrawerHeader>
               <DrawerTitle className="relative text-center text-[#EEEEEE]">
                 <span>Choose Style</span>

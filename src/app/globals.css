@@ -142,21 +142,19 @@ body {
   padding: 150px;
   background-image: url("/images/test2.jpg");
   width: 100%;
-  height: 70%;
+  height: 100%;
   background-size: cover;
-  background-position: center;
+  background-position: 0% 180%;
   z-index: -100;
 }
 
-.hero-content {
+.centered-content {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 150px;
-
+  margin-top: 15%;
 }
 
 .hero-title {
@@ -189,20 +187,22 @@ body {
 
 .content {
   background-color: #222831;
-  margin-top: 400px;
+  margin-top: 15%;
   left: 0;
   padding: 40px;
   height: 5000px;
   width: 100%;
   color: #EEEEEE;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 .drawer-content {
   display: flex;
   justify-content: space-around;
   font-size: 18px;
+  color: #EEEEEE;
+  background-color: #31363F;
 }
 
 .car-card {
@@ -212,4 +212,5 @@ body {
   margin-bottom: 20px;
   color: #EEEEEE;
   border: none;
+  box-shadow: none;
 }

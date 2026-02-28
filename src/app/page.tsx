@@ -1,18 +1,24 @@
+"use client"
+import TitleSubtitle from "@/components/ui/TitleSubtitle"
+import { Button } from "@/components/ui/button";
 import BrowseCarsDrawer from "@/components/BrowseCarsDrawer";
+import { useState } from "react";
 
 export default function Home() {
+  const [open, setOpen] = useState(false);
   return (
     <div className="main-container">
 
       <div className="hero-bg"></div>
 
-      <div className="hero-content">
-        <h1 className="hero-title">Find your next ride.</h1>
-        <p className="hero-description">Discover the best car rental deals in town. Whether you're looking for a compact car, an SUV, or a luxury vehicle, we have you covered.</p>
+      <TitleSubtitle title="Find your next ride." 
+      subtitle="Discover the best car rental deals in town. Whether you're looking for a compact car, an SUV, or a luxury vehicle, we have you covered." 
+      />
 
-        <BrowseCarsDrawer />
-
-      </div>
+      <Button variant="default" className="hero-button" onClick={() => setOpen(true)}>
+        Browse Cars
+      </Button>
+      <BrowseCarsDrawer open={open} setOpen={setOpen} />
 
       <div className="content">
         <h2 className="content-title">Why Choose Us?</h2>
