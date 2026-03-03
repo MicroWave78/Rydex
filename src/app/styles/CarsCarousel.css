@@ -1,0 +1,10 @@
+.car-details {
+    margin-top: 20px;
+    text-align: center;
+    color: #EEEEEE;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    gap: 500px;
+}

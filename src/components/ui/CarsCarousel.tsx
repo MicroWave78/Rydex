@@ -1,5 +1,6 @@
 "use client"
 
+import "@/app/styles/CarsCarousel.css"
 import { useState, useEffect, use } from "react"
 import {
   Carousel,
@@ -10,33 +11,63 @@ import {
 } from "@/components/ui/carousel"
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
+import { ChevronsUp, Gauge, Timer } from "lucide-react";
+
+
 
 const cars = [
   {
     id: 1,
-    name: "Car 1",
-    image: "/images/test.png",
-    hp: 150,
+    name: "Audi R8",
+    image: "/images/demo-car-5.png",
+    hp: 420,
+    topSpeed: 200,
+    seats: 2,
+    zeroToSixty: 7.5,
+},
+  {
+    id: 2,
+    name: "MINI John Cooper Works",
+    image: "/images/demo-car-2.png",
+    hp: 228,
+    topSpeed: 220,
+    seats: 4,
+    zeroToSixty: 5.0,
+  },
+  {
+    id: 3,
+    name: "BMW i8 Protonic",
+    image: "/images/demo-car-3.png",
+    hp: 374,
+    topSpeed: 250,
+    seats: 2,
+    zeroToSixty: 4.0,
+  },
+  {
+    id: 4,
+    name: "Audi R8",
+    image: "/images/demo-car-5.png",
+    hp: 420,
     topSpeed: 200,
     seats: 4,
     zeroToSixty: 7.5,
 },
   {
-    id: 2,
-    name: "Car 2",
-    image: "/images/test.png",
-    hp: 200,
+    id: 5,
+    name: "MINI John Cooper Works",
+    image: "/images/demo-car-2.png",
+    hp: 228,
     topSpeed: 220,
-    seats: 2,
+    seats: 4,
     zeroToSixty: 5.0,
   },
   {
-    id: 3,
-    name: "Car 3",
-    image: "/images/test2.jpg",
-    hp: 300,
+    id: 6,
+    name: "BMW i8 Protonic",
+    image: "/images/demo-car-3.png",
+    hp: 374,
     topSpeed: 250,
-    seats: 4,
+    seats: 2,
     zeroToSixty: 4.0,
   },
 ]
@@ -56,26 +87,36 @@ export default function CarsCarousel() {
     }, [api])
     return (
         <>
-        <Carousel className="max-w-full sm:max-w-xs md:max-w-sm lg:max-w-md" 
+        <Carousel 
         setApi={setApi} 
         plugins={[Autoplay({delay: 4000})]} 
-        opts = {{ loop: true, align: "start"}}>
+        opts = {{ loop: true}}>
 
             <CarouselContent>
                 {cars.map((car) => (
-                    <CarouselItem key={car.id}>
-                        <Image src={car.image} alt={car.name} width={600} height={450} />
+                    <CarouselItem key={car.id} className="basis-1/3">
+                        <Image src={car.image} alt={car.name} width={700} height={450} />
                     </CarouselItem>
                 ))}
             </CarouselContent>
         </Carousel>
 
-        <div>
-            <h2>Car Details: {cars[current]?.name}</h2>
-            <p>Horsepower: {cars[current]?.hp} HP</p>
-            <p>Top Speed: {cars[current]?.topSpeed} km/h</p>
-            <p>Seats: {cars[current]?.seats}</p>
-            <p>0-60 mph: {cars[current]?.zeroToSixty} seconds</p>
+        <div className="car-details">
+            <span className="material-symbols-outlined">
+                <p className="flex items-center gap-2">
+                    <ChevronsUp className="w-4 h-4" />Horsepower: {cars[current]?.hp} HP
+                </p>
+                <p className="flex items-center gap-2">
+                    <Gauge className="w-4 h-4" />Top Speed: {cars[current]?.topSpeed} km/h
+                </p>
+            </span>
+
+            <h2>{cars[current]?.name}</h2>
+            
+            <span className="material-symbols-outlined">
+                <p>Seats: {cars[current]?.seats}</p>
+                <p className="flex items-center gap-2"><Timer className="w-4 h-4" />0-60 mph: {cars[current]?.zeroToSixty} seconds</p>
+            </span>
         </div>
         </>
     )
