@@ -49,7 +49,7 @@ const cars = [
     image: "/images/demo-car-5.png",
     hp: 420,
     topSpeed: 200,
-    seats: 4,
+    seats: 2,
     zeroToSixty: 7.5,
 },
   {
@@ -115,7 +115,9 @@ export default function CarsCarousel() {
             
             <span className="material-symbols-outlined">
                 <p>Seats: {cars[current]?.seats}</p>
-                <p className="flex items-center gap-2"><Timer className="w-4 h-4" />0-60 mph: {cars[current]?.zeroToSixty} seconds</p>
+                <p className="flex items-center gap-2">
+                    <Timer className="w-4 h-4" />0-60 mph: {cars[current]?.zeroToSixty} seconds
+                </p>
             </span>
         </div>
         </>

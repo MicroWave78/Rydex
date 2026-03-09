@@ -32,6 +32,10 @@ export default function Home() {
        
 
       </div>
+
+      <div className="footer">
+        <p>&copy; 2023 Rent a Car. All rights reserved.</p>
+      </div>
     </div>
   );
 }

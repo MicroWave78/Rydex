@@ -124,12 +124,6 @@
 body {
   background-color: #222831;
   color: #EEEEEE;
-  font-family: "Oswald", sans-serif;
-  
-}
-
-::-webkit-scrollbar {
-  width: 0px;
 }
 
 .main-container {
@@ -150,6 +144,7 @@ body {
   background-size: cover;
   background-position: 0% 190%;
   z-index: -1;
+  background-repeat: no-repeat;
 }
 
 .centered-content {
@@ -205,7 +200,4 @@ body {
 
 .cars-carousel {
   margin-top: 5%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }

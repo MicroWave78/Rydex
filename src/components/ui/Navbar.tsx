@@ -6,8 +6,12 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <Link href="/">
-        <h1 className="navbar-logo">Rent a Car</h1>
+        <h1>Rent a Car</h1>
       </Link>
+
+      
+      <input type="text" placeholder="Search..." className="search-bar"/>
+      
 
       <ul className="nav-links">
         
