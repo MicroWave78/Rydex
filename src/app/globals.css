@@ -142,7 +142,7 @@ body {
   width: 100%;
   height: 100%;
   background-size: cover;
-  background-position: 0% 190%;
+  background-position: 50% 190%;
   z-index: -1;
   background-repeat: no-repeat;
 }
@@ -198,6 +198,11 @@ body {
   border-top-right-radius: 20px;
 }
 
-.cars-carousel {
-  margin-top: 5%;
+.footer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background-color: #31363F;
+  color: #EEEEEE;
+  padding: 20px;
 }

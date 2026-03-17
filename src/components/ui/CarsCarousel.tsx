@@ -1,19 +1,15 @@
 "use client"
 
 import "@/app/styles/CarsCarousel.css"
-import { useState, useEffect, use } from "react"
+import { useState, useEffect } from "react"
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel"
-import Image from "next/image";
-import Autoplay from "embla-carousel-autoplay";
-import { ChevronsUp, Gauge, Timer } from "lucide-react";
-
-
+import Image from "next/image"
+import Autoplay from "embla-carousel-autoplay"
+import { ChevronsUp, Gauge, Timer } from "lucide-react"
 
 const cars = [
   {
@@ -24,7 +20,7 @@ const cars = [
     topSpeed: 200,
     seats: 2,
     zeroToSixty: 7.5,
-},
+  },
   {
     id: 2,
     name: "MINI John Cooper Works",
@@ -51,7 +47,7 @@ const cars = [
     topSpeed: 200,
     seats: 2,
     zeroToSixty: 7.5,
-},
+  },
   {
     id: 5,
     name: "MINI John Cooper Works",
@@ -73,53 +69,68 @@ const cars = [
 ]
 
 export default function CarsCarousel() {
-    const [api, setApi] = useState<any>();
-    const [current, setCurrent] = useState(0);
+  const [api, setApi] = useState<any>()
+  const [current, setCurrent] = useState(0)
 
-    useEffect(() => {
-        if (!api) return;
+  useEffect(() => {
+    if (!api) return
 
-        setCurrent(api.selectedScrollSnap())
-        
-        api.on("select", () => {
-            setCurrent(api.selectedScrollSnap())
-        })
-    }, [api])
-    return (
-        <>
-        <Carousel 
-        setApi={setApi} 
-        plugins={[Autoplay({delay: 4000})]} 
-        opts = {{ loop: true}}>
+    setCurrent(api.selectedScrollSnap())
 
-            <CarouselContent>
-                {cars.map((car) => (
-                    <CarouselItem key={car.id} className="basis-1/3">
-                        <Image src={car.image} alt={car.name} width={700} height={450} />
-                    </CarouselItem>
-                ))}
-            </CarouselContent>
-        </Carousel>
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap())
+    })
+  }, [api])
 
-        <div className="car-details">
-            <span className="material-symbols-outlined">
-                <p className="flex items-center gap-2">
-                    <ChevronsUp className="w-4 h-4" />Horsepower: {cars[current]?.hp} HP
-                </p>
-                <p className="flex items-center gap-2">
-                    <Gauge className="w-4 h-4" />Top Speed: {cars[current]?.topSpeed} km/h
-                </p>
-            </span>
+  return (
+    <div className="max-w-full px-4">
 
-            <h2>{cars[current]?.name}</h2>
-            
-            <span className="material-symbols-outlined">
-                <p>Seats: {cars[current]?.seats}</p>
-                <p className="flex items-center gap-2">
-                    <Timer className="w-4 h-4" />0-60 mph: {cars[current]?.zeroToSixty} seconds
-                </p>
-            </span>
+      <Carousel
+        setApi={setApi}
+        plugins={[Autoplay({ delay: 4000 })]}
+        opts={{ loop: true }}
+      >
+        <CarouselContent>
+          {cars.map((car) => (
+            <CarouselItem key={car.id} className="basis-1/3 flex justify-center">
+              <Image
+                src={car.image}
+                alt={car.name}
+                width={600}
+                height={300}
+                className="object-contain hover:scale-105 transition"
+              />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 items-center text-center gap-6 mt-8">
+
+        <div className="flex flex-col items-center gap-2">
+          <p className="flex items-center gap-2">
+            <ChevronsUp className="w-4 h-4" />
+            Horsepower: {cars[current]?.hp} HP
+          </p>
+          <p className="flex items-center gap-2">
+            <Gauge className="w-4 h-4" />
+            Top Speed: {cars[current]?.topSpeed} km/h
+          </p>
         </div>
-        </>
-    )
+
+        <h2 className="text-2xl font-semibold">
+          {cars[current]?.name}
+        </h2>
+
+        <div className="flex flex-col items-center gap-2">
+          <p>Seats: {cars[current]?.seats}</p>
+          <p className="flex items-center gap-2">
+            <Timer className="w-4 h-4" />
+            0-60 mph: {cars[current]?.zeroToSixty} seconds
+          </p>
+        </div>
+
+      </div>
+    </div>
+  )
 }

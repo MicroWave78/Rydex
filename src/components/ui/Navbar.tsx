@@ -6,7 +6,7 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <Link href="/">
-        <h1>Rent a Car</h1>
+        <h1>Rydex</h1>
       </Link>
 
       
