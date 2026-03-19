@@ -1,6 +1,5 @@
 "use client"
 
-import "@/app/styles/CarsCarousel.css"
 import { useState, useEffect } from "react"
 import {
   Carousel,
@@ -9,7 +8,7 @@ import {
 } from "@/components/ui/carousel"
 import Image from "next/image"
 import Autoplay from "embla-carousel-autoplay"
-import { ChevronsUp, Gauge, Timer } from "lucide-react"
+import { ChevronsUp, Gauge, Timer, Armchair } from "lucide-react"
 
 const cars = [
   {
@@ -92,7 +91,7 @@ export default function CarsCarousel() {
       >
         <CarouselContent>
           {cars.map((car) => (
-            <CarouselItem key={car.id} className="basis-1/3 flex justify-center">
+            <CarouselItem key={car.id} className="sm:basis-1/3 flex justify-center">
               <Image
                 src={car.image}
                 alt={car.name}
@@ -123,7 +122,10 @@ export default function CarsCarousel() {
         </h2>
 
         <div className="flex flex-col items-center gap-2">
-          <p>Seats: {cars[current]?.seats}</p>
+          <p className="flex items-center gap-2">
+            <Armchair className="w-4 h-4"/>
+            Seats: {cars[current]?.seats}
+          </p>
           <p className="flex items-center gap-2">
             <Timer className="w-4 h-4" />
             0-60 mph: {cars[current]?.zeroToSixty} seconds

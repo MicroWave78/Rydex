@@ -1,8 +1,6 @@
-import "@/app/about/style.css"
-
 export default function About() {
   return (
-    <div className="about-page">
+    <div className="">
       
       <h1>About Us</h1>
       <p>This page contains information about our company.</p>

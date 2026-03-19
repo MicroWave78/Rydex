@@ -1,5 +1,5 @@
 "use client"
-import "@/app/styles/BrowseCarsDrawer.css";
+
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -27,25 +27,32 @@ import {
 export default function BrowseCarsDrawer({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
     return (
         <Drawer open = {open} onOpenChange={setOpen}>
-          <DrawerContent className="drawer-content">
+          <DrawerContent className="bg-[#31363F] p-4">
             <DrawerHeader>
-              <DrawerTitle className="relative text-center text-[#EEEEEE]">
+              <DrawerTitle className="text-center relative text-[#EEEEEE]">
                 <span>Choose Style</span>
                 <DrawerClose asChild>
                   <X className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 cursor-pointer"/>
                 </DrawerClose>
               </DrawerTitle>
-              <DrawerDescription className="text-[#EEEEEE]">Here you can select the style of car you want to rent.</DrawerDescription>
+              <DrawerDescription className="text-[#EEEEEE]">
+                Here you can select the style of car you want to rent.
+              </DrawerDescription>
             </DrawerHeader>
 
-            <div className="drawer-content">
-              <Card className="car-card">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4 overflow-scroll md:overflow-hidden">
+              <Card className="text-center bg-[#31363F] border-none text-[#EEEEEE] shadow-none">
                 <CardHeader>
                   <CardTitle>Standard</CardTitle>
                   <CardDescription className="text-[#EEEEEE]">Perfect for city driving and daily commuting.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Image src="/images/test2.jpg" alt="Standard Car" width={400} height={300} className="car-image" />
+                  <Image 
+                  src="/images/test2.jpg" 
+                  alt="Standard Car" 
+                  width={400} 
+                  height={300} 
+                  className="w-full h-auto object-cover rounded-lg" />
                 </CardContent>
                 <CardFooter className="justify-center">
                   <Link href={`/cars/standard`}>
@@ -54,13 +61,18 @@ export default function BrowseCarsDrawer({ open, setOpen }: { open: boolean, set
                 </CardFooter>
               </Card>
 
-              <Card className="car-card">
+              <Card className="text-center bg-[#31363F] border-none text-[#EEEEEE] shadow-none">
                 <CardHeader>
                   <CardTitle>SUV</CardTitle>
                   <CardDescription className="text-[#EEEEEE]">Perfect for family trips and off-road adventures.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Image src="/images/test2.jpg" alt="SUV" width={400} height={300} className="car-image" />
+                  <Image 
+                  src="/images/test2.jpg" 
+                  alt="SUV" 
+                  width={400} 
+                  height={300} 
+                  className="w-full h-auto object-cover rounded-lg" />
                 </CardContent>
                 <CardFooter className="justify-center">
                   
@@ -71,13 +83,18 @@ export default function BrowseCarsDrawer({ open, setOpen }: { open: boolean, set
                 </CardFooter>
               </Card>
 
-              <Card className="car-card">
+              <Card className="text-center bg-[#31363F] border-none text-[#EEEEEE] shadow-none">
                 <CardHeader>
                   <CardTitle>Sports</CardTitle>
                   <CardDescription className="text-[#EEEEEE]">Perfect for speed and performance. Or just for fun!</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Image src="/images/test2.jpg" alt="Sports Car" width={400} height={300} className="car-image" />
+                  <Image 
+                  src="/images/test2.jpg" 
+                  alt="Sports Car" 
+                  width={400} 
+                  height={300} 
+                  className="w-full h-auto object-cover rounded-lg" />
                 </CardContent>
                 <CardFooter className="justify-center">
                   <Link href={`/cars/sports`}>
