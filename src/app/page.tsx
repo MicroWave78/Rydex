@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import BrowseCarsDrawer from "@/components/browseCarsDrawer";
 import { useState } from "react";
 import CarsCarousel from "@/components/carsCarousel";
-import CarGrid from "@/components/ui/carGrid";
+import CarGrid from "@/components/carGrid";
 import {
   Card,
   CardAction,
@@ -14,7 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import Image from "next/image";
+import { ArrowDown } from "lucide-react"
 
 import { Car, Calendar, KeyRound, Flag, CircleDollarSign, Gem, Tag } from "lucide-react";
 
@@ -31,18 +31,29 @@ export default function Home() {
         <div className="absolute inset-0 backdrop-blur-xs" />
       </div>
 
-      <TitleSubtitle title="Find your next ride." 
-      subtitle="Discover the best car rental deals in town. Whether you're looking for a compact car, an SUV, or a luxury vehicle, we have you covered." 
-      />
+      <section className="min-h-[calc(100vh-90px)] md:min-h-[calc(100vh-33px)] flex flex-col items-center justify-center text-center px-4">
+        <TitleSubtitle 
+          title="Find your next ride." 
+          subtitle="Discover the best car rental deals in town. Whether you're looking for a compact car, an SUV, or a luxury vehicle, we have you covered." 
+        />
 
-      <Button variant="default" className="mx-auto mt-5 px-5 bg-[#76ABAE] cursor-pointer hover:bg-[#5A8B8E] active:bg-[#3E6B6F]" onClick={() => setOpen(true)}>
-        Browse Cars
-      </Button>
+        <Button
+          variant="default"
+          className="mt-5 px-5 bg-[#76ABAE] cursor-pointer hover:bg-[#5A8B8E] active:bg-[#3E6B6F]"
+          onClick={() => setOpen(true)}
+        >
+          Browse Cars
+        </Button>
+      </section>
 
       <BrowseCarsDrawer open={open} setOpen={setOpen} />
+      <div className="w-full flex justify-center mb-3">
+        <ArrowDown className="w-8 h-8 rounded-full text-center animate-bounce border-1 "/>
+      </div>
+      
 
       {/* Main content */}
-      <div className="w-full bg-[#222831]  mt-30 md:mt-70 text-[#EEEEEE] p-1 rounded-t-lg">
+      <div className="w-full bg-[#222831] text-[#EEEEEE] p-1 rounded-t-lg">
         
         <CarsCarousel /> 
 
