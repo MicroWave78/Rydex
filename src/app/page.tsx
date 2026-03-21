@@ -1,9 +1,9 @@
 "use client"
-import TitleSubtitle from "@/components/ui/titleSubtitle"
+import TitleSubtitle from "@/components/titleSubtitle"
 import { Button } from "@/components/ui/button";
-import BrowseCarsDrawer from "@/components/ui/browseCarsDrawer";
+import BrowseCarsDrawer from "@/components/browseCarsDrawer";
 import { useState } from "react";
-import CarsCarousel from "@/components/ui/carsCarousel";
+import CarsCarousel from "@/components/carsCarousel";
 import CarGrid from "@/components/ui/carGrid";
 import {
   Card,
