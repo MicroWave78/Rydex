@@ -41,7 +41,8 @@ export default function Home() {
 
       <BrowseCarsDrawer open={open} setOpen={setOpen} />
 
-      <div className="w-full bg-[#222831] mt-70 text-[#EEEEEE] p-1 rounded-t-lg">
+      {/* Main content */}
+      <div className="w-full bg-[#222831]  mt-30 md:mt-70 text-[#EEEEEE] p-1 rounded-t-lg">
         
         <CarsCarousel /> 
 
@@ -84,8 +85,10 @@ export default function Home() {
           <CarGrid />
         </div>
 
+
+
         {/* Why choose us section */}
-        <div className="w-full p-4">
+        <div className="w-full py-5 px-4">
           <h1 className="text-4xl mt-10 text-center font-bold">Why Choose Us?</h1>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 mt-5 p-4 text-base md:text-lg">
@@ -116,8 +119,14 @@ export default function Home() {
           </div>
         </div>
         
+        {/* Latest Cars */}
+        <div className="w-full p-4 mt-5">
+          <h1 className="text-3xl md:text-4xl font-bold text-center">Latest Cars</h1>
+          <CarGrid />
+        </div>
 
-
+        {/* Who is Rydex */}
+        
       </div>
 
       

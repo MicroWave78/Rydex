@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { BookmarkIcon, Gauge, Fuel, Cog, MoveUpRight } from "lucide-react"
+import { BookmarkIcon, Gauge, Fuel, Cog, MoveUpRight, ChevronLeft, ChevronRight } from "lucide-react"
 import { Toggle } from "@/components/ui/toggle"
 import { Button } from "@/components/ui/button"
 
@@ -48,6 +48,7 @@ const cars = [
 
 export default function CarGrid() {
     return (
+        <>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4 mt-5">
             {cars.map((car, i) => (
                 <div key={i}
@@ -57,7 +58,7 @@ export default function CarGrid() {
                     <div className="relative">
                         <img
                             src={car.img}
-                            className="w-full h-40 md:h-70 object-cover"
+                            className="w-full h-auto md:h-70 object-cover"
                             alt="demo car"
                         />
 
@@ -115,6 +116,13 @@ export default function CarGrid() {
 
                 </div>
             ))}
+            
+            
         </div>
+        <div className="flex flex-row justify-center gap-2 mt-2">
+            <span className="p-2"><ChevronLeft className="cursor-pointer hover:text-[#76ABAE] transition duration-200"/></span>
+            <span className="p-2"><ChevronRight className="cursor-pointer hover:text-[#76ABAE] transition duration-200"/></span>
+        </div>
+        </>
     )
 }
