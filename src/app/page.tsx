@@ -48,12 +48,12 @@ export default function Home() {
 
       <BrowseCarsDrawer open={open} setOpen={setOpen} />
       <div className="w-full flex justify-center mb-3">
-        <ArrowDown className="w-8 h-8 rounded-full text-center animate-bounce border-1 "/>
+        <ArrowDown className="w-8 h-8 rounded-full text-center animate-bounce  bg-white text-black"/>
       </div>
       
 
       {/* Main content */}
-      <div className="w-full bg-[#222831] text-[#EEEEEE] p-1 rounded-t-lg">
+      <div className="w-full bg-[#31363F] text-[#EEEEEE] p-1 rounded-t-lg">
         
         <CarsCarousel /> 
 

@@ -70,7 +70,7 @@ export default function CarGrid() {
                         )}
 
                         {/* bookmark */}
-                        <Toggle aria-label="Toggle bookmark" size="sm" className="absolute top-3 right-3 p-1 rounded-full">
+                        <Toggle aria-label="Toggle bookmark" size="sm" className="absolute top-3 right-3 p-1 rounded-full cursor-pointer">
                             <BookmarkIcon className="group-data-[state=on]/toggle:fill-foreground" />
                         </Toggle>
 

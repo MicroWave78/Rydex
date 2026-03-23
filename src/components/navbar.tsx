@@ -1,4 +1,4 @@
-import { House, CircleQuestionMark, UserRound, ReceiptText, Search } from "lucide-react"
+import { House, CircleQuestionMark, UserRound, ReceiptText, Search, Menu } from "lucide-react"
 import Link from "next/link";
 import {
   InputGroup,
@@ -16,7 +16,7 @@ export default function Navbar() {
         <h1 className="text-lg md:text-2xl font-bold">Rydex</h1>
       </Link>
 
-      <div className="flex-1 flex justify-center ">
+      <div className="flex-1 flex justify-center invisible md:visible">
         <InputGroup className="max-w-xs md:max-w-xl border-none focus-within:bg-[#31363F] hover:bg-[#31363F] transition duration-500">
           <InputGroupInput placeholder="Search..." />
           <InputGroupAddon>
@@ -26,7 +26,7 @@ export default function Navbar() {
       </div>
       
 
-      <ul className="flex flex-row gap-10">
+      <ul className="flex flex-row gap-10 invisible md:visible">
         
         <li>
             <Link href="/">

@@ -1,7 +1,6 @@
 "use client"
 
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { X } from 'lucide-react';
 import {
@@ -40,25 +39,25 @@ export default function BrowseCarsDrawer({ open, setOpen }: { open: boolean, set
               </DrawerDescription>
             </DrawerHeader>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4 overflow-scroll md:overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-scroll md:overflow-hidden">
               <Card className="text-center bg-[#31363F] border-none text-[#EEEEEE] shadow-none">
                 <CardHeader>
                   <CardTitle>Standard</CardTitle>
                   <CardDescription className="text-[#EEEEEE]">Perfect for city driving and daily commuting.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Image 
-                  src="/images/test2.jpg" 
-                  alt="Standard Car" 
-                  width={400} 
-                  height={300} 
-                  className="w-full h-auto object-cover rounded-lg" />
-                </CardContent>
-                <CardFooter className="justify-center">
                   <Link href={`/cars/standard`}>
-                    <Button variant="default" className="cursor-pointer">Select</Button>
-                </Link>
-                </CardFooter>
+                    <div className="relative group w-full">
+                      <Image 
+                      src="/images/test2.jpg" 
+                      alt="Standard Car" 
+                      width={400}
+                      height={300} 
+                      className="w-full h-auto object-cover rounded-lg"></Image> 
+                      <div className="absolute inset-0 flex items-center justify-center text-white font-semibold text-lg bg-black/40 rounded-lg opacity-0 group-hover:opacity-100 transition duration-200">Select</div>
+                    </div>
+                  </Link>
+                </CardContent>
               </Card>
 
               <Card className="text-center bg-[#31363F] border-none text-[#EEEEEE] shadow-none">
@@ -67,20 +66,16 @@ export default function BrowseCarsDrawer({ open, setOpen }: { open: boolean, set
                   <CardDescription className="text-[#EEEEEE]">Perfect for family trips and off-road adventures.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Image 
-                  src="/images/test2.jpg" 
-                  alt="SUV" 
-                  width={400} 
-                  height={300} 
-                  className="w-full h-auto object-cover rounded-lg" />
+                  <div className="relative group w-full">
+                      <Image 
+                      src="/images/test2.jpg" 
+                      alt="Standard Car" 
+                      width={400}
+                      height={300} 
+                      className="w-full h-auto object-cover rounded-lg"></Image> 
+                      <div className="absolute inset-0 flex items-center justify-center text-white font-semibold text-lg bg-black/40 rounded-lg opacity-0 group-hover:opacity-100 transition duration-200">Select</div>
+                    </div>
                 </CardContent>
-                <CardFooter className="justify-center">
-                  
-                <Link href={`/cars/suv`}>
-                    <Button variant="default" className="cursor-pointer">Select</Button>
-                </Link>
-
-                </CardFooter>
               </Card>
 
               <Card className="text-center bg-[#31363F] border-none text-[#EEEEEE] shadow-none">
@@ -89,18 +84,16 @@ export default function BrowseCarsDrawer({ open, setOpen }: { open: boolean, set
                   <CardDescription className="text-[#EEEEEE]">Perfect for speed and performance. Or just for fun!</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Image 
-                  src="/images/test2.jpg" 
-                  alt="Sports Car" 
-                  width={400} 
-                  height={300} 
-                  className="w-full h-auto object-cover rounded-lg" />
+                  <div className="relative group w-full">
+                      <Image 
+                      src="/images/test2.jpg" 
+                      alt="Standard Car" 
+                      width={400}
+                      height={300} 
+                      className="w-full h-auto object-cover rounded-lg"></Image> 
+                      <div className="absolute inset-0 flex items-center justify-center text-white font-semibold text-lg bg-black/40 rounded-lg opacity-0 group-hover:opacity-100 transition duration-200">Select</div>
+                    </div>
                 </CardContent>
-                <CardFooter className="justify-center">
-                  <Link href={`/cars/sports`}>
-                    <Button variant="default" className="cursor-pointer">Select</Button>
-                </Link>
-                </CardFooter>
               </Card>
 
             </div>
