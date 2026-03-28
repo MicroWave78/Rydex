@@ -88,7 +88,7 @@ export default function RootLayout({
             <div className="flex flex-col mx-auto gap-2">
               <h1 className="font-bold text-lg">Sale Hours</h1>
               <p>Monday - Firday: 09:00AM - 09:00PM</p>
-              <p>Saturday: 09:00AM - 07-00PM</p>
+              <p>Saturday: 09:00AM - 07:00PM</p>
               <p>Sunday: Closed</p>
 
               <div className="flex flex-col gap-2 mt-4">
@@ -103,7 +103,7 @@ export default function RootLayout({
               </div>
             </div>
           </div>
-          <p className="text-center mt-6">&copy; 2025 Rydex. All rights reserved.</p>
+          <p className="text-center mt-6">&copy; 2026 Rydex. All rights reserved.</p>
         </footer>
       </body>
     </html>

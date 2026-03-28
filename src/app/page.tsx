@@ -2,31 +2,42 @@
 import TitleSubtitle from "@/components/titleSubtitle"
 import { Button } from "@/components/ui/button";
 import BrowseCarsDrawer from "@/components/browseCarsDrawer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CarsCarousel from "@/components/carsCarousel";
 import CarGrid from "@/components/carGrid";
+import Image from "next/image";
+import Link from "next/link";
 import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { ArrowDown } from "lucide-react"
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+  InputGroupText,
+  InputGroupTextarea,
+} from "@/components/ui/input-group"
 
-import { Car, Calendar, KeyRound, Flag, CircleDollarSign, Gem, Tag } from "lucide-react";
+import { Car, Calendar, KeyRound, Flag, CircleDollarSign, Gem, Tag, Star, ArrowDown } from "lucide-react";
+
+
 
 export default function Home() {
   const [open, setOpen] = useState(false);
+
+  const [scrollY, setScrollY] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY)
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
   return (
     <div className="w-full flex flex-col">
 
       <div className="fixed inset-0 -z-10">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/test2.jpg')" }}
+          style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
         />
         <div className="absolute inset-0 backdrop-blur-xs" />
       </div>
@@ -47,8 +58,11 @@ export default function Home() {
       </section>
 
       <BrowseCarsDrawer open={open} setOpen={setOpen} />
-      <div className="w-full flex justify-center mb-3">
-        <ArrowDown className="w-8 h-8 rounded-full text-center animate-bounce  bg-white text-black"/>
+      <div className="w-full flex justify-center mb-3 transition-opacity duration-200" style={{
+        opacity: Math.max(1 - scrollY / 100, 0),
+        pointerEvents: scrollY > 100 ? "none" : "auto",
+      }}>
+        <ArrowDown className="w-8 h-8 rounded-full text-center animate-bounce bg-white text-black"/>
       </div>
       
 
@@ -137,10 +151,95 @@ export default function Home() {
         </div>
 
         {/* Who is Rydex */}
-        
-      </div>
+        <div className="w-full flex bg-[#222831] rounded-xl py-6 mb-6">
+          <div className="w-full flex flex-col md:flex-row items-center justify-around gap-6 px-10">
+            <div className="flex flex-col md:w-1/4 text-center">
+              <h1 className="text-3xl md:text-4xl font-bold ">Who is Rydex?</h1>
+              <p className="text-lg md:text-base">Rydex is a modern car rental platform designed to make finding and booking your next ride simple and stress-free. From everyday vehicles to premium options, we connect you with reliable cars at competitive prices, all in just a few clicks.</p>
+            </div>
 
-      
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full md:w-1/2">
+
+              <div className="flex flex-col items-center text-center text-black rounded-xl p-4 justify-center bg-white gap-2">
+                <h2 className="text-lg font-semibold">Great</h2>
+                <div className="flex flex-row gap-1">
+                  {Array.from({ length: 5}).map((_, i) => (
+                    <div key={i} className="group/star">
+                      <Star className="text-green-500 bg-green-500 fill-background transition-all group-hover/star:-translate-y-1 duration-200 ease-out" />
+                    </div>
+                  ))}
+                </div>
+                <p>Based on 5,801 reviews</p>
+                <Link href={"https://www.trustpilot.com"}>
+                <Image src={"/images/Trustpilot_logo.png"}
+                alt=""
+                width={100}
+                height={200}
+                className="h-auto w-full"
+                /></Link>
+                
+              </div>
+
+              <div className="flex flex-col items-center text-center text-black rounded-xl p-4 justify-center bg-white gap-2">
+                <h2 className="text-lg font-semibold">Great</h2>
+                <div className="flex flex-row gap-1">
+                  {Array.from({ length: 5}).map((_, i) => (
+                    <div key={i} className="group/star">
+                      <Star className="text-green-500 bg-green-500 fill-background transition-all group-hover/star:-translate-y-1 duration-200 ease-out" />
+                    </div>
+                  ))}
+                </div>
+                <p>Based on 5,801 reviews</p>
+                <Link href={"https://customerreviews.google.com"}>
+                <Image src={"/images/Google-Review-Logo.png"}
+                alt=""
+                width={100}
+                height={100}
+                className="h-auto w-full"
+                /></Link>
+              </div>
+
+              <div className="flex flex-col items-center text-center text-black rounded-xl p-4 justify-center bg-white gap-2">
+                <h2 className="text-lg font-semibold">Great</h2>
+                <div className="flex flex-row gap-1">
+                  {Array.from({ length: 5}).map((_, i) => (
+                    <div key={i} className="group/star">
+                      <Star className="text-green-500 bg-green-500 fill-background transition-all group-hover/star:-translate-y-1 duration-200 ease-out" />
+                    </div>
+                  ))}
+                </div>
+                <p>Based on 5,801 reviews</p>
+                <Link href={"https://www.yelp.com"}>
+                <Image src={"/images/Yelp_Logo.svg.png"}
+                alt=""
+                width={100}
+                height={100}
+                className="h-auto w-full"
+                /></Link>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        {/* Join Rydex */}
+        <div className="w-full flex flex-col items-center gap-4 py-4">
+          <div className="text-center">
+            <h2 className="text-xl font-semibold">Join Rydex</h2>
+            <p className="text-sm md:text-base">Recieve pricing updates, shopping tips & more!</p>
+          </div>
+
+          <div className="w-full max-w-sm">
+            <InputGroup>
+              <InputGroupInput placeholder="example@gmail.com" className="" />
+              <InputGroupAddon align="inline-end">
+                <InputGroupButton variant="default" className="cursor-pointer bg-[#76ABAE]">Sign Up</InputGroupButton>
+              </InputGroupAddon>
+            </InputGroup>
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 }

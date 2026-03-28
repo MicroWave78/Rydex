@@ -66,15 +66,17 @@ export default function BrowseCarsDrawer({ open, setOpen }: { open: boolean, set
                   <CardDescription className="text-[#EEEEEE]">Perfect for family trips and off-road adventures.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="relative group w-full">
+                  <Link href={`/cars/suv`}>
+                    <div className="relative group w-full">
                       <Image 
                       src="/images/test2.jpg" 
-                      alt="Standard Car" 
+                      alt="SUV Car" 
                       width={400}
                       height={300} 
                       className="w-full h-auto object-cover rounded-lg"></Image> 
                       <div className="absolute inset-0 flex items-center justify-center text-white font-semibold text-lg bg-black/40 rounded-lg opacity-0 group-hover:opacity-100 transition duration-200">Select</div>
                     </div>
+                  </Link>
                 </CardContent>
               </Card>
 
@@ -84,15 +86,17 @@ export default function BrowseCarsDrawer({ open, setOpen }: { open: boolean, set
                   <CardDescription className="text-[#EEEEEE]">Perfect for speed and performance. Or just for fun!</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="relative group w-full">
+                  <Link href={`/cars/sports`}>
+                    <div className="relative group w-full">
                       <Image 
                       src="/images/test2.jpg" 
-                      alt="Standard Car" 
+                      alt="Sports Car" 
                       width={400}
                       height={300} 
                       className="w-full h-auto object-cover rounded-lg"></Image> 
                       <div className="absolute inset-0 flex items-center justify-center text-white font-semibold text-lg bg-black/40 rounded-lg opacity-0 group-hover:opacity-100 transition duration-200">Select</div>
                     </div>
+                  </Link>
                 </CardContent>
               </Card>
 
