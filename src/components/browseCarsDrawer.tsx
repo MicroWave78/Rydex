@@ -39,7 +39,7 @@ export default function BrowseCarsDrawer({ open, setOpen }: { open: boolean, set
               </DrawerDescription>
             </DrawerHeader>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-scroll md:overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-y-auto md:overflow-hidden">
               <Card className="text-center bg-[#31363F] border-none text-[#EEEEEE] shadow-none">
                 <CardHeader>
                   <CardTitle>Standard</CardTitle>
@@ -49,7 +49,7 @@ export default function BrowseCarsDrawer({ open, setOpen }: { open: boolean, set
                   <Link href={`/cars/standard`}>
                     <div className="relative group w-full">
                       <Image 
-                      src="/images/test2.jpg" 
+                      src="/images/hero-bg.jpg" 
                       alt="Standard Car" 
                       width={400}
                       height={300} 
@@ -69,7 +69,7 @@ export default function BrowseCarsDrawer({ open, setOpen }: { open: boolean, set
                   <Link href={`/cars/suv`}>
                     <div className="relative group w-full">
                       <Image 
-                      src="/images/test2.jpg" 
+                      src="/images/hero-bg.jpg" 
                       alt="SUV Car" 
                       width={400}
                       height={300} 
@@ -89,7 +89,7 @@ export default function BrowseCarsDrawer({ open, setOpen }: { open: boolean, set
                   <Link href={`/cars/sports`}>
                     <div className="relative group w-full">
                       <Image 
-                      src="/images/test2.jpg" 
+                      src="/images/hero-bg.jpg" 
                       alt="Sports Car" 
                       width={400}
                       height={300} 

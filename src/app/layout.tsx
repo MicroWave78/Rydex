@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "../components/navbar";
 import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa"
 import { FaXTwitter } from "react-icons/fa6"
+import Link from "next/link";
 
 const oswald = Oswald({
   variable: "--font-oswald",
@@ -48,41 +49,41 @@ export default function RootLayout({
 
             <div className="flex flex-col mx-auto gap-2">
               <h1 className="font-bold text-lg">Company</h1>
-              <p className="cursor-pointer">About Us</p>
-              <p className="cursor-pointer">Blog</p>
-              <p className="cursor-pointer">Services</p>
-              <p className="cursor-pointer">FAQs</p>
-              <p className="cursor-pointer">Terms</p>
-              <p className="cursor-pointer">Contact Us</p>
+              <Link href="/about"><p >About Us</p></Link>
+              <Link href=""><p >Blog</p></Link>
+              <Link href=""><p >Services</p></Link>
+              <Link href=""><p >FAQs</p></Link>
+              <Link href=""><p >Terms</p></Link>
+              <Link href=""><p >Contact Us</p></Link>
             </div>
 
             <div className="flex flex-col mx-auto gap-2">
               <h1 className="font-bold text-lg">Quick Links</h1>
-              <p className="cursor-pointer">Get in Touch</p>
-              <p className="cursor-pointer">Help center</p>
-              <p className="cursor-pointer">Live chat</p>
-              <p className="cursor-pointer">How it works</p>
+              <Link href=""><p >Get in Touch</p></Link>
+              <Link href=""><p >Help center</p></Link>
+              <Link href=""><p >Live chat</p></Link>
+              <Link href=""><p >How it works</p></Link>
             </div>
 
             <div className="flex flex-col mx-auto gap-2">
               <h1 className="font-bold text-lg">Our Brands</h1>
-              <p className="cursor-pointer">Toyota</p>
-              <p className="cursor-pointer">Porche</p>
-              <p className="cursor-pointer">Audi</p>
-              <p className="cursor-pointer">BMW</p>
-              <p className="cursor-pointer">Ford</p>
-              <p className="cursor-pointer">Nissan</p>
-              <p className="cursor-pointer">Volkswagen</p>
+              <Link href=""><p >Toyota</p></Link>
+              <Link href=""><p >Porche</p></Link>
+              <Link href=""><p >Audi</p></Link>
+              <Link href=""><p >BMW</p></Link>
+              <Link href=""><p >Ford</p></Link>
+              <Link href=""><p >Nissan</p></Link>
+              <Link href=""><p >Volkswagen</p></Link>
             </div>
 
             <div className="flex flex-col mx-auto gap-2">
               <h1 className="font-bold text-lg">Vehicles Type</h1>
-              <p className="cursor-pointer">Sedan</p>
-              <p className="cursor-pointer">Suv</p>
-              <p className="cursor-pointer">Hybrid</p>
-              <p className="cursor-pointer">Electric</p>
-              <p className="cursor-pointer">Convertible</p>
-              <p className="cursor-pointer">Sport</p>
+              <Link href=""><p >Sedan</p></Link>
+              <Link href=""><p >Suv</p></Link>
+              <Link href=""><p >Hybrid</p></Link>
+              <Link href=""><p >Electric</p></Link>
+              <Link href=""><p >Convertible</p></Link>
+              <Link href=""><p >Sport</p></Link>
             </div>
 
             <div className="flex flex-col mx-auto gap-2">
@@ -95,10 +96,10 @@ export default function RootLayout({
                 <h1 className="font-bold text-lg">Connect With Us</h1>
 
                 <div className="grid grid-cols-4">
-                  <FaFacebook className="cursor-pointer"/>
-                  <FaInstagram className="cursor-pointer"/>
-                  <FaLinkedin className="cursor-pointer"/>
-                  <FaXTwitter className="cursor-pointer"/>
+                  <Link href=""><FaFacebook className="w-4 h-4"/></Link>
+                  <Link href=""><FaInstagram className="w-4 h-4"/></Link>
+                  <Link href=""><FaLinkedin className="w-4 h-4"/></Link>
+                  <Link href=""><FaXTwitter className="w-4 h-4"/></Link>
                 </div>
               </div>
             </div>

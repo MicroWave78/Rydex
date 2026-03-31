@@ -53,11 +53,12 @@ export default function Home() {
           className="mt-5 px-5 bg-[#76ABAE] cursor-pointer hover:bg-[#5A8B8E] active:bg-[#3E6B6F]"
           onClick={() => setOpen(true)}
         >
-          Browse Cars
+          Browse Cars by Type
         </Button>
+        <BrowseCarsDrawer open={open} setOpen={setOpen} />
       </section>
 
-      <BrowseCarsDrawer open={open} setOpen={setOpen} />
+      
       <div className="w-full flex justify-center mb-3 transition-opacity duration-200" style={{
         opacity: Math.max(1 - scrollY / 100, 0),
         pointerEvents: scrollY > 100 ? "none" : "auto",
@@ -223,13 +224,13 @@ export default function Home() {
         </div>
 
         {/* Join Rydex */}
-        <div className="w-full flex flex-col items-center gap-4 py-4">
+        <div className="w-full flex flex-col items-center gap-4 py-10">
           <div className="text-center">
             <h2 className="text-xl font-semibold">Join Rydex</h2>
             <p className="text-sm md:text-base">Recieve pricing updates, shopping tips & more!</p>
           </div>
 
-          <div className="w-full max-w-sm">
+          <div className="w-full max-w-xs md:max-w-sm">
             <InputGroup>
               <InputGroupInput placeholder="example@gmail.com" className="" />
               <InputGroupAddon align="inline-end">
