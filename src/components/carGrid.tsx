@@ -1,15 +1,17 @@
 import Image from "next/image"
-import { BookmarkIcon, Gauge, Fuel, Cog, MoveUpRight, ChevronLeft, ChevronRight } from "lucide-react"
+import { BookmarkIcon, Gauge, Fuel, Cog, MoveUpRight, ChevronLeft, ChevronRight, Users } from "lucide-react"
 import { Toggle } from "@/components/ui/toggle"
 import { Button } from "@/components/ui/button"
+import { Badge } from "./ui/badge"
 
 const cars = [
     {
         name: "Ford Transit",
-        price: "$22,000",
+        price: "$35",
         miles: "2500 Miles",
         fuel: "Diesel",
         transmission: "Manual",
+        seats: "5 Seats",
         img: "/images/demo-car-1.webp",
         badge: "Great Price",
         badgeColor: "bg-[#207d24]",
@@ -17,10 +19,11 @@ const cars = [
     },
     {
         name: "New GLC",
-        price: "$95,000",
+        price: "$50",
         miles: "50 Miles",
         fuel: "Petrol",
         transmission: "Automatic",
+        seats: "5 Seats",
         img: "/images/demo-car-1.webp",
         badge: "Low Mileage",
         badgeColor: "bg-[#2363b8]",
@@ -28,19 +31,21 @@ const cars = [
     },
     {
         name: "Audi A6 3.5",
-        price: "$58,000",
+        price: "$48",
         miles: "100 Miles",
         fuel: "Petrol",
         transmission: "Automatic",
+        seats: "5 Seats",
         img: "/images/demo-car-1.webp",
         description: "3.5 D5 PowerPulse Momentum 5dr AWD"
     },
     {
         name: "Ford Transit",
-        price: "$45,000",
+        price: "$60",
         miles: "15000 Miles",
         fuel: "Diesel",
         transmission: "Manual",
+        seats: "5 Seats",
         img: "/images/demo-car-1.webp",
         description: "3.5 D5 PowerPulse Momentum 5dr AWD"
     }
@@ -64,9 +69,9 @@ export default function CarGrid() {
 
                         {/* badge */}
                         {car.badge && (
-                            <span className={`absolute top-3 left-3 ${car.badgeColor} text-white text-xs px-3 py-1 rounded-full`}>
+                            <Badge className={`absolute top-3 left-3 ${car.badgeColor} text-white text-xs px-3 py-1 rounded-full`}>
                                 {car.badge}
-                            </span>
+                            </Badge>
                         )}
 
                         {/* bookmark */}
@@ -99,12 +104,16 @@ export default function CarGrid() {
                                 <Cog className="w-5 h-5"/>
                                 {car.transmission}
                             </span>
+                            <span className="flex flex-col items-center">
+                                <Users className="w-5 h-5"/>
+                                {car.seats}
+                            </span>
                         </div>
 
                         {/* footer */}
                         <div className="flex justify-between items-center">
                             <span className="text-lg font-bold">
-                                {car.price}
+                                {car.price} / Day
                             </span>
 
                             <Button className="text-sm text-grey-300 hover:text-white cursor-pointer hover:-translate-y-1 transition duration-300">

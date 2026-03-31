@@ -47,43 +47,42 @@ export default function RootLayout({
         <footer className="flex flex-col bg-[#222831] p-6">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-20">
 
-            <div className="flex flex-col mx-auto gap-2">
+            <div className="flex flex-col mx-auto gap-2 ">
               <h1 className="font-bold text-lg">Company</h1>
-              <Link href="/about"><p >About Us</p></Link>
-              <Link href=""><p >Blog</p></Link>
-              <Link href=""><p >Services</p></Link>
-              <Link href=""><p >FAQs</p></Link>
-              <Link href=""><p >Terms</p></Link>
-              <Link href=""><p >Contact Us</p></Link>
+              <Link href="/about" className="hover:underline"><p >About Us</p></Link>
+              <Link href="" className="hover:underline"><p >Services</p></Link>
+              <Link href="/about#faq" className="hover:underline"><p >FAQs</p></Link>
+              <Link href="" className="hover:underline"><p >Terms</p></Link>
+              <Link href="/contact" className="hover:underline"><p >Contact Us</p></Link>
             </div>
 
             <div className="flex flex-col mx-auto gap-2">
               <h1 className="font-bold text-lg">Quick Links</h1>
-              <Link href=""><p >Get in Touch</p></Link>
-              <Link href=""><p >Help center</p></Link>
-              <Link href=""><p >Live chat</p></Link>
-              <Link href=""><p >How it works</p></Link>
+              <Link href="/contact" className="hover:underline"><p >Get in Touch</p></Link>
+              <Link href="" className="hover:underline"><p >Help center</p></Link>
+              <Link href="" className="hover:underline"><p >Live chat</p></Link>
+              <Link href="/#howto" className="hover:underline"><p >How it works</p></Link>
             </div>
 
             <div className="flex flex-col mx-auto gap-2">
               <h1 className="font-bold text-lg">Our Brands</h1>
-              <Link href=""><p >Toyota</p></Link>
-              <Link href=""><p >Porche</p></Link>
-              <Link href=""><p >Audi</p></Link>
-              <Link href=""><p >BMW</p></Link>
-              <Link href=""><p >Ford</p></Link>
-              <Link href=""><p >Nissan</p></Link>
-              <Link href=""><p >Volkswagen</p></Link>
+              <Link href="" className="hover:underline"><p >Toyota</p></Link>
+              <Link href="" className="hover:underline"><p >Porche</p></Link>
+              <Link href="" className="hover:underline"><p >Audi</p></Link>
+              <Link href="" className="hover:underline"><p >BMW</p></Link>
+              <Link href="" className="hover:underline"><p >Ford</p></Link>
+              <Link href="" className="hover:underline"><p >Nissan</p></Link>
+              <Link href="" className="hover:underline"><p >Volkswagen</p></Link>
             </div>
 
             <div className="flex flex-col mx-auto gap-2">
               <h1 className="font-bold text-lg">Vehicles Type</h1>
-              <Link href=""><p >Sedan</p></Link>
-              <Link href=""><p >Suv</p></Link>
-              <Link href=""><p >Hybrid</p></Link>
-              <Link href=""><p >Electric</p></Link>
-              <Link href=""><p >Convertible</p></Link>
-              <Link href=""><p >Sport</p></Link>
+              <Link href="" className="hover:underline" ><p >Sedan</p></Link>
+              <Link href="" className="hover:underline"><p >Suv</p></Link>
+              <Link href="" className="hover:underline"><p >Hybrid</p></Link>
+              <Link href="" className="hover:underline"><p >Electric</p></Link>
+              <Link href="" className="hover:underline"><p >Convertible</p></Link>
+              <Link href="" className="hover:underline"><p >Sport</p></Link>
             </div>
 
             <div className="flex flex-col mx-auto gap-2">
@@ -96,10 +95,10 @@ export default function RootLayout({
                 <h1 className="font-bold text-lg">Connect With Us</h1>
 
                 <div className="grid grid-cols-4">
-                  <Link href=""><FaFacebook className="w-4 h-4"/></Link>
-                  <Link href=""><FaInstagram className="w-4 h-4"/></Link>
-                  <Link href=""><FaLinkedin className="w-4 h-4"/></Link>
-                  <Link href=""><FaXTwitter className="w-4 h-4"/></Link>
+                  <Link href="https://facebook.com/" target="_blank"><FaFacebook className="w-4 h-4"/></Link>
+                  <Link href="https://instagram.com/" target="_blank"><FaInstagram className="w-4 h-4"/></Link>
+                  <Link href="https://linkedin.com/" target="_blank"><FaLinkedin className="w-4 h-4"/></Link>
+                  <Link href="https://twitter.com/" target="_blank"><FaXTwitter className="w-4 h-4"/></Link>
                 </div>
               </div>
             </div>

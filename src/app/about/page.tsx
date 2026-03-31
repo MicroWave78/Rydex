@@ -4,17 +4,14 @@ import { CircleDollarSign, Gem, Tag, Car, ShieldCheck, Cpu, Wrench, Calendar, Sh
 import CountUp from "react-countup";
 import { useEffect, useState } from "react";
 import {useInView} from "react-intersection-observer";
-
-
-
-
+import FAQ from "@/components/faq";
 
 export default function About() {
   const [start, setStart] = useState(false);
 
   const { ref, inView } = useInView({
-    triggerOnce: true, // only animate once
-    threshold: 0.3,    // % of element visible before triggering
+    triggerOnce: true,
+    threshold: 0.6,    // % of element visible before triggering
   });
 
   useEffect(() => {
@@ -79,15 +76,7 @@ export default function About() {
 
           </div>
 
-          <div className="flex flex-col w-full items-center p-6">
-            <h1 className="text-2xl md:text-4xl font-semibold">Our Mission</h1>
-            <p className="text-md md:text-lg">To provide a seamless and enjoyable car rental experience that exceeds our customers' expectations, making every journey memorable.</p>
-          </div>
 
-          <div className="flex flex-col w-full items-center p-6">
-            <h1 className="text-2xl md:text-4xl font-semibold">Our Vision</h1>
-            <p className="text-md md:text-lg">To be the leading car rental service, known for our exceptional customer service, diverse fleet, and commitment to sustainability.</p>
-          </div>
 
           {/* Values */}
           <div className="flex flex-col w-full items-center p-6">
@@ -166,15 +155,15 @@ export default function About() {
           </div>
 
           {/* Achievements */}
-          <div className="w-[50vw] px-4 py-6 mx-auto">
+          <div ref = {ref} className="w-[50vw] px-4 py-6 mx-auto">
             <h1 className="w-full text-center text-2xl md:text-4xl font-semibold">Our Achievements</h1>
             
-            <div ref = {ref} className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8 py-4 text-base md:text-lg">
+            <div  className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8 py-4 justify-items-center text-base md:text-lg">
               <div className="flex flex-col text-center gap-4">
                 <div
-                className="w-40 h-40 flex flex-col md:mx-auto items-center justify-center text-center rounded-full border-2 shadow-2xl hover:shadow-[#76ABAE] border-[#76ABAE] duration-500 ease-out">
+                className={'w-50 h-50 flex flex-col md:mx-auto items-center justify-center text-center rounded-full border-2 shadow-2xl hover:shadow-[#76ABAE] border-[#76ABAE] duration-500 ease-out'}>
                   <h3 className="font-semibold">
-                    {start && <CountUp start={0} end={10000} duration={4} />}+ Bookings
+                    {start && <CountUp start={0} end={10000} duration={2} delay={0.3} />}+ Bookings
                   </h3>
                 </div>
                 <p className="text-sm lg:text-lg">Rydex proudly serves over 10,000 satisfied customers!</p>
@@ -182,9 +171,9 @@ export default function About() {
 
               <div className="flex flex-col text-center gap-4">
                 <div  
-                className="w-40 h-40 flex flex-col md:mx-auto items-center justify-center text-center rounded-full border-2 shadow-2xl hover:shadow-[#76ABAE] border-[#76ABAE] duration-500 ease-out">
+                className="w-50 h-50 flex flex-col md:mx-auto items-center justify-center text-center rounded-full border-2 shadow-2xl hover:shadow-[#76ABAE] border-[#76ABAE] duration-500 ease-out">
                   <h3 className="font-semibold">
-                    {start && <CountUp start={0} end={500} duration={4} delay={3.7} />}+ Cars
+                    {start && <CountUp start={0} end={500} duration={2} delay={2} />}+ Cars
                   </h3>
                 </div>
                 <p className="text-sm lg:text-lg">Our fleet boasts over 500 vehicles, ensuring the perfect ride for every customer.</p>
@@ -192,9 +181,9 @@ export default function About() {
 
               <div className="flex flex-col text-center gap-4">
                 <div 
-                className="w-40 h-40 flex flex-col md:mx-auto items-center justify-center text-center rounded-full border-2 shadow-2xl hover:shadow-[#76ABAE] border-[#76ABAE] duration-500 ease-out">
+                className="w-50 h-50 flex flex-col md:mx-auto items-center justify-center text-center rounded-full border-2 shadow-2xl hover:shadow-[#76ABAE] border-[#76ABAE] duration-500 ease-out">
                   <h3 className="font-semibold">
-                    {start && <CountUp start={0} end={98} duration={2} delay={7.3} />}% Customer Satisfaction
+                    {start && <CountUp start={0} end={98} duration={2} delay={3.6} />}% Customer Satisfaction
                   </h3>
                 </div>
                 <p className="text-sm lg:text-lg">We are proud to maintain a 98% customer satisfaction rate!</p>
@@ -203,7 +192,8 @@ export default function About() {
             </div>
           </div>
 
-       </div>
+          <FAQ />
+        </div>
       
     </div>
   );

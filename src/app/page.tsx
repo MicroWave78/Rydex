@@ -73,7 +73,7 @@ export default function Home() {
         <CarsCarousel /> 
 
         {/* How it works section */}
-        <div className="w-full px-4 py-16">
+        <div className="w-full px-4 py-16" id="howto">
           <h1 className="text-3xl md:text-4xl font-bold text-center">How Rydex Works</h1>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 mt-5 py-4 text-base md:text-lg">

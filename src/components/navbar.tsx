@@ -17,7 +17,7 @@ export default function Navbar() {
       </Link>
 
       <div className="flex-1 flex justify-center invisible md:visible">
-        <InputGroup className="max-w-xs md:max-w-xl border-none focus-within:bg-[#31363F] hover:bg-[#31363F] transition duration-500">
+        <InputGroup className="max-w-xs md:max-w-xl border-none focus-within:bg-[#222831] hover:bg-[#222831] transition duration-500">
           <InputGroupInput placeholder="Search..." />
           <InputGroupAddon>
             <Search />
