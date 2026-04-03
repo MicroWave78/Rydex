@@ -101,6 +101,8 @@ export default function RootLayout({
                   <Link href="https://twitter.com/" target="_blank"><FaXTwitter className="w-4 h-4"/></Link>
                 </div>
               </div>
+
+              
             </div>
           </div>
           <p className="text-center mt-6">&copy; 2026 Rydex. All rights reserved.</p>

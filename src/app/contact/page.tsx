@@ -28,7 +28,7 @@ export default function Contact() {
             <h1 className="text-2xl md:text-4xl font-bold mt-5">Get in Touch with Rydex</h1>
 
             <div className="w-full max-w-md mt-10 bg-[#1E2127] rounded-lg shadow-lg p-6">
-                <FieldSet className="">
+                <FieldSet>
                     <FieldGroup>
                         <Field>
                             <FieldLabel htmlFor="name">Full name</FieldLabel>
