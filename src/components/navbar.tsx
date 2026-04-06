@@ -8,6 +8,7 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "@/components/ui/input-group"
+import { Button } from "./ui/button";
 
 export default function Navbar() {
   return (
@@ -26,37 +27,33 @@ export default function Navbar() {
       </div>
       
 
-      <ul className="flex flex-row gap-10 invisible md:visible">
+      <div className="flex flex-row gap-10 invisible md:visible items-center">
         
-        <li>
-            <Link href="/">
-              <House className="w-4 h-4 inline-block mb-1 mr-1"/>
-              Home
-            </Link>
-        </li>
-
-        <li>
-            <Link href="/about">
-              <CircleQuestionMark className="w-4 h-4 inline-block mb-1 mr-1"/>
-              About
-            </Link>
-        </li>
-
-        <li>
-            <Link href="/contact">
-              <ReceiptText className="w-4 h-4 inline-block mb-1 mr-1"/>
-              Contact
-            </Link>
-        </li>
-
-        <li>
-            <Link href="/dashboard">
-              <UserRound className="w-4 h-4 inline-block mb-1 mr-1"/>
-              Account
-            </Link>
-        </li>
-
-      </ul>
+        <Link href="/">
+          <House className="w-4 h-4 inline-block mb-1 mr-1"/>
+          Home
+        </Link>
+    
+        <Link href="/about">
+          <CircleQuestionMark className="w-4 h-4 inline-block mb-1 mr-1"/>
+          About
+        </Link>
+    
+        <Link href="/contact">
+          <ReceiptText className="w-4 h-4 inline-block mb-1 mr-1"/>
+          Contact
+        </Link>
+    
+        <div className="flex justify-center items-center gap-4">
+          <Link href="/login">
+            <Button className="dark cursor-pointer" variant={"outline"}>Log In</Button>
+          </Link>
+          <Link href="/register">
+            <Button className="dark cursor-pointer" variant={"default"}>Register</Button>
+          </Link>
+        </div>
+        
+      </div>
     </nav>
   );
 }

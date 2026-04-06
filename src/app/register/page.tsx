@@ -2,19 +2,9 @@
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 import React, { useState } from "react"
 import Link from "next/link";
+import AlertMessage from "@/components/alertMessage";
 
 
 export default function Register() {
@@ -24,11 +14,21 @@ export default function Register() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    const [open, setOpen] = useState(false);
+    const [alertType, setAlertType] = useState<"success" | "error">("success");
+    const [alertTitle, setAlertTitle] = useState("");
+    const [buttonText, setButtonText] = useState("OK");
+    const [link, setLink] = useState("/register");
+    const [alertMessage, setAlertMessage] = useState<React.ReactNode>(null);
+
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
-            alert("Passwords do not match");
+            setAlertType("error");
+            setAlertTitle("Registration Failed");
+            setAlertMessage("Passwords do not match.");
+            setOpen(true);
             return;
         }
 
@@ -47,18 +47,42 @@ export default function Register() {
 
         const data = await res.json();
         if (!res.ok) {
-            alert(data.error);
+            setAlertType("error");
+            setAlertTitle("Registration Failed");
+            setAlertMessage(data.error);
+            setOpen(true);
         } else {
-            alert(data.message);
+            setAlertType("success");
+            setAlertTitle("Registration Successful");
+            setButtonText("Go to Login");
+            setLink("/login");
+            setAlertMessage(
+                <>
+                    Account created successfully! You can now {" "} 
+                    <Link href="/login" 
+                    className="text-blue-300 hover:underline">log in</Link>.
+                </>
+            );
+            setOpen(true);
             setName("");
             setEmail("");
             setPassword("");
             setConfirmPassword("");
+            setUsername("");
         }
 
     };
     return (
         <section className="min-h-[80vh] md:min-h-[70vh] flex flex-col items-center justify-center text-center px-4 py-20">
+            <AlertMessage
+                type={alertType}
+                title={alertTitle}
+                message={alertMessage}
+                open={open}
+                setOpen={setOpen}
+                buttonText={buttonText}
+                link={link}
+            />
             <h1 className="text-2xl md:text-4xl font-bold mt-5">Create your Rydex account</h1>
             <p className="text-sm md:text-base mt-4 text-[#EEEEEE]/80">Join us today and experience the future of car rentals.</p>
 
