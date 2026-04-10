@@ -39,6 +39,7 @@ export default function Login() {
             setLink("/");
             setButtonText("Go to Home Page");
             setOpen(true);
+            
         }
     };
     return (

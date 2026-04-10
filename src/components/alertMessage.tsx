@@ -35,16 +35,16 @@ export default function AlertMessage({ type, title, message, buttonText, link, o
                         {message}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
-                <AlertDialogFooter>
+                <AlertDialogFooter className="flex justify-center items-center">
                     {type === "success" && (
                         <Link href={link}>
-                            <AlertDialogCancel className="dark cursor-pointer">
+                            <AlertDialogCancel className="dark cursor-pointer" onClick={() => setOpen(false)}>
                                 {buttonText}
                             </AlertDialogCancel>
                         </Link>
                     )}
                     {type === "error" && (
-                        <AlertDialogCancel className="dark cursor-pointer">
+                        <AlertDialogCancel className="dark cursor-pointer" onClick={() => setOpen(false)}>
                                 {buttonText}
                         </AlertDialogCancel>
                     )}

@@ -1,11 +1,10 @@
 import { NextResponse, NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
-import { error } from "console";
 
-export async function POST(req: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const body = await req.json();
+    const body = await request.json();
     const { email, password, name, username } = body;
 
     if (!email || !password || !name || !username) {

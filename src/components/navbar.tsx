@@ -9,8 +9,13 @@ import {
   InputGroupTextarea,
 } from "@/components/ui/input-group"
 import { Button } from "./ui/button";
+import { cookies } from "next/headers";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const cookieStore = await cookies();
+  const userId = cookieStore.get("userId")?.value;
+  const username = cookieStore.get("username")?.value;
+
   return (
     <nav className="w-full fixed top-0 left-0 z-50 flex items-center justify-between px-6 py-3 backdrop-blur-lg shadow-md">
       <Link href="/">
@@ -27,7 +32,7 @@ export default function Navbar() {
       </div>
       
 
-      <div className="flex flex-row gap-10 invisible md:visible items-center">
+      <div className="flex flex-row gap-10 visible md:visible items-center">
         
         <Link href="/">
           <House className="w-4 h-4 inline-block mb-1 mr-1"/>
@@ -44,14 +49,26 @@ export default function Navbar() {
           Contact
         </Link>
     
-        <div className="flex justify-center items-center gap-4">
-          <Link href="/login">
-            <Button className="dark cursor-pointer" variant={"outline"}>Log In</Button>
-          </Link>
-          <Link href="/register">
-            <Button className="dark cursor-pointer" variant={"default"}>Register</Button>
-          </Link>
-        </div>
+        {userId ? (
+          <div className="flex justify-center items-center gap-4">
+            <Link href="/dashboard">
+              <Button className="dark cursor-pointer rounded-full" variant={"default"}>
+                <UserRound className="w-4 h-4 inline-block mb-1 mr-1"/>
+                Your Dashboard</Button>
+            </Link>
+
+            
+          </div>
+        ) : (
+          <div className="flex justify-center items-center gap-4">
+            <Link href="/register">
+              <Button className="dark cursor-pointer rounded-full" variant={"default"}>Sign Up</Button>
+            </Link>
+            <Link href="/login">
+              <Button className="dark cursor-pointer rounded-full" variant={"outline"}>Log In</Button>
+            </Link>
+          </div>
+        )}
         
       </div>
     </nav>

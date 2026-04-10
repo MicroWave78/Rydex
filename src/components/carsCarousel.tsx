@@ -88,7 +88,7 @@ export default function CarsCarousel() {
 
       <Carousel
         setApi={setApi}
-        plugins={[Autoplay({ delay: 4000 })]}
+        plugins={[Autoplay({ delay: 4000, stopOnInteraction: false })]}
         opts={{ loop: true }}
       >
         <CarouselContent>
@@ -97,7 +97,7 @@ export default function CarsCarousel() {
               <Image
                 src={car.image}
                 alt={car.name}
-                width={600}
+                width={500}
                 height={300}
                 className="object-contain hover:scale-105 transition"
               />

@@ -2,9 +2,10 @@
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react"
+import { useState } from "react"
 import Link from "next/link";
 import AlertMessage from "@/components/alertMessage";
+import React from "react";
 
 
 export default function Register() {
