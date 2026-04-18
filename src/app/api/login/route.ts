@@ -29,6 +29,20 @@ export async function POST(request: NextRequest) {
         const expiresAt = new Date();
         expiresAt.setDate(expiresAt.getDate() + 1); // Token expires in 1 day
 
+        await prisma.session.deleteMany({
+            where: {
+                expiresAt: {
+                    lt: new Date()
+                }
+            }
+        })
+
+        await prisma.session.deleteMany({
+            where: {
+                userId: user.id
+            }
+        })
+
         await prisma.session.create({
             data: {
                 token,

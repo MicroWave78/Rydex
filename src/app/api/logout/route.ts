@@ -4,7 +4,7 @@ import { redirect } from "next/navigation"
 
 export async function POST() {
   const cookieStore = await cookies()
-  const token = cookieStore.get("session_token")?.value
+  const token = cookieStore.get("sessionToken")?.value
 
   if (token) {
     await prisma.session.deleteMany({
