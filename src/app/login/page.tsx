@@ -7,7 +7,7 @@ import { useState } from "react";
 import AlertMessage from "@/components/alertMessage";
 
 export default function Login() {
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [open, setOpen] = useState(false);
     const [alertType, setAlertType] = useState<"success" | "error">("success");
@@ -15,30 +15,41 @@ export default function Login() {
     const [alertMessage, setAlertMessage] = useState<React.ReactNode>(null);
     const [buttonText, setButtonText] = useState("OK");
     const [link, setLink] = useState("/login");
+    const [loading, setLoading] = useState(false);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+        setLoading(true);
+
         const res = await fetch("/api/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({username, password})
+            body: JSON.stringify({email, password})
         })
         const data = await res.json();
+        setLoading(false);
         if (!res.ok) {
             setAlertType("error");
             setAlertTitle("Login Failed");
             setAlertMessage(data.error);
             setOpen(true);
         } else {
-            setAlertType("success");
-            setAlertTitle("Login Successful");
-            setAlertMessage("You have successfully logged in!");
-            setLink("/");
-            setButtonText("Go to Home Page");
-            setOpen(true);
+            if (data.role === "USER") {
+                setTimeout(() => {
+                    window.location.href = "/";
+                }, 4000);   // Redirect after 4 seconds
+                setAlertType("success");
+                setAlertTitle("Login Successful");
+                setAlertMessage("You have successfully logged in! Redirecting to home page...");
+                setLink("/");
+                setButtonText("");
+                setOpen(true);
+                
+            } else if (data.role === "ADMIN") {
+                window.location.href = "/admin";
+            }
             
         }
     };
@@ -62,12 +73,12 @@ export default function Login() {
                     <FieldSet>
                         <FieldGroup>
                             <Field>
-                                <FieldLabel>Username</FieldLabel>
+                                <FieldLabel>Email</FieldLabel>
                                 <Input 
-                                    type="text" 
-                                    placeholder="Enter your username" 
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
+                                    type="email"
+                                    placeholder="Enter your email" 
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </Field>
                             <Field>
@@ -80,8 +91,8 @@ export default function Login() {
                                 />
                             </Field>
                             <Field >
-                            <Button className="dark cursor-pointer" type="submit">
-                                Log In
+                            <Button className="dark cursor-pointer" type="submit" disabled={loading}>
+                                {loading ? "Logging in..." : "Log In"}
                             </Button>
                         </Field>
                         </FieldGroup>

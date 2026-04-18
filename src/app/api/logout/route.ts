@@ -1,8 +1,18 @@
-import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma"
+import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
 
 export async function POST() {
-    const response = NextResponse.json({ message: "Logout successful" });
-    response.cookies.delete("userId");
-    response.cookies.delete("username");
-    return response;
+  const cookieStore = await cookies()
+  const token = cookieStore.get("session_token")?.value
+
+  if (token) {
+    await prisma.session.deleteMany({
+      where: { token }
+    })
+  }
+
+  cookieStore.delete("sessionToken")
+
+  redirect("/login")
 }

@@ -74,7 +74,7 @@ export default function Register() {
 
     };
     return (
-        <section className="min-h-[80vh] md:min-h-[70vh] flex flex-col items-center justify-center text-center px-4 py-20">
+        <section className="min-h-[80vh] md:min-h-[70vh] flex flex-col items-center justify-center text-center px-4 py-20 mt-8">
             <AlertMessage
                 type={alertType}
                 title={alertTitle}

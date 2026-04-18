@@ -1,4 +1,4 @@
-import { House, CircleQuestionMark, UserRound, ReceiptText, Search, Menu } from "lucide-react"
+import { House, CircleQuestionMark, UserRound, ReceiptText, Search, Menu, LogOut } from "lucide-react"
 import Link from "next/link";
 import {
   InputGroup,
@@ -9,20 +9,27 @@ import {
   InputGroupTextarea,
 } from "@/components/ui/input-group"
 import { Button } from "./ui/button";
-import { cookies } from "next/headers";
+import Image from "next/image";
+import { getCurrentUser } from "@/lib/auth";
 
 export default async function Navbar() {
-  const cookieStore = await cookies();
-  const userId = cookieStore.get("userId")?.value;
-  const username = cookieStore.get("username")?.value;
+  const user = await getCurrentUser();
 
   return (
-    <nav className="w-full fixed top-0 left-0 z-50 flex items-center justify-between px-6 py-3 backdrop-blur-lg shadow-md">
-      <Link href="/">
-        <h1 className="text-lg md:text-2xl font-bold">Rydex</h1>
+    <nav className="w-full fixed top-0 left-0 z-50 flex items-center justify-between px-6 py-3 backdrop-blur-lg shadow-md ">
+      
+      <Link href="/" className="flex items-center shrink-0">
+        <Image
+          src="/images/rydex_logo_white.png"
+          alt="Rydex Logo"
+          width={180}
+          height={70}
+          className="h-12 w-auto"
+          priority
+        />
       </Link>
 
-      <div className="flex-1 flex justify-center invisible md:visible">
+      <div className="flex-1 flex justify-center hidden md:flex">
         <InputGroup className="max-w-xs md:max-w-xl border-none focus-within:bg-[#222831] hover:bg-[#222831] transition duration-500">
           <InputGroupInput placeholder="Search..." />
           <InputGroupAddon>
@@ -32,7 +39,7 @@ export default async function Navbar() {
       </div>
       
 
-      <div className="flex flex-row gap-10 visible md:visible items-center">
+      <div className="flex flex-row gap-10 hidden md:flex items-center">
         
         <Link href="/">
           <House className="w-4 h-4 inline-block mb-1 mr-1"/>
@@ -49,14 +56,21 @@ export default async function Navbar() {
           Contact
         </Link>
     
-        {userId ? (
+        {user ? (
           <div className="flex justify-center items-center gap-4">
-            <Link href="/dashboard">
+            <Link href={user.role === "ADMIN" ? "/admin" : "/dashboard"}>
               <Button className="dark cursor-pointer rounded-full" variant={"default"}>
                 <UserRound className="w-4 h-4 inline-block mb-1 mr-1"/>
-                Your Dashboard</Button>
+                {user.role === "ADMIN" ? "Admin Dashboard" : "My Account"}
+              </Button>
             </Link>
 
+            <form action="/api/logout" method="POST" >
+              <Button className="dark cursor-pointer rounded-full" variant={"outline"} type="submit">
+                <LogOut className="w-4 h-4 inline-block mb-1 mr-1"/>
+                Log Out
+              </Button>
+            </form>
             
           </div>
         ) : (

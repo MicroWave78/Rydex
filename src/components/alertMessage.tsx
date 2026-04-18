@@ -1,16 +1,16 @@
+"use client"
+
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import Link from "next/link"
 import React from "react"
+import { useRouter } from "next/navigation"
 
 type Props = {
     type: "success" | "error",
@@ -23,6 +23,8 @@ type Props = {
 }
 
 export default function AlertMessage({ type, title, message, buttonText, link, open, setOpen }: Props) {
+    const router = useRouter();
+
     return (
         <AlertDialog open={open} onOpenChange={setOpen}>
 
@@ -36,14 +38,16 @@ export default function AlertMessage({ type, title, message, buttonText, link, o
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="flex justify-center items-center">
-                    {type === "success" && (
-                        <Link href={link}>
-                            <AlertDialogCancel className="dark cursor-pointer" onClick={() => setOpen(false)}>
+                    {type === "success" && buttonText && (
+                            <AlertDialogCancel className="dark cursor-pointer" onClick={() => {
+                                setOpen(false);
+                                router.push(link);
+                                router.refresh();
+                            }}>
                                 {buttonText}
                             </AlertDialogCancel>
-                        </Link>
                     )}
-                    {type === "error" && (
+                    {type === "error" && buttonText && (
                         <AlertDialogCancel className="dark cursor-pointer" onClick={() => setOpen(false)}>
                                 {buttonText}
                         </AlertDialogCancel>

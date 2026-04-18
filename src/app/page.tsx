@@ -42,7 +42,7 @@ export default function Home() {
         <div className="absolute inset-0 backdrop-blur-xs" />
       </div>
 
-      <section className="min-h-[calc(100vh-90px)] md:min-h-[calc(100vh-33px)] flex flex-col items-center justify-center text-center px-4">
+      <section className="min-h-[calc(100vh-100px)] md:min-h-[calc(100vh-33px)] flex flex-col items-center justify-center text-center px-4">
         <TitleSubtitle 
           title="Find your next ride." 
           subtitle="Discover the best car rental deals in town. Whether you're looking for a compact car, an SUV, or a luxury vehicle, we have you covered." 
@@ -55,11 +55,14 @@ export default function Home() {
         >
           Browse Cars by Type
         </Button>
+        <Link href="/cars" className="mt-3 text-sm md:text-base text-[#EEEEEE] hover:underline">
+          Or check out all our cars
+        </Link>
         <BrowseCarsDrawer open={open} setOpen={setOpen} />
       </section>
 
       
-      <div className="w-full flex justify-center mb-3 transition-opacity duration-200" style={{
+      <div className="w-full flex justify-center mb-1 transition-opacity duration-200" style={{
         opacity: Math.max(1 - scrollY / 100, 0),
         pointerEvents: scrollY > 100 ? "none" : "auto",
       }}>

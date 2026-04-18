@@ -20,24 +20,36 @@ enum Rank {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  username     String   @unique
+  id           Int       @id @default(autoincrement())
+  username     String    @unique
   name         String
-  email        String   @unique
+  email        String    @unique
   password     String
-  createdAt    DateTime @default(now())
-  role         Role     @default(USER)
-  rank         Rank     @default(BRONZE)
-  totalRentals Int      @default(0)
+  createdAt    DateTime  @default(now())
+  role         Role      @default(USER)
+  rank         Rank      @default(BRONZE)
+  totalRentals Int       @default(0)
+  sessions     Session[]
 }
 
 model Car {
-  id          Int      @id @default(autoincrement())
-  model       String
-  year        Int
-  pricePerDay Int
-  available   Boolean  @default(true)
-  createdAt   DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  brand        String
+  type         String
+  model        String
+  year         Int
+  pricePerDay  Int
+  seats        Int
+  hp           Int
+  transmission String
+  fuelType     String
+  image        String
+  description  String?
+  featured     Boolean  @default(false)
+  color        String?
+  mileage      Int?
+  available    Boolean  @default(true)
+  createdAt    DateTime @default(now())
 }
 
 model Messages {
@@ -48,4 +60,12 @@ model Messages {
   type      String   @default("General Inquiry")
   message   String
   createdAt DateTime @default(now())
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
