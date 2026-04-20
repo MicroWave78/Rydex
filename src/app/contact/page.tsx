@@ -13,24 +13,9 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import AlertMessage from "@/components/alertMessage";
-const messageTypes = [
-    { value: "general", label: "General Inquiry" },
-    { value: "support", label: "Support" },
-    { value: "feedback", label: "Feedback" },
-    { value: "partnership", label: "Partnership" },
-    { value: "other", label: "Other" },
-];
 
 
 export default function Contact() {

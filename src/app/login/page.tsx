@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useState } from "react";
 import AlertMessage from "@/components/alertMessage";
+import { LogIn } from "lucide-react";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -39,10 +40,10 @@ export default function Login() {
             if (data.role === "USER") {
                 setTimeout(() => {
                     window.location.href = "/";
-                }, 4000);   // Redirect after 4 seconds
+                }, 3000);   // Redirect after 3 seconds
                 setAlertType("success");
                 setAlertTitle("Login Successful");
-                setAlertMessage("You have successfully logged in! Redirecting to home page...");
+                setAlertMessage("You have successfully logged in! Redirecting you to home page...");
                 setLink("/");
                 setButtonText("");
                 setOpen(true);
@@ -92,6 +93,7 @@ export default function Login() {
                             </Field>
                             <Field >
                             <Button className="dark cursor-pointer" type="submit" disabled={loading}>
+                                <LogIn className="w-4 h-4 inline-block mr-1"/>
                                 {loading ? "Logging in..." : "Log In"}
                             </Button>
                         </Field>

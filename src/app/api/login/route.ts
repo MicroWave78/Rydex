@@ -37,12 +37,6 @@ export async function POST(request: NextRequest) {
             }
         })
 
-        await prisma.session.deleteMany({
-            where: {
-                userId: user.id
-            }
-        })
-
         await prisma.session.create({
             data: {
                 token,

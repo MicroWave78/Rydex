@@ -31,7 +31,7 @@ export default function BrowseCarsDrawer({ open, setOpen }: { open: boolean, set
               <DrawerTitle className="text-center relative text-[#EEEEEE]">
                 <span>Choose Style</span>
                 <DrawerClose asChild>
-                  <X className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 cursor-pointer"/>
+                  <X className="absolute right-4 top-1/2 w-5 h-5 cursor-pointer"/>
                 </DrawerClose>
               </DrawerTitle>
               <DrawerDescription className="text-[#EEEEEE]">
