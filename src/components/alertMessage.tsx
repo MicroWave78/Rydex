@@ -19,10 +19,11 @@ type Props = {
     buttonText: string,
     link: string,
     open: boolean,
-    setOpen: (open: boolean) => void
+    setOpen: (open: boolean) => void,
+    onConfirm?: () => void
 }
 
-export default function AlertMessage({ type, title, message, buttonText, link, open, setOpen }: Props) {
+export default function AlertMessage({ type, title, message, buttonText, link, open, setOpen, onConfirm }: Props) {
     const router = useRouter();
 
     return (
@@ -39,16 +40,20 @@ export default function AlertMessage({ type, title, message, buttonText, link, o
                 </AlertDialogHeader>
                 <AlertDialogFooter className="flex justify-center items-center">
                     {type === "success" && buttonText && (
-                            <AlertDialogCancel className="dark cursor-pointer" onClick={() => {
-                                setOpen(false);
-                                router.push(link);
-                                router.refresh();
-                            }}>
-                                {buttonText}
-                            </AlertDialogCancel>
+                        <AlertDialogCancel className="dark cursor-pointer" onClick={() => {
+                            setOpen(false);
+                            onConfirm?.();
+                            router.push(link);
+                            router.refresh();
+                        }}>
+                            {buttonText}
+                        </AlertDialogCancel>
                     )}
                     {type === "error" && buttonText && (
-                        <AlertDialogCancel className="dark cursor-pointer" onClick={() => setOpen(false)}>
+                        <AlertDialogCancel className="dark cursor-pointer" onClick={() => {
+                            setOpen(false);
+                            onConfirm?.();
+                            }}>
                                 {buttonText}
                         </AlertDialogCancel>
                     )}

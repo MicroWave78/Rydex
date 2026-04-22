@@ -67,7 +67,15 @@ export default function Contact() {
     }
 
     return (
-        <section className="min-h-[80vh] md:min-h-[70vh] flex flex-col items-center justify-center text-center px-4 py-20">
+        <>
+        <div className="fixed inset-0 -z-10">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
+        />
+        <div className="absolute inset-0 backdrop-blur-sm" />
+      </div>
+        <section className="min-h-[100vh] flex flex-col items-center justify-center text-center px-4 py-20">
             <AlertMessage
                 type={alertType}
                 title={alertTitle}
@@ -110,5 +118,6 @@ export default function Contact() {
                 </FieldSet>
             </div>
         </section>
+        </>
     );
 }

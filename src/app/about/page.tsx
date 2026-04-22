@@ -35,7 +35,7 @@ export default function About() {
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
         />
-        <div className="absolute inset-0 backdrop-blur-xs" />
+        <div className="absolute inset-0 backdrop-blur-sm" />
       </div>
       <section className="min-h-[calc(100vh-100px)] flex flex-col items-center justify-center text-center px-4">
         

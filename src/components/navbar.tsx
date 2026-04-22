@@ -24,7 +24,7 @@ export default async function Navbar() {
           alt="Rydex Logo"
           width={180}
           height={70}
-          className="h-14 w-auto"
+          className="h-6 w-auto md:h-13 "
           priority
         />
       </Link>
@@ -39,7 +39,7 @@ export default async function Navbar() {
       </div>
       
 
-      <div className="flex flex-row gap-10 hidden md:flex items-center">
+      <div className="flex flex-row gap-4 md:gap-10 md:flex items-center">
         
         <Link href="/">
           <House className="w-4 h-4 inline-block mb-1 mr-1"/>
@@ -75,11 +75,11 @@ export default async function Navbar() {
           </div>
         ) : (
           <div className="flex justify-center items-center gap-4">
-            <Link href="/register">
-              <Button className="dark cursor-pointer rounded-full" variant={"default"}>Sign Up</Button>
-            </Link>
-            <Link href="/login">
-              <Button className="dark cursor-pointer rounded-full" variant={"outline"}>Log In</Button>
+            <Link href="/auth">
+              <Button className="dark cursor-pointer rounded-full" variant={"default"}>
+                <UserRound className="w-4 h-4 inline-block"/>
+                My Account
+                </Button>
             </Link>
           </div>
         )}
