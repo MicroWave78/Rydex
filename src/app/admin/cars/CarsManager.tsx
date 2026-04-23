@@ -3,7 +3,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -13,7 +13,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import AddCarForm from "./AddCarForm"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 type Car = {
   id: number
@@ -37,6 +50,7 @@ type Car = {
 
 export default function CarsManager({ cars }: { cars: Car[] }) {
   const [open, setOpen] = useState(false)
+  const router = useRouter()
 
   return (
     <>
@@ -50,7 +64,8 @@ export default function CarsManager({ cars }: { cars: Car[] }) {
         <p className="text-lg text-gray-500 mb-8">Add, edit, or remove cars from your fleet.</p>
 
         <Button
-          className="mb-8 bg-[#76ABAE] text-white hover:bg-[#5A8B8E] transition self-start"
+          variant={"outline"}
+          className="dark mb-8 self-start cursor-pointer"
           onClick={() => setOpen(true)}
         >
           Add New Car
@@ -100,12 +115,57 @@ export default function CarsManager({ cars }: { cars: Car[] }) {
                 <TableCell>{car.color ?? "-"}</TableCell>
                 <TableCell>{car.available ? "Yes" : "No"}</TableCell>
                 <TableCell>${car.pricePerDay}</TableCell>
-                <TableCell>
+                <TableCell className="flex">
                   <Link href={`/admin/cars/${car.id}/edit`}>
                     <Button variant="outline" size="sm" className="cursor-pointer">
                       Edit
                     </Button>
                   </Link>
+
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        className="cursor-pointer ml-2"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </AlertDialogTrigger>
+
+                    <AlertDialogContent className="dark">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Delete {car.brand} {car.model}?
+                        </AlertDialogTitle>
+
+                        <AlertDialogDescription>
+                          This action cannot be undone. The car will be permanently removed from the database.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="cursor-pointer">
+                          Cancel
+                        </AlertDialogCancel>
+
+                        <AlertDialogAction asChild>
+                          <Button
+                          className="cursor-pointer bg-red-400 hover:bg-red-500 "
+                          onClick={async () => {
+                            await fetch(`/api/cars?id=${car.id}`, {
+                              method: "DELETE",
+                            });
+                            
+                            toast.success(`${car.brand} ${car.model} deleted successfully.`, {position: "top-center"});
+                            router.refresh();
+                          }}>
+                            Delete Car
+                          </Button>
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </TableCell>
               </TableRow>
             ))}

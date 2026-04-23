@@ -1,4 +1,3 @@
-// app/admin/cars/page.tsx
 import prisma from "@/lib/prisma"
 import CarsManager from "./CarsManager"
 

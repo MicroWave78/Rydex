@@ -18,6 +18,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -26,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AlertMessage from "@/components/alertMessage";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner"
 
 export default function AddCarForm({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
   const router = useRouter();
@@ -39,7 +41,7 @@ export default function AddCarForm({ open, setOpen }: { open: boolean, setOpen: 
   const [hp, setHp] = useState("");
   const [transmission, setTransmission] = useState("");
   const [fuelType, setFuelType] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState<File | null>(null);
   const [description, setDescription] = useState("");
   const [color, setColor] = useState("");
   const [mileage, setMileage] = useState("");
@@ -56,28 +58,37 @@ export default function AddCarForm({ open, setOpen }: { open: boolean, setOpen: 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!image) {
+      setAlertType("error");
+      setAlertTitle("Image Required");
+      setAlertMessage("Please upload an image for the car.");
+      setButtonText("OK");
+      setLink("");
+      setAlertOpen(true);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("brand", brand);
+    formData.append("type", type);
+    formData.append("model", model);
+    formData.append("year", year);
+    formData.append("pricePerDay", pricePerDay);
+    formData.append("seats", seats);
+    formData.append("hp", hp);
+    formData.append("transmission", transmission);
+    formData.append("fuelType", fuelType);
+    formData.append("image", image);
+    formData.append("description", description);
+    formData.append("color", color);
+    formData.append("mileage", mileage);
+    formData.append("featured", featured.toString());
+    formData.append("available", available.toString());
+
+
     const res = await fetch("/api/cars", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        brand,
-        type,
-        model,
-        year,
-        pricePerDay,
-        seats,
-        hp,
-        transmission,
-        fuelType,
-        image,
-        description,
-        color,
-        mileage,
-        featured,
-        available,
-      }),
+      body: formData,
     });
 
     const data = await res.json();
@@ -85,12 +96,13 @@ export default function AddCarForm({ open, setOpen }: { open: boolean, setOpen: 
     if (!res.ok) {
       setAlertType("error");
       setAlertTitle("Failed to Add Car");
-      setAlertMessage(data.error || "An error occurred while adding the car.");
+      setAlertMessage(data.error);
       setButtonText("OK");
       setLink("");
       setAlertOpen(true);
       return;
     }
+    
 
     setAlertType("success");
     setAlertTitle("Car Added Successfully");
@@ -108,7 +120,7 @@ export default function AddCarForm({ open, setOpen }: { open: boolean, setOpen: 
     setHp("");
     setTransmission("");
     setFuelType("");
-    setImage("");
+    setImage(null);
     setDescription("");
     setColor("");
     setMileage("");
@@ -131,16 +143,16 @@ export default function AddCarForm({ open, setOpen }: { open: boolean, setOpen: 
         link={link}
       />
 
-      <DialogContent className="dark h-[90vh] overflow-y-auto ">
+      <DialogContent className="dark h-[92vh] overflow-y-auto w-full min-w-2xl">
         <DialogHeader>
           <DialogTitle>Add New Car</DialogTitle>
           <DialogDescription>
             Fill out the form below to add a new car to the database.
           </DialogDescription>
         </DialogHeader>
-
-      <FieldSet>
-          <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
+        <FieldSet className="w-full max-w-lg mt-8 mx-auto justify-center">
+          
           <FieldGroup>
             <Field>
               <FieldLabel>Brand</FieldLabel>
@@ -193,7 +205,7 @@ export default function AddCarForm({ open, setOpen }: { open: boolean, setOpen: 
             <Field>
               <FieldLabel>Seats</FieldLabel>
               <FieldContent>
-                <Input value={seats} onChange={(e) => setSeats(e.target.value)} placeholder="Seats" type="number" className="border p-2 rounded" />
+                <Input value={seats} max={7} onChange={(e) => setSeats(e.target.value)} placeholder="Seats" type="number" className="border p-2 rounded" />
               </FieldContent>
             </Field>
             <Field>
@@ -215,20 +227,28 @@ export default function AddCarForm({ open, setOpen }: { open: boolean, setOpen: 
               </FieldContent>
             </Field>
 
-            <Field className="mb-4">
+            <Field className="">
               <FieldLabel>Image</FieldLabel>
               <FieldContent>
-                <Input value={image} onChange={(e) => setImage(e.target.value)} placeholder="/images/cars/example.jpg" />
-                
+                <Input accept="image/*" 
+                type="file" 
+                className="cursor-pointer"
+                onChange={(e) => setImage(e.target.files?.[0] ?? null)} />
               </FieldContent>
             </Field>
           </FieldGroup>
-          <Button type="submit" className="cursor-pointer mt-4 bg-[#76ABAE] text-white px-4 py-2 rounded hover:bg-[#5A8B8E] transition">
-            Add Car
-          </Button>
-          </form>
-      </FieldSet>
 
+          <DialogFooter className="items-center justify-center py-2">
+            <Button 
+              type="submit" 
+              className="cursor-pointer px-6 py-2 bg-[#76ABAE] text-white hover:bg-[#5A8B8E] transition">
+              Add Car
+            </Button>
+          </DialogFooter>
+        </FieldSet>
+
+        
+      </form>
         
       </DialogContent>
     </Dialog>    

@@ -5,6 +5,7 @@ import Navbar from "../components/navbar";
 import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa"
 import { FaXTwitter } from "react-icons/fa6"
 import Link from "next/link";
+import { Toaster } from "@/components/ui/sonner";
 
 const oswald = Oswald({
   variable: "--font-oswald",
@@ -35,17 +36,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${oswald.variable} antialiased min-h-screen flex flex-col bg-[#31363F] text-[#EEEEEE]`}
+        className={`${geistSans.variable} ${geistMono.variable} ${oswald.variable} antialiased  flex flex-col bg-[#31363F] text-[#EEEEEE]`}
       >
         <Navbar />
         <main className="flex-1">
           {children}
         </main>
+        <Toaster />
         
         {/* footer */}
         
-        <footer className="flex flex-col bg-[#222831] p-6">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-20">
+        <footer className="flex flex-col bg-[#222831] p-6 ">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-10 md:gap-14">
 
             <div className="flex flex-col mx-auto gap-2 ">
               <h1 className="font-bold text-lg">Company</h1>

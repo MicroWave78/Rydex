@@ -4,7 +4,7 @@ import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import AlertMessage from "@/components/alertMessage";
-import { LogIn } from "lucide-react";
+import { Eye, EyeClosed, LogIn } from "lucide-react";
 import { useRouter } from "next/navigation";
 type LoginFormProps = {
   onSwitch?: () => void;
@@ -16,6 +16,8 @@ export default function LoginForm({ onSwitch, isActive = false }: LoginFormProps
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+
     const [open, setOpen] = useState(false);
     const [alertType, setAlertType] = useState<"success" | "error">("success");
     const [alertTitle, setAlertTitle] = useState("");
@@ -96,12 +98,23 @@ export default function LoginForm({ onSwitch, isActive = false }: LoginFormProps
                             isActive ? "opacity-100 translate-y-0 delay-200" : "opacity-0 translate-y-3 delay-0"
                         }`}>
                             <FieldLabel>Password</FieldLabel>
-                            <Input 
-                                type="password" 
-                                placeholder="Enter your password" 
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
+                            <div className="relative">
+                                <Input 
+                                    type={showPassword ? "text" : "password"} 
+                                    placeholder="Enter your password" 
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                                <Button
+                                    type="button"
+                                    className="absolute top-0 right-0 h-full px-3 hover:bg-transparent cursor-pointer"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    size={"icon"}
+                                    variant={"ghost"}
+                                >
+                                    {showPassword ? <Eye className="w-4 h-4" /> : <EyeClosed className="w-4 h-4" />}
+                                </Button>
+                            </div>
                         </Field>
                         <Field
                             className={`transition-all duration-500 ${
