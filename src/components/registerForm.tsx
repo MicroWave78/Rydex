@@ -65,18 +65,29 @@ export default function RegisterForm({ onSwitch, isActive = false, onRegisterSuc
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (password.length < 8) {
+        const hasMinLength = password.length >= 8;
+
+        const extraValidations = [
+            { text: "Contains a number", valid: /\d/.test(password) },
+            { text: "Contains uppercase letter", valid: /[A-Z]/.test(password) },
+            { text: "Contains special character", valid: /[!@#$%^&*]/.test(password) },
+        ];
+
+        const extraScore = extraValidations.filter((v) => v.valid).length;
+        const passwordValid = hasMinLength && extraScore >= 2;
+
+        if (!name.trim() || !email.trim() || !username.trim() || !password) {
             setAlertType("error");
             setAlertTitle("Registration Failed");
-            setAlertMessage("Password must be at least 8 characters long.");
+            setAlertMessage("Please fill in all fields.");
             setOpen(true);
             return;
         }
 
-        if (strength < 3) {
+        if (!passwordValid) {
             setAlertType("error");
             setAlertTitle("Registration Failed");
-            setAlertMessage("Password is not strong enough. Please make sure it contains a number, an uppercase letter, and a special character.");
+            setAlertMessage("Password must be at least 8 characters and contain at least 2 of: number, uppercase letter, special character.");
             setOpen(true);
             return;
         }
@@ -85,22 +96,6 @@ export default function RegisterForm({ onSwitch, isActive = false, onRegisterSuc
             setAlertType("error");
             setAlertTitle("Registration Failed");
             setAlertMessage("Passwords do not match.");
-            setOpen(true);
-            return;
-        }
-
-        if (password.toLowerCase().includes(email.toLowerCase())) {
-            setAlertType("error");
-            setAlertTitle("Registration Failed");
-            setAlertMessage("Password should not contain your email.");
-            setOpen(true);
-            return;
-        }
-
-        if (password.toLowerCase().includes(username.toLowerCase()) || password.toLowerCase().includes(name.toLowerCase())) {
-            setAlertType("error");
-            setAlertTitle("Registration Failed");
-            setAlertMessage("Password should not contain your username or name.");
             setOpen(true);
             return;
         }

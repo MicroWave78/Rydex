@@ -27,7 +27,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AlertMessage from "@/components/alertMessage";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner"
+
 
 export default function AddCarForm({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
   const router = useRouter();
@@ -143,7 +143,7 @@ export default function AddCarForm({ open, setOpen }: { open: boolean, setOpen: 
         link={link}
       />
 
-      <DialogContent className="dark h-[92vh] overflow-y-auto w-full min-w-2xl">
+      <DialogContent className="dark h-[92vh] overflow-y-auto w-full min-w-2xl no-scrollbar">
         <DialogHeader>
           <DialogTitle>Add New Car</DialogTitle>
           <DialogDescription>

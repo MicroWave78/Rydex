@@ -15,7 +15,7 @@ export default function Register() {
             <div className="absolute inset-0 backdrop-blur-sm" />
         </div>
 
-        <section className="min-h-screen flex items-center justify-center px-4 py-20">
+        <section className="min-h-screen flex items-center justify-center px-4 py-20 mt-20">
             <div className="w-full flex flex-col items-center text-center lg:-translate-y-14 xl:-translate-y-0">
                 <div
                     key={flipped ? "login" : "register"}
@@ -32,14 +32,13 @@ export default function Register() {
                 <div className={`w-full max-w-md [perspective:1200px] mt-10 transition-all duration-700 ${
                     flipped ? "drop-shadow-[0_0_30px_rgba(118,171,174,0.35)]" : "drop-shadow-[0_0_25px_rgba(255,255,255,0.15)]"
                     }`}>
-                        
                     <div
-                        className={`relative w-full h-[700px] sm:h-[680px] md:h-[620px] transition-transform duration-700 [transform-style:preserve-3d] ${
+                        className={` w-full transition-transform duration-700 [transform-style:preserve-3d] ${
                             flipped ? "[transform:rotateY(180deg)]" : "[transform:rotateY(0deg)]"
                         }`}
                     >
                         {/* Front - Register */}
-                        <div className="absolute inset-0 [backface-visibility:hidden]">
+                        <div className="inset-0 [backface-visibility:hidden]">
                             <RegisterForm 
                             onSwitch={() => setFlipped(true)} 
                             isActive={!flipped}
