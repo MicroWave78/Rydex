@@ -29,25 +29,33 @@ export default function Register() {
                     </p>
                 </div>
                 
-                <div className={`w-full max-w-md [perspective:1200px] mt-10 transition-all duration-700 ${
-                    flipped ? "drop-shadow-[0_0_30px_rgba(118,171,174,0.35)]" : "drop-shadow-[0_0_25px_rgba(255,255,255,0.15)]"
-                    }`}>
+                <div
+                    className={`w-full max-w-md [perspective:1200px] mt-10 transition-all duration-700 ${
+                        flipped
+                        ? "drop-shadow-[0_0_30px_rgba(118,171,174,0.35)]"
+                        : "drop-shadow-[0_0_25px_rgba(255,255,255,0.15)]"
+                    }`}
+                >
                     <div
-                        className={` w-full transition-transform duration-700 [transform-style:preserve-3d] ${
-                            flipped ? "[transform:rotateY(180deg)]" : "[transform:rotateY(0deg)]"
+                        className={`relative w-full min-h-[800px] transition-transform duration-700 [transform-style:preserve-3d] ${
+                        flipped ? "[transform:rotateY(180deg)]" : "[transform:rotateY(0deg)]"
                         }`}
                     >
                         {/* Front - Register */}
-                        <div className="inset-0 [backface-visibility:hidden]">
-                            <RegisterForm 
-                            onSwitch={() => setFlipped(true)} 
+                        <div className=" inset-0 [backface-visibility:hidden]">
+                        <RegisterForm
+                            onSwitch={() => setFlipped(true)}
                             isActive={!flipped}
-                            onRegisterSuccess={() => setFlipped(true)} />
+                            onRegisterSuccess={() => setFlipped(true)}
+                        />
                         </div>
 
                         {/* Back - Login */}
                         <div className="absolute inset-0 [transform:rotateY(180deg)] [backface-visibility:hidden]">
-                            <LoginForm onSwitch={() => setFlipped(false)} isActive={flipped}/>
+                        <LoginForm
+                            onSwitch={() => setFlipped(false)}
+                            isActive={flipped}
+                        />
                         </div>
                     </div>
                 </div>

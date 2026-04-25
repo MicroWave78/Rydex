@@ -34,7 +34,7 @@ export default function CarCard({
   year,
 }: CarCardProps) {
   return (
-    <div className="w-full bg-[#EEEEEE] rounded-2xl overflow-hidden shadow-lg hover:-translate-y-1 hover:shadow-2xl transition duration-300">
+    <div className="w-full h-full flex flex-col bg-[#EEEEEE] rounded-2xl overflow-hidden shadow-lg hover:-translate-y-1 hover:shadow-2xl transition duration-300">
       
       <div className="relative w-full h-52">
         <Image
@@ -66,7 +66,7 @@ export default function CarCard({
           </span>
         </div>
 
-        <p className="text-sm mt-3 text-gray-700 line-clamp-2">
+        <p className="text-sm mt-3 text-gray-700 line-clamp-1">
           {description || "Premium rental car ready for your next trip."}
         </p>
 
@@ -88,13 +88,14 @@ export default function CarCard({
             {fuelType}
           </div>
         </div>
-
-        <Link href={`/cars/${id}`}>
+        
+        <Link href={`/cars/${id}`} className="">
           <Button className="w-full mt-5 px-4 py-2 bg-[#31363F] text-[#EEEEEE] cursor-pointer rounded-lg hover:bg-[#222831] transition">
             View Details
             <MoveUpRight className="w-4 h-4 inline-block ml-1" />
           </Button>
         </Link>
+        
       </div>
     </div>
   );
