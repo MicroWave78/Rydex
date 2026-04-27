@@ -33,7 +33,7 @@ export default function Register() {
                     flipped ? "drop-shadow-[0_0_25px_rgba(255,255,255,0.15)]" : "drop-shadow-[0_0_30px_rgba(118,171,174,0.35)]"
                     }`}>
                     <div
-                        className={`relative w-full transition-transform duration-700 [transform-style:preserve-3d] ${
+                        className={`relative w-full min-h-[800px] transition-transform duration-700 [transform-style:preserve-3d] ${
                             flipped ? "[transform:rotateY(180deg)]" : "[transform:rotateY(0deg)]"
                         }`}
                     >

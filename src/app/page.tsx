@@ -71,7 +71,7 @@ export default function Home() {
       
 
       {/* Main content */}
-      <div className="w-full bg-[#31363F] text-[#EEEEEE] p-1 rounded-t-lg">
+      <div id="main" className="w-full bg-[#31363F] text-[#EEEEEE] p-1 rounded-t-lg">
         
         <CarsCarousel /> 
 

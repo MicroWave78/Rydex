@@ -22,35 +22,34 @@ export default function RegisterForm({ onSwitch, isActive = false, onRegisterSuc
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const validations = [
-        { text: "At least 8 characters", valid: password.length >= 8 },
         { text: "Contains a number", valid: /\d/.test(password) },
         { text: "Contains uppercase letter", valid: /[A-Z]/.test(password) },
         { text: "Contains special character", valid: /[!@#$%^&*]/.test(password) },
     ]
 
+    const hasMinLength = password.length >= 8;
     const strength = validations.filter((v) => v.valid).length;
+    const visualStrength = hasMinLength ? strength : 0;
+    
 
     const getStrengthColor = (score: number) => {
-        if (score === 0) return "bg-muted";
-        if (score <= 1) return "bg-red-500";
-        if (score <= 2) return "bg-orange-500";
-        if (score <= 3) return "bg-teal-400";
+        if (score <= 0) return "bg-red-500";
+        if (score <= 1) return "bg-orange-500";
+        if (score <= 2) return "bg-teal-400";
         return "bg-green-500";
     };
 
     const getStrengthText = (score: number) => {
-        if (score === 0) return "";
+        if (score === 0) return "Very Weak";
         if (score <= 1) return "Weak";
-        if (score <= 2) return "Moderate";
-        if (score <= 3) return "Strong";
-        return "Very Strong";
+        if (score <= 2) return "Good";
+        return "Strong";
     };
 
     const getStrengthTextColor = (score: number) => {
-        if (score === 0) return "text-muted-foreground";
-        if (score <= 1) return "text-red-500";
-        if (score <= 2) return "text-orange-500";
-        if (score <= 3) return "text-teal-400";
+        if (score <= 0) return "text-red-500";
+        if (score <= 1) return "text-orange-500";
+        if (score <= 2) return "text-teal-400";
         return "text-green-500";
     };
 
@@ -75,6 +74,7 @@ export default function RegisterForm({ onSwitch, isActive = false, onRegisterSuc
 
         const extraScore = extraValidations.filter((v) => v.valid).length;
         const passwordValid = hasMinLength && extraScore >= 2;
+        
 
         if (!name.trim() || !email.trim() || !username.trim() || !password) {
             setAlertType("error");
@@ -87,7 +87,21 @@ export default function RegisterForm({ onSwitch, isActive = false, onRegisterSuc
         if (!passwordValid) {
             setAlertType("error");
             setAlertTitle("Registration Failed");
-            setAlertMessage("Password must be at least 8 characters and contain at least 2 of: number, uppercase letter, special character.");
+            setAlertMessage(
+                <>
+                    <span className="font-semibold block mb-2">
+                        Password requirements:
+                    </span>
+
+                    <ul className="list-disc list-inside text-sm">
+                        <li>At least 8 characters</li>
+                        <li>Contains 2 of the following:</li>
+                        <li className="ml-4">Number</li>
+                        <li className="ml-4">Uppercase letter</li>
+                        <li className="ml-4">Special character</li>
+                    </ul>
+                </>
+            );
             setOpen(true);
             return;
         }
@@ -187,7 +201,7 @@ export default function RegisterForm({ onSwitch, isActive = false, onRegisterSuc
                                 <Input type= {showPassword ? "text" : "password"} placeholder="Create a strong password" value={password} onChange={(e) => setPassword(e.target.value)} />
                                 <Button
                                     type="button"
-                                    className="absolute top-0 right-0 h-full px-3 hover:bg-transparent cursor-pointer"
+                                    className="absolute top-0 right-0 h-full px-3 hover:bg-transparent hover:text-[#76ABAE] cursor-pointer"
                                     onClick={() => setShowPassword(!showPassword)}
                                     size={"icon"}
                                     variant={"ghost"}
@@ -196,19 +210,40 @@ export default function RegisterForm({ onSwitch, isActive = false, onRegisterSuc
                                 </Button>
                             </div>
                             <div className="space-y-2">
+                                
                                 <div className="h-1 w-full overflow-hidden rounded-full bg-secondary">
                                     <div
                                         className={`h-full transition-all duration-500 ease-out ${getStrengthColor(
-                                        strength
+                                        visualStrength
                                         )}`}
-                                        style={{ width: `${(strength / 4) * 100}%` }}
+                                        style={{ width: `${(visualStrength / 3) * 100}%` }}
                                     />
                                 </div>
-                                <div className="flex items-center justify-between text-xs font-medium">
-                                    <span className="text-muted-foreground">Password must contain</span>
-                                    <span className={getStrengthTextColor(strength)}>
-                                        {getStrengthText(strength)}
+
+                                <div className="text-right text-sm">
+                                    <span className={getStrengthTextColor(visualStrength)}>
+                                        {password && getStrengthText(visualStrength)}
                                     </span>
+                                </div>
+
+                                <div
+                                        className={`flex items-center gap-2 transition-color duration-200 ${
+                                        hasMinLength ? "text-green-400" : "text-muted-foreground"
+                                        }`}
+                                    >
+                                        {hasMinLength ? (
+                                        <CheckCircle2 className="h-3.5 w-3.5" />
+                                        ) : (
+                                        <X className="h-3.5 w-3.5" />
+                                        )}
+
+                                        <span className="text-[13px]">
+                                        {hasMinLength ? "Password is at least 8 characters long" : "Password must be at least 8 characters long"}
+                                        </span>
+                                    </div>
+                                
+                                <div className="flex text-xs font-medium">
+                                    <span className="text-muted-foreground">And at least 2 of the following:{" "}</span>
                                 </div>
                             </div>
 
@@ -244,7 +279,7 @@ export default function RegisterForm({ onSwitch, isActive = false, onRegisterSuc
                                 <Input type= {showConfirmPassword ? "text" : "password"} placeholder="Confirm your password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                                 <Button
                                     type="button"
-                                    className="absolute top-0 right-0 h-full px-3 hover:bg-transparent cursor-pointer"
+                                    className="absolute top-0 right-0 h-full px-3 hover:bg-transparent hover:text-[#76ABAE] cursor-pointer"
                                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                     size={"icon"}
                                     variant={"ghost"}

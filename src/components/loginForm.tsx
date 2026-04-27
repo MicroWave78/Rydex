@@ -55,7 +55,7 @@ export default function LoginForm({ onSwitch, isActive = false }: LoginFormProps
                 setAlertType("success");
                 setAlertTitle("Login Successful");
                 setAlertMessage("You have successfully logged in! Redirecting you to home page...");
-                setLink("/");
+                setLink("/#main");
                 setButtonText("");
                 setOpen(true);
                 
