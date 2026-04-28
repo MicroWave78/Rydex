@@ -17,6 +17,7 @@ enum Rank {
   GOLD
   PLATINUM
   DIAMOND
+  VIP
 }
 
 model User {
@@ -30,6 +31,7 @@ model User {
   rank         Rank      @default(BRONZE)
   totalRentals Int       @default(0)
   sessions     Session[]
+  rentals      Rental[]
 }
 
 model Car {
@@ -50,6 +52,7 @@ model Car {
   mileage      Int?
   available    Boolean  @default(true)
   createdAt    DateTime @default(now())
+  rentals      Rental[]
 }
 
 model Messages {
@@ -68,4 +71,18 @@ model Session {
   userId    Int
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Rental {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  carId      Int
+  pickupDate DateTime
+  returnDate DateTime
+  totalPrice Int
+  status     String   @default("PENDING")
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  car  Car  @relation(fields: [carId], references: [id])
 }

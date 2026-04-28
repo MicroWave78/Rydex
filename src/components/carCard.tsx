@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Gauge, Fuel, Cog, MoveUpRight, Users } from "lucide-react"
+import { Fuel, Cog, MoveUpRight, Users, Zap } from "lucide-react"
 import { Button } from "./ui/button";
 
 
@@ -76,7 +76,7 @@ export default function CarCard({
             {seats} Seats
           </div>
           <div className="bg-gray-100 rounded p-2">
-            <Gauge className="w-5 h-5 inline-block mr-1" />
+            <Zap className="w-5 h-5 inline-block mr-1" />
             {hp} HP
           </div>
           <div className="bg-gray-100 rounded p-2">

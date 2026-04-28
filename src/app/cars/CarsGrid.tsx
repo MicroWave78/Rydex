@@ -72,30 +72,41 @@ export default function CarsGrid({ cars }: { cars: CarCardProps[] }) {
     
 
     return (
-        <div className="w-full flex flex-col mt-16">
-            <div className="fixed inset-0 -z-10">
+        <div className="w-full overflow-x-hidden">
+              <div className="fixed inset-0 -z-10">
                 <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
                 />
-                <div className="absolute inset-0 backdrop-blur-sm" />
-            </div>
-            <section className="min-h-[calc(100vh-100px)] flex flex-col items-center justify-center text-center px-4">
-                
-            <TitleSubtitle 
-            title="Explore Our Car Collection"
-            subtitle="" />
+                <div className="absolute inset-0 bg-black/35 backdrop-blur-sm" />
+              </div>
+        
+              <section className="relative mt-16 flex min-h-[calc(100vh-100px)] md:min-h-[calc(100vh-50px)] flex-col items-center justify-center px-4 text-center">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#31363F]" />
+        
+                <div className="relative z-10">
+                  <p className="mb-3 text-sm font-semibold uppercase tracking-[0.35em] text-[#76ABAE]">
+                    More than rentals
+                  </p>
+        
+                  <TitleSubtitle
+                    title="Explore Our Car Collection"
+                    subtitle=""
+                  />
+                </div>
+        
+                <div
+                  className="absolute bottom-6 transition-opacity duration-200"
+                  style={{
+                    opacity: Math.max(1 - scrollY / 100, 0),
+                    pointerEvents: scrollY > 100 ? "none" : "auto",
+                  }}
+                >
+                  <ArrowDown className="h-9 w-9 animate-bounce rounded-full bg-white p-1 text-black" />
+                </div>
+              </section>
 
-            </section>
-
-            <div className="w-full flex justify-center mb-1 transition-opacity duration-200" style={{
-                opacity: Math.max(1 - scrollY / 100, 0),
-                pointerEvents: scrollY > 100 ? "none" : "auto",
-            }}>
-                <ArrowDown className="w-8 h-8 rounded-full text-center animate-bounce bg-white text-black"/>
-            </div>
-
-            <div className="w-full bg-[#31363F] text-[#EEEEEE] p-1 rounded-t-lg">
+            <div className="w-full bg-[#31363F] text-[#EEEEEE] p-1">
                 <div className="w-full px-4 py-6">
                     <div className="mx-auto flex max-w-7xl flex-col gap-4 rounded-2xl bg-[#222831] p-4 shadow-xl md:flex-row md:items-center">
                         

@@ -1,249 +1,308 @@
-"use client"
-import TitleSubtitle from "@/components/titleSubtitle"
+"use client";
+
+import TitleSubtitle from "@/components/titleSubtitle";
 import { Button } from "@/components/ui/button";
 import BrowseCarsDrawer from "@/components/browseCarsDrawer";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import CarsCarousel from "@/components/carsCarousel";
 import CarGrid from "@/components/carGrid";
-import Image from "next/image";
 import Link from "next/link";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-  InputGroupText,
-  InputGroupTextarea,
-} from "@/components/ui/input-group"
+} from "@/components/ui/input-group";
+import {
+  ArrowDown,
+  Calendar,
+  Car,
+  CircleDollarSign,
+  Flag,
+  Gem,
+  KeyRound,
+  ShieldCheck,
+  Tag,
+} from "lucide-react";
+import Reviews from "@/components/reviews";
 
-import { Car, Calendar, KeyRound, Flag, CircleDollarSign, Gem, Tag, Star, ArrowDown } from "lucide-react";
+const steps = [
+  {
+    icon: Car,
+    title: "Choose a Car",
+    text: "Browse our collection and pick the ride that fits your trip.",
+  },
+  {
+    icon: Calendar,
+    title: "Book It",
+    text: "Select your dates, check availability, and reserve instantly.",
+  },
+  {
+    icon: KeyRound,
+    title: "Pick Up",
+    text: "Grab the keys from your selected location and start driving.",
+  },
+  {
+    icon: Flag,
+    title: "Enjoy",
+    text: "Drive comfortably and return the car when your trip is done.",
+  },
+];
 
-
+const benefits = [
+  {
+    icon: CircleDollarSign,
+    title: "Transparent Pricing",
+    text: "Clear daily prices with no confusing hidden costs.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Verified Vehicles",
+    text: "Every listed vehicle is checked before being available to book.",
+  },
+  {
+    icon: Gem,
+    title: "Premium Experience",
+    text: "From economy cars to luxury options, Rydex keeps the process simple.",
+  },
+  {
+    icon: Tag,
+    title: "Flexible Offers",
+    text: "Find options for city trips, family rides, business travel, or weekends.",
+  },
+];
 
 export default function Home() {
   const [open, setOpen] = useState(false);
-
-  const [scrollY, setScrollY] = useState(0)
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <div className="w-full flex flex-col">
-
+    <div className="w-full overflow-x-hidden">
       <div className="fixed inset-0 -z-10">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
         />
-        <div className="absolute inset-0 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-black/35 backdrop-blur-sm" />
       </div>
 
-      <section className="min-h-[calc(100vh-100px)] md:min-h-[calc(100vh-33px)] flex flex-col items-center justify-center text-center px-4">
-        <TitleSubtitle 
-          title="Find your next ride." 
-          subtitle="Discover the best car rental deals in town. Whether you're looking for a compact car, an SUV, or a luxury vehicle, we have you covered." 
-        />
+      {/* Hero */}
+      <section className="relative flex min-h-[calc(100vh-50px)] md:min-h-[calc(100vh+10px)] flex-col items-center justify-center px-4 text-center">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#31363F]" />
 
-        <Button
-          variant="default"
-          className="mt-5 px-5 bg-[#76ABAE] cursor-pointer hover:bg-[#5A8B8E] active:bg-[#3E6B6F]"
-          onClick={() => setOpen(true)}
+        <div className="relative z-10 max-w-3xl">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.35em] text-[#76ABAE]">
+            Premium car rental
+          </p>
+
+          <TitleSubtitle
+            title="Find your next ride."
+            subtitle="Discover rental cars built for every kind of trip — from daily drives to premium weekend escapes."
+          />
+
+          <div className="mt-7 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Button
+              className="rounded-full cursor-pointer bg-[#76ABAE] px-7 py-3 text-base text-white hover:bg-[#5A8B8E]"
+              onClick={() => setOpen(true)}
+            >
+              Browse by Type
+            </Button>
+
+            <Link href="/cars">
+              <Button
+                
+                className="rounded-full cursor-pointer border-1 border-[#76ABAE] bg-transparent px-7 py-3 text-base text-[#EEEEEE] hover:bg-[#76ABAE]/10"
+              >
+                View All Cars
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        <div
+          className="absolute bottom-6 transition-opacity duration-200"
+          style={{
+            opacity: Math.max(1 - scrollY / 100, 0),
+            pointerEvents: scrollY > 100 ? "none" : "auto",
+          }}
         >
-          Browse Cars by Type
-        </Button>
-        <Link href="/cars" className="mt-3 text-sm md:text-base text-[#EEEEEE] hover:underline">
-          Or check out all our cars
-        </Link>
+          <ArrowDown className="h-9 w-9 animate-bounce rounded-full bg-white p-1 text-black" />
+        </div>
+
         <BrowseCarsDrawer open={open} setOpen={setOpen} />
       </section>
 
-      
-      <div className="w-full flex justify-center mb-1 transition-opacity duration-200" style={{
-        opacity: Math.max(1 - scrollY / 100, 0),
-        pointerEvents: scrollY > 100 ? "none" : "auto",
-      }}>
-        <ArrowDown className="w-8 h-8 rounded-full text-center animate-bounce bg-white text-black"/>
-      </div>
-      
-
-      {/* Main content */}
-      <div id="main" className="w-full bg-[#31363F] text-[#EEEEEE] p-1 rounded-t-lg">
-        
-        <CarsCarousel /> 
-
-        {/* How it works section */}
-        <div className="w-full px-4 py-16" id="howto">
-          <h1 className="text-3xl md:text-4xl font-bold text-center">How Rydex Works</h1>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 mt-5 py-4 text-base md:text-lg">
-
-            <div className="flex flex-col items-center text-center p-6 rounded-2xl border-2 border-transparent hover:shadow-2xl hover:shadow-[#76ABAE] hover:border-[#76ABAE] hover:-translate-y-1 duration-300">
-              <Car className="w-8 h-8 mb-4"/>
-              <h3 className="font-semibold">Choose a Car</h3>
-              <p className="text-sm">Browse and pick your favorite model.</p>
-            </div>
-
-            <div className="flex flex-col items-center text-center p-6 rounded-2xl border-2 border-transparent hover:shadow-2xl hover:shadow-[#76ABAE] hover:border-[#76ABAE] hover:-translate-y-1 duration-300">
-              <Calendar className="w-8 h-8 mb-4"/>
-              <h3 className="font-semibold">Book It</h3>
-              <p className="text-sm">Select your desired date and time.</p>
-            </div>
-
-            <div className="flex flex-col items-center text-center p-6 rounded-2xl border-2 border-transparent hover:shadow-2xl hover:shadow-[#76ABAE] hover:border-[#76ABAE] hover:-translate-y-1 duration-300">
-              <KeyRound className="w-8 h-8 mb-4"/>
-              <h3 className="font-semibold">Pick up</h3>
-              <p className="text-sm">Grab the keys and go.</p>
-            </div>
-
-            <div className="flex flex-col items-center text-center p-6 rounded-2xl border-2 border-transparent hover:shadow-2xl hover:shadow-[#76ABAE] hover:border-[#76ABAE] hover:-translate-y-1 duration-300">
-              <Flag className="w-8 h-8 mb-4"/>
-              <h3 className="font-semibold">Enjoy</h3>
-              <p className="text-sm">Drive and have fun.</p>
-            </div>
+      <main className=" bg-[#31363F] text-[#EEEEEE]">
+        {/* Featured Carousel */}
+        <section className="mx-auto  px-4 py-16">
+          <div className="mb-8 text-center" id="main">
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#76ABAE]">
+              Featured rides
+            </p>
+            <h2 className="mt-2 text-3xl font-bold md:text-4xl">
+              Cars that turn trips into experiences
+            </h2>
           </div>
-        </div>
 
-        {/* Most searched cars section */}
-        <div className="w-full p-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-center">The Most Searched Cars</h1>
-          
-          <CarGrid />
-        </div>
+          <CarsCarousel />
+        </section>
 
-
-
-        {/* Why choose us section */}
-        <div className="w-full py-5 px-4">
-          <h1 className="text-4xl mt-10 text-center font-bold">Why Choose Us?</h1>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 mt-5 p-4 text-base md:text-lg">
-
-            <div className="flex flex-col items-center text-center p-6 rounded-2xl border-2 border-[#76ABAE] shadow-2xl shadow-[#76ABAE] -translate-y-1 hover:shadow-none hover:translate-y-1 duration-300">
-              <CircleDollarSign className="w-8 h-8 mb-4" />
-              <h3 className="font-semibold">Special Financing Offers</h3>
-              <p className="text-sm md:text-base">Our stress-free finance department that can find financial solutions to save you money.</p>
-            </div>
-
-            <div className="flex flex-col items-center text-center p-6 rounded-2xl border-2 border-[#76ABAE] shadow-2xl shadow-[#76ABAE] -translate-y-1 hover:shadow-none hover:translate-y-1 duration-300">
-              <Gem className="w-8 h-8 mb-4"/>
-              <h3 className="font-semibold">Trusted Car Dealership</h3>
-              <p className="text-sm md:text-base">Our stress-free finance department that can find financial solutions to save you money.</p>
-            </div>
-
-            <div className="flex flex-col items-center text-center p-6 rounded-2xl border-2 border-[#76ABAE] shadow-2xl shadow-[#76ABAE] -translate-y-1 hover:shadow-none hover:translate-y-1 duration-300">
-              <Tag className="w-8 h-8 mb-4"/>
-              <h3 className="font-semibold">Transparent Pricing</h3>
-              <p className="text-sm md:text-base">Our stress-free finance department that can find financial solutions to save you money.</p>
-            </div>
-
-            <div className="flex flex-col items-center text-center p-6 rounded-2xl border-2 border-[#76ABAE] shadow-2xl shadow-[#76ABAE] -translate-y-1 hover:shadow-none hover:translate-y-1 duration-300">
-              <Car className="w-8 h-8 mb-4"/>
-              <h3 className="font-semibold">Expert Car Service</h3>
-              <p className="text-sm md:text-base">Our stress-free finance department that can find financial solutions to save you money.</p>
-            </div>
-          </div>
-        </div>
-        
-        {/* Latest Cars */}
-        <div className="w-full p-4 mt-5">
-          <h1 className="text-3xl md:text-4xl font-bold text-center">Latest Cars</h1>
-          <CarGrid />
-        </div>
-
-        {/* Who is Rydex */}
-        <div className="w-full flex bg-[#222831] rounded-xl py-6 mb-6">
-          <div className="w-full flex flex-col md:flex-row items-center justify-around gap-6 px-10">
-            <div className="flex flex-col md:w-1/4 text-center">
-              <h1 className="text-3xl md:text-4xl font-bold ">Who is Rydex?</h1>
-              <p className="text-lg md:text-base">Rydex is a modern car rental platform designed to make finding and booking your next ride simple and stress-free. From everyday vehicles to premium options, we connect you with reliable cars at competitive prices, all in just a few clicks.</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full md:w-1/2">
-
-              <div className="flex flex-col items-center text-center text-black rounded-xl p-4 justify-center bg-white gap-2">
-                <h2 className="text-lg font-semibold">Great</h2>
-                <div className="flex flex-row gap-1">
-                  {Array.from({ length: 5}).map((_, i) => (
-                    <div key={i} className="group/star">
-                      <Star className="text-green-500 bg-green-500 fill-background transition-all group-hover/star:-translate-y-1 duration-200 ease-out" />
-                    </div>
-                  ))}
-                </div>
-                <p>Based on 5,801 reviews</p>
-                <Link href={"https://www.trustpilot.com"}>
-                <Image src={"/images/Trustpilot_logo.png"}
-                alt=""
-                width={100}
-                height={200}
-                className="h-auto w-full"
-                /></Link>
-                
-              </div>
-
-              <div className="flex flex-col items-center text-center text-black rounded-xl p-4 justify-center bg-white gap-2">
-                <h2 className="text-lg font-semibold">Great</h2>
-                <div className="flex flex-row gap-1">
-                  {Array.from({ length: 5}).map((_, i) => (
-                    <div key={i} className="group/star">
-                      <Star className="text-green-500 bg-green-500 fill-background transition-all group-hover/star:-translate-y-1 duration-200 ease-out" />
-                    </div>
-                  ))}
-                </div>
-                <p>Based on 5,801 reviews</p>
-                <Link href={"https://customerreviews.google.com"}>
-                <Image src={"/images/Google-Review-Logo.png"}
-                alt=""
-                width={100}
-                height={100}
-                className="h-auto w-full"
-                /></Link>
-              </div>
-
-              <div className="flex flex-col items-center text-center text-black rounded-xl p-4 justify-center bg-white gap-2">
-                <h2 className="text-lg font-semibold">Great</h2>
-                <div className="flex flex-row gap-1">
-                  {Array.from({ length: 5}).map((_, i) => (
-                    <div key={i} className="group/star">
-                      <Star className="text-green-500 bg-green-500 fill-background transition-all group-hover/star:-translate-y-1 duration-200 ease-out" />
-                    </div>
-                  ))}
-                </div>
-                <p>Based on 5,801 reviews</p>
-                <Link href={"https://www.yelp.com"}>
-                <Image src={"/images/Yelp_Logo.svg.png"}
-                alt=""
-                width={100}
-                height={100}
-                className="h-auto w-full"
-                /></Link>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-        {/* Join Rydex */}
-        <div className="w-full flex flex-col items-center gap-4 py-10">
+        {/* How it works */}
+        <section id="howto" className="mx-auto max-w-7xl px-4 py-16">
           <div className="text-center">
-            <h2 className="text-xl font-semibold">Join Rydex</h2>
-            <p className="text-sm md:text-base">Recieve pricing updates, shopping tips & more!</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#76ABAE]">
+              Simple process
+            </p>
+            <h2 className="mt-2 text-3xl font-bold md:text-4xl">
+              How Rydex Works
+            </h2>
           </div>
 
-          <div className="w-full max-w-xs md:max-w-sm">
-            <InputGroup>
-              <InputGroupInput placeholder="example@gmail.com" className="" />
+          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {steps.map((step) => {
+              const Icon = step.icon;
+
+              return (
+                <div
+                  key={step.title}
+                  className="group rounded-2xl border border-white/10 bg-[#222831]/80 p-6 text-center transition duration-300 hover:-translate-y-2 hover:border-[#76ABAE]/70 hover:shadow-2xl hover:shadow-[#76ABAE]/20"
+                >
+                  <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#76ABAE]/15 text-[#76ABAE] transition group-hover:bg-[#76ABAE] group-hover:text-white">
+                    <Icon className="h-7 w-7" />
+                  </div>
+
+                  <h3 className="text-lg font-semibold">{step.title}</h3>
+                  <p className="mt-2 text-sm text-[#EEEEEE]/70">{step.text}</p>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Popular cars */}
+        <section className="mx-auto px-4 py-16">
+          <div className="mb-8 w-full flex flex-col items-center gap-4 text-center">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#76ABAE]">
+                Popular choices
+              </p>
+              <h2 className="mt-2 text-3xl font-bold md:text-4xl">
+                Most Searched Cars
+              </h2>
+            </div>
+
+            <Link href="/cars">
+              <Button className="rounded-full cursor-pointer bg-[#76ABAE] px-6 hover:bg-[#5A8B8E]">
+                See Inventory
+              </Button>
+            </Link>
+          </div>
+
+          <CarGrid />
+        </section>
+
+        {/* Why choose us */}
+        <section className="mx-4 my-16 rounded-3xl bg-[#222831] px-6 py-16 shadow-2xl">
+          <div className="mx-auto max-w-7xl">
+            <div className="text-center">
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#76ABAE]">
+                Why choose us
+              </p>
+              <h2 className="mt-2 text-3xl font-bold md:text-4xl">
+                Built for smooth rentals
+              </h2>
+            </div>
+
+            <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {benefits.map((benefit) => {
+                const Icon = benefit.icon;
+
+                return (
+                  <div
+                    key={benefit.title}
+                    className="rounded-2xl border border-[#76ABAE]/40 bg-white/5 p-6 text-center backdrop-blur transition duration-300 hover:-translate-y-2 hover:bg-white/10 hover:shadow-2xl hover:shadow-[#76ABAE]/20"
+                  >
+                    <Icon className="mx-auto mb-4 h-8 w-8 text-[#76ABAE]" />
+                    <h3 className="font-semibold">{benefit.title}</h3>
+                    <p className="mt-2 text-sm text-[#EEEEEE]/70">
+                      {benefit.text}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <Reviews />
+
+        {/* CTA */}
+        <section className="relative mx-4 my-20 overflow-hidden rounded-3xl bg-[#222831] px-6 py-20 text-center shadow-2xl">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#76ABAE]/20 via-transparent to-[#76ABAE]/20" />
+          <div className="absolute left-1/2 top-0 h-40 w-40 -translate-x-1/2 rounded-full bg-[#76ABAE]/30 blur-3xl" />
+
+          <div className="relative z-10 mx-auto max-w-2xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-[#76ABAE]">
+              Ready to drive?
+            </p>
+
+            <h2 className="text-3xl font-bold md:text-5xl">
+              Your next ride is waiting.
+            </h2>
+
+            <p className="mt-4 text-[#EEEEEE]/75">
+              Browse our collection, choose the car that fits your trip, and book it in just a few clicks.
+            </p>
+
+            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Link href="/cars">
+                <Button className="group cursor-pointer relative h-auto overflow-hidden rounded-full border border-[#76ABAE] bg-[#76ABAE] px-7 py-3 text-base font-medium text-white">
+                  <span className="absolute left-1/2 top-full h-8 w-8 -translate-x-1/2 -translate-y-1/2 scale-0 rounded-full bg-white transition-transform duration-700 ease-in-out group-hover:scale-[18]" />
+                  <span className="relative z-10 transition-colors duration-500 group-hover:text-[#222831]">
+                    Browse Cars
+                  </span>
+                </Button>
+              </Link>
+
+              <Link href="/about">
+                <Button
+                  variant="outline"
+                  className="h-auto cursor-pointer rounded-full border-[#76ABAE] bg-transparent px-7 py-3 text-base text-[#EEEEEE] hover:bg-[#76ABAE]/10"
+                >
+                  Learn More
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Newsletter */}
+        <section className="mx-auto flex max-w-3xl flex-col items-center gap-5 px-4 pb-20 text-center">
+          <div>
+            <h2 className="text-2xl font-semibold">Join Rydex</h2>
+            <p className="mt-2 text-[#EEEEEE]/70">
+              Receive pricing updates, shopping tips, and rental inspiration.
+            </p>
+          </div>
+
+          <div className="w-full max-w-md">
+            <InputGroup className="border-white/10 bg-[#222831]">
+              <InputGroupInput type="email" placeholder="example@gmail.com" />
               <InputGroupAddon align="inline-end">
-                <InputGroupButton variant="default" className="cursor-pointer bg-[#76ABAE]">Sign Up</InputGroupButton>
+                <InputGroupButton className="bg-[#76ABAE] hover:bg-[#5A8B8E] text-white">
+                  Sign Up
+                </InputGroupButton>
               </InputGroupAddon>
             </InputGroup>
           </div>
-        </div>
-
-      </div>
+        </section>
+      </main>
     </div>
   );
 }

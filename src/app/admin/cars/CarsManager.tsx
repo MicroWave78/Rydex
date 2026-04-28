@@ -125,9 +125,9 @@ export default function CarsManager({ cars }: { cars: Car[] }) {
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button
-                        variant="destructive"
+                        
                         size="sm"
-                        className="cursor-pointer ml-2"
+                        className="cursor-pointer ml-2 bg-transparent text-red-500 hover:bg-red-500 hover:text-white"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>

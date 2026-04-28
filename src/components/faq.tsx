@@ -90,7 +90,7 @@ export default function FAQ() {
         <div className="flex flex-col w-full items-center p-6" id="faq">
             <h1 className="text-4xl font-semibold">FAQs</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-5 ">
-                <Card className="w-full max-w-sm max-w-sm bg-[#0f172a] border-none shadow-2xl shadow-[#1d4f52] text-white text-xl">
+                <Card className="w-full max-w-sm max-w-sm bg-[#0f172a] border-none shadow-2xl shadow-[#76ABAE]/50 text-white text-xl">
                     <CardHeader>
                         <CardTitle>Frequently Asked Questions</CardTitle>
                         <CardDescription className="text-[#b0b0b0]">Find answers to common questions about our car rental service.</CardDescription>
@@ -110,7 +110,7 @@ export default function FAQ() {
                     </CardContent>
                 </Card>
 
-                <Card className="w-full max-w-sm bg-[#0f172a] border-none shadow-2xl shadow-[#1d4f52] text-white text-xl">
+                <Card className="w-full max-w-sm bg-[#0f172a] border-none shadow-2xl shadow-[#76ABAE]/50 text-white text-xl">
                     <CardHeader>
                         <CardTitle>About Rank System</CardTitle>
                         <CardDescription className="text-[#b0b0b0]">Find answers to common questions about our rank system.</CardDescription>
