@@ -15,7 +15,7 @@ export default function Register() {
             <div className="absolute inset-0 backdrop-blur-sm" />
         </div>
 
-        <section className="min-h-screen flex items-center justify-center px-4 py-20 mt-20">
+        <section className="min-h-screen flex items-center justify-center px-4 py-18">
             <div className="w-full flex flex-col items-center text-center lg:-translate-y-14 xl:-translate-y-0">
                 <div
                     key={flipped ? "register" : "login"}

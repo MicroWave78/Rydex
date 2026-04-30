@@ -65,7 +65,7 @@ export default function CarsManager({ cars }: { cars: Car[] }) {
 
         <Button
           variant={"outline"}
-          className="dark mb-8 self-start cursor-pointer"
+          className="dark mb-8 self-start cursor-pointer hidden md:block"
           onClick={() => setOpen(true)}
         >
           Add New Car

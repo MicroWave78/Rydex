@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Calendar, MapPin } from "lucide-react";
+import { useMemo, useState, useEffect } from "react";
+import { MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,12 +13,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
+import AlertMessage from "@/components/alertMessage";
 
 type RentDialogProps = {
   carId: number;
   carName: string;
   pricePerDay: number;
   available: boolean;
+  isLoggedIn: boolean
 };
 
 const pickupPoints = [
@@ -32,12 +35,43 @@ export default function RentDialog({
   carId,
   carName,
   pricePerDay,
-  available
+  available,
+  isLoggedIn
 }: RentDialogProps) {
   const [open, setOpen] = useState(false);
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [pickupLocation, setPickupLocation] = useState("");
+
+  const [processing, setProcessing] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertType, setAlertType] = useState<"success" | "error">("success");
+  const [alertTitle, setAlertTitle] = useState("");
+  const [alertMessage, setAlertMessage] = useState<React.ReactNode>(null);
+
+  const createRental = async () => {
+    const res = await fetch("/api/rentals", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            carId,
+            pickupDate,
+            returnDate,
+            pickupLocation,
+            totalPrice,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "Something went wrong.");
+        }
+
+        return
+  }
 
   const rentalDays = useMemo(() => {
     if (!pickupDate || !returnDate) return 0;
@@ -53,52 +87,113 @@ export default function RentDialog({
 
   const totalPrice = rentalDays * pricePerDay;
 
-  const handleConfirm = async () => {
+  useEffect(() => {
+    const handlePaymentMessage = async (event: MessageEvent) => {
+      if (event.data?.type !== "PAYMENT_SUCCESS") return;
+
+      try {
+        await createRental();
+
+        setProcessing(false);
+        setOpen(false);
+
+        setAlertType("success");
+        setAlertTitle("Booking Confirmed");
+        setAlertMessage(
+          <>
+            Your payment was successful and your rental has been booked.
+            <br />
+            You can view it in your profile.
+          </>
+        );
+        setOpen(false);
+        setOpenAlert(true);
+      } catch (error) {
+        setProcessing(false);
+
+        setAlertType("error");
+        setAlertTitle("Booking Failed");
+        setAlertMessage(
+          error instanceof Error
+            ? error.message
+            : "Payment succeeded, but the booking could not be saved."
+        );
+        setOpen(false);
+        setOpenAlert(true);
+      }
+    };
+
+    window.addEventListener("message", handlePaymentMessage);
+
+    return () => {
+      window.removeEventListener("message", handlePaymentMessage);
+    };
+  }, [carId, pickupDate, returnDate, pickupLocation, totalPrice]);
+
+  const handleConfirm = () => {
     if (!pickupDate || !returnDate || !pickupLocation) {
-      alert("Please complete all booking fields.");
+      setAlertType("error");
+      setAlertTitle("Missing Details");
+      setAlertMessage("Please complete all booking fields.");
+      setOpenAlert(true);
       return;
     }
 
     if (rentalDays <= 0) {
-      alert("Return date must be after pickup date.");
+      setAlertType("error");
+      setAlertTitle("Invalid Dates");
+      setAlertMessage("Return date must be after pickup date.");
+      setOpenAlert(true);
       return;
     }
 
-    const res = await fetch("/api/rentals", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        carId,
-        pickupDate,
-        returnDate,
-        pickupLocation,
-        totalPrice,
-      }),
-    });
+    setProcessing(true);
 
-    const data = await res.json();
+    const paymentWindow = window.open(
+      `/payment?carId=${carId}&carName=${encodeURIComponent(carName)}&price=${totalPrice}&days=${rentalDays}`,
+      "_blank",
+      "width=720, height=860"
+    )
 
-    if (!res.ok) {
-      alert(data.error || "Something went wrong.");
-      return;
+    if (!paymentWindow) {
+      setProcessing(false);
+      setAlertType("error");
+      setAlertTitle("Payment Window Blocked");
+      setAlertMessage("Please allow popups and try again.");
+      setOpenAlert(true);
     }
-
-    alert("Booking created successfully!");
-    setOpen(false);
+    
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-            disabled = {!available}
-            className="mt-8 w-full cursor-pointer rounded-full bg-[#76ABAE] py-6 text-base hover:bg-[#5A8B8E]">
-            {available ? "Book This Car" : "Currently Unavailable"}
-        </Button>
-      </DialogTrigger>
+    <>
+    <AlertMessage
+      type={alertType}
+      title={alertTitle}
+      message={alertMessage}
+      open={openAlert}
+      setOpen={setOpenAlert}
+      buttonText="OK"
+      link=""
+    />
 
+    <Button
+      disabled = {!available}
+      className="mt-8 w-full cursor-pointer rounded-full bg-[#76ABAE] py-6 text-base hover:bg-[#5A8B8E]"
+      onClick={() => {
+        if (!isLoggedIn) {
+          setAlertType("error");
+          setAlertTitle("Login Required");
+          setAlertMessage("You need to be logged in before booking a car.");
+          setOpenAlert(true);
+          return;
+        }
+        setOpen(true);
+      }}>
+      {available ? "Rent This Car" : "Currently Unavailable"}
+    </Button>
+
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="dark max-w-3xl">
         <DialogHeader>
           <DialogTitle>Book {carName}</DialogTitle>
@@ -198,13 +293,23 @@ export default function RentDialog({
           </Button>
 
           <Button
+            disabled={processing}
             className="bg-[#76ABAE] hover:bg-[#5A8B8E] cursor-pointer"
             onClick={handleConfirm}
           >
-            Confirm Booking
+            {processing ? (
+              <span className="flex items-center gap-2">
+                <Spinner />
+                Processing payment...
+              </span>
+            ) : (
+              "Confirm Booking"
+            )}
+            
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
+    </>
   );
 }

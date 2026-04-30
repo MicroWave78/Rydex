@@ -20,6 +20,12 @@ enum Rank {
   VIP
 }
 
+enum RentalStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
 model User {
   id           Int       @id @default(autoincrement())
   username     String    @unique
@@ -74,14 +80,15 @@ model Session {
 }
 
 model Rental {
-  id         Int      @id @default(autoincrement())
-  userId     Int
-  carId      Int
-  pickupDate DateTime
-  returnDate DateTime
-  totalPrice Int
-  status     String   @default("PENDING")
-  createdAt  DateTime @default(now())
+  id             Int          @id @default(autoincrement())
+  userId         Int
+  carId          Int
+  pickupDate     DateTime
+  returnDate     DateTime
+  pickupLocation String
+  totalPrice     Int
+  status         RentalStatus @default(PENDING)
+  createdAt      DateTime     @default(now())
 
   user User @relation(fields: [userId], references: [id])
   car  Car  @relation(fields: [carId], references: [id])

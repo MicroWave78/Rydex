@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { cookies } from "next/headers";
 import {
   Calendar,
   Car,
@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { ClassNameValue } from "tailwind-merge";
 import RentDialog from "./RentDialog";
+import CarCard from "@/components/carCard";
 
 export default async function CarDetailsPage({
   params,
@@ -30,6 +31,32 @@ export default async function CarDetailsPage({
   });
 
   if (!car) notFound();
+
+  const cars = await prisma.car.findMany({
+    where: {
+      type: car.type,
+      id: {
+        not: car.id,
+      },
+      available: true,
+    },
+  });
+
+  const recommendedCars = cars
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 4);
+
+  const cookieStore = await cookies();
+  const sessionToken = cookieStore.get("sessionToken")?.value;
+
+  const session = sessionToken
+    ? await prisma.session.findUnique({
+      where: { token: sessionToken},
+      include: { user: true},
+    })
+    : null;
+
+  const isLoggedIn = !!session && session.expiresAt > new Date();
 
   return (
     <main className="min-h-screen bg-[#31363F] px-4 py-28 text-[#EEEEEE]">
@@ -94,7 +121,8 @@ export default async function CarDetailsPage({
               carId={car.id}
               carName={`${car.brand} ${car.model}`}
               pricePerDay={car.pricePerDay} 
-              available = {car.available}/>
+              available = {car.available}
+              isLoggedIn = {isLoggedIn} />
           </div>
         </section>
 
@@ -143,6 +171,27 @@ export default async function CarDetailsPage({
             </ul>
           </div>
         </section>
+
+        {recommendedCars.length > 0 && (
+          <section className="mt-12">
+            <div className="mb-6 flex items-end justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#76ABAE]">
+                  Similar rides
+                </p>
+                <h2 className="mt-2 text-2xl font-bold md:text-3xl">
+                  More {car.type} cars you might like
+                </h2>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+              {recommendedCars.map((recommendedCar) => (
+                <CarCard key={recommendedCar.id} {...recommendedCar} />
+              ))}
+            </div>
+          </section>
+        )}
 
         
       </div>
