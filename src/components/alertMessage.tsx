@@ -20,10 +20,12 @@ type Props = {
     link: string,
     open: boolean,
     setOpen: (open: boolean) => void,
-    onConfirm?: () => void
+    onConfirm?: () => void,
+    secondaryButtonText?: string,
+    onSecondaryConfirm?: () => void,
 }
 
-export default function AlertMessage({ type, title, message, buttonText, link, open, setOpen, onConfirm }: Props) {
+export default function AlertMessage({ type, title, message, buttonText, link, open, setOpen, onConfirm, secondaryButtonText, onSecondaryConfirm }: Props) {
     const router = useRouter();
 
     return (
@@ -55,6 +57,14 @@ export default function AlertMessage({ type, title, message, buttonText, link, o
                             onConfirm?.();
                             }}>
                                 {buttonText}
+                        </AlertDialogCancel>
+                    )}
+                    {secondaryButtonText && (
+                        <AlertDialogCancel className="dark cursor-pointer" onClick={() => {
+                            setOpen(false);
+                            onSecondaryConfirm?.();
+                        }}>
+                            {secondaryButtonText}
                         </AlertDialogCancel>
                     )}
                 </AlertDialogFooter>

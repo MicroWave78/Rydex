@@ -10,6 +10,7 @@ import CarCard from "@/components/carCard"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
+import { useSearchParams } from "next/navigation"
 
 type CarCardProps = {
   id: number;
@@ -27,8 +28,9 @@ type CarCardProps = {
 };
 
 export default function CarsGrid({ cars }: { cars: CarCardProps[] }) {
+    const searchParams = useSearchParams();
+
     const [search, setSearch] = useState("");
-    const [typeFilter, setTypeFilter] = useState("all");
     const [fuelFilter, setFuelFilter] = useState("all");
     const [transmissionFilter, setTransmissionFiler] = useState("all");
 
@@ -36,6 +38,9 @@ export default function CarsGrid({ cars }: { cars: CarCardProps[] }) {
     const maxCarPrice = Math.max(...cars.map((car) => car.pricePerDay));
     const [maxPrice, setMaxPrice] = useState(maxCarPrice);
     const [minPrice, setMinPrice] = useState(minCarPrice);
+
+    const initialType = searchParams.get("type")?.toLowerCase() || "all";
+    const [typeFilter, setTypeFilter] = useState(initialType);
 
     const types = Array.from(new Set(cars.map((car) => car.type.trim())));
     const fuelTypes = Array.from(new Set(cars.map((car) => car.fuelType.trim())));
@@ -61,8 +66,8 @@ export default function CarsGrid({ cars }: { cars: CarCardProps[] }) {
 
         return matchesSearch && matchesType && matchesFuel && matchesPrice && matchesTransmission;
     });
-    const [scrollY, setScrollY] = useState(0)
     
+    const [scrollY, setScrollY] = useState(0)
     
     useEffect(() => {
         const handleScroll = () => setScrollY(window.scrollY)
@@ -124,7 +129,7 @@ export default function CarsGrid({ cars }: { cars: CarCardProps[] }) {
                             <SelectContent>
                                 <SelectItem value="all">All Types</SelectItem>
                                 {types.map((type) => (
-                                    <SelectItem key={type} value={type}>
+                                    <SelectItem key={type} value={type.toLowerCase()}>
                                         {type}
                                     </SelectItem>
                                 ))}

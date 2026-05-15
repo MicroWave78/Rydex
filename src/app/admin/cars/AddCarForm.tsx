@@ -231,7 +231,7 @@ export default function AddCarForm({ open, setOpen }: { open: boolean, setOpen: 
                 </FieldContent>
               </Field>
 
-              <Field className="">
+              <Field>
                 <FieldLabel>Image</FieldLabel>
                 <FieldContent>
                   <Input accept="image/*" 

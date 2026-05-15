@@ -1,4 +1,3 @@
-// app/admin/cars/CarsManager.tsx
 "use client"
 
 import { useState } from "react"
@@ -106,14 +105,18 @@ export default function CarsManager({ cars }: { cars: Car[] }) {
                 <TableCell>{car.year}</TableCell>
                 <TableCell>{car.type}</TableCell>
                 <TableCell>{car.description ?? "-"}</TableCell>
-                <TableCell>{car.featured ? "Yes" : "No"}</TableCell>
+                <TableCell className={car.featured ? "text-green-500" : "text-red-500"}>
+                  {car.featured ? "Yes" : "No"}
+                </TableCell>
                 <TableCell>{car.fuelType}</TableCell>
                 <TableCell>{car.hp}</TableCell>
                 <TableCell>{car.mileage ?? "-"}</TableCell>
                 <TableCell>{car.seats}</TableCell>
                 <TableCell>{car.transmission}</TableCell>
                 <TableCell>{car.color ?? "-"}</TableCell>
-                <TableCell>{car.available ? "Yes" : "No"}</TableCell>
+                <TableCell className={car.available ? "text-green-500" : "text-red-500"}>
+                  {car.available ? "Yes" : "No"}
+                </TableCell>
                 <TableCell>${car.pricePerDay}</TableCell>
                 <TableCell className="flex">
                   <Link href={`/admin/cars/${car.id}/edit`}>

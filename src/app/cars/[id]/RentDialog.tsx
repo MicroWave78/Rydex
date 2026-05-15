@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -48,6 +48,19 @@ export default function RentDialog({
   const [alertType, setAlertType] = useState<"success" | "error">("success");
   const [alertTitle, setAlertTitle] = useState("");
   const [alertMessage, setAlertMessage] = useState<React.ReactNode>(null);
+  const [secondaryButtonText, setSecondaryButtonText] = useState("");
+
+  const paymentWindowRef = useRef<Window | null>(null);
+  const paymentCheckerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const paymentFinishedRef = useRef(false);
+
+  const clearPaymentChecker = () => {
+    if (paymentCheckerRef.current) {
+      clearInterval(paymentCheckerRef.current);
+      paymentCheckerRef.current = null;
+    }
+    paymentWindowRef.current = null;
+  };
 
   const createRental = async () => {
     const res = await fetch("/api/rentals", {
@@ -89,7 +102,20 @@ export default function RentDialog({
 
   useEffect(() => {
     const handlePaymentMessage = async (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return;
+      if (event.data?.carId && Number(event.data.carId) !== carId) return;
+
+      if (event.data?.type === "PAYMENT_CANCELLED") {
+        paymentFinishedRef.current = true;
+        clearPaymentChecker();
+        setProcessing(false);
+        return;
+      }
+
       if (event.data?.type !== "PAYMENT_SUCCESS") return;
+
+      paymentFinishedRef.current = true;
+      clearPaymentChecker();
 
       try {
         await createRental();
@@ -127,6 +153,7 @@ export default function RentDialog({
 
     return () => {
       window.removeEventListener("message", handlePaymentMessage);
+      clearPaymentChecker();
     };
   }, [carId, pickupDate, returnDate, pickupLocation, totalPrice]);
 
@@ -147,13 +174,16 @@ export default function RentDialog({
       return;
     }
 
-    setProcessing(true);
+    paymentFinishedRef.current = false;
+    clearPaymentChecker();
+
+    
 
     const paymentWindow = window.open(
       `/payment?carId=${carId}&carName=${encodeURIComponent(carName)}&price=${totalPrice}&days=${rentalDays}`,
       "_blank",
       "width=720, height=860"
-    )
+    );
 
     if (!paymentWindow) {
       setProcessing(false);
@@ -162,6 +192,16 @@ export default function RentDialog({
       setAlertMessage("Please allow popups and try again.");
       setOpenAlert(true);
     }
+
+    paymentWindowRef.current = paymentWindow;
+    setProcessing(true);
+
+    paymentCheckerRef.current = setInterval(() => {
+      if (paymentWindow?.closed && !paymentFinishedRef.current) {
+        clearPaymentChecker();
+        setProcessing(false);
+      }
+    }, 500);
     
   };
 
@@ -175,6 +215,8 @@ export default function RentDialog({
       setOpen={setOpenAlert}
       buttonText="OK"
       link=""
+      secondaryButtonText={secondaryButtonText}
+      onSecondaryConfirm={() => window.location.href = "/login"}
     />
 
     <Button
@@ -185,6 +227,7 @@ export default function RentDialog({
           setAlertType("error");
           setAlertTitle("Login Required");
           setAlertMessage("You need to be logged in before booking a car.");
+          setSecondaryButtonText("Go to Login");
           setOpenAlert(true);
           return;
         }
@@ -194,7 +237,7 @@ export default function RentDialog({
     </Button>
 
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="dark max-w-3xl">
+      <DialogContent className="dark rounded-3xl border border-white/10 bg-[#222831] p-6 shadow-2xl">
         <DialogHeader>
           <DialogTitle>Book {carName}</DialogTitle>
           <DialogDescription>
