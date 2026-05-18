@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo, useEffect } from "react"
 import Link from "next/link"
-import { ArrowLeft, Trash2 } from "lucide-react"
+import { ArrowLeft, Trash2, ArrowUpDown, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -26,6 +26,7 @@ import {
 import AddCarForm from "./AddCarForm"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { Input } from "@/components/ui/input"
 
 type Car = {
   id: number
@@ -47,9 +48,135 @@ type Car = {
   createdAt: Date
 }
 
+type SortKey = 
+  | "id"
+  | "createdAt"
+  | "brand"
+  | "model"
+  | "year"
+  | "type"
+  | "featured"
+  | "fuelType"
+  | "hp"
+  | "mileage"
+  | "seats"
+  | "transmission"
+  | "color"
+  | "available"
+  | "pricePerDay";
+
+type SortDirection = "asc" | "desc"
+
 export default function CarsManager({ cars }: { cars: Car[] }) {
   const [open, setOpen] = useState(false)
   const router = useRouter()
+
+  const [sortKey, setSortKey] = useState<SortKey>("id")
+  const [sortDirection, setSortDirection] = useState<SortDirection>("asc")
+  const [search, setSearch] = useState("")
+  const [page, setPage] = useState(1)
+  const pageSize = 15
+
+  const handleSort = (key: SortKey) => {
+    setPage(1)
+    if (sortKey === key) {
+      setSortDirection((current) => (current === "asc" ? "desc" : "asc"))
+    } else {
+      setSortKey(key)
+      setSortDirection("asc")
+    }
+  }
+
+  const filteredAndSortedCars = useMemo(() => {
+    const query = search.trim().toLowerCase()
+
+    const filtered = cars.filter((car) => {
+      if (!query) return true
+
+      const searchableText = [
+        car.id,
+        car.brand,
+        car.model,
+        car.year,
+        car.type,
+        car.featured ? "featured yes" : "not featured no",
+        car.fuelType,
+        car.hp,
+        car.mileage,
+        car.seats,
+        car.transmission,
+        car.color,
+        car.available ? "available yes" : "unavailable no",
+        car.pricePerDay,
+        new Date(car.createdAt).toLocaleDateString(),
+      ]
+      .join(" ")
+      .toLowerCase();
+
+      return searchableText.includes(query);
+    });
+
+    filtered.sort((a, b) => {
+      let aValue = a[sortKey];
+      let bValue = b[sortKey];
+
+      if (sortKey === "createdAt") {
+        aValue = new Date(a.createdAt).getTime();
+        bValue = new Date(b.createdAt).getTime();
+      }
+
+      if (typeof aValue === "boolean") {
+        aValue = aValue ? 1 : 0;
+      }
+
+      if (typeof bValue === "boolean") {
+        bValue = bValue ? 1 : 0;
+      }
+
+      if (typeof aValue === "number" && typeof bValue === "number") {
+        return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
+      }
+
+      const result = String(aValue ?? "").localeCompare(String(bValue ?? ""), undefined, {
+        numeric: true,
+        sensitivity: "base",
+      });
+
+      return sortDirection === "asc" ? result : -result;
+    });
+
+    return filtered;
+  }, [cars, search, sortKey, sortDirection]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredAndSortedCars.length / pageSize))
+
+  useEffect(() => {
+  if (page > totalPages) {
+    setPage(totalPages);
+  }
+}, [page, totalPages]);
+
+const startIndex = (page - 1) * pageSize;
+const endIndex = startIndex + pageSize;
+
+const paginatedCars = filteredAndSortedCars.slice(startIndex, endIndex);
+
+const sortableHead = (label: string, key: SortKey) => (
+  <TableHead>
+    <button
+      type="button"
+      onClick={() => handleSort(key)}
+      className="flex items-center gap-1 cursor-pointer whitespace-nowrap transition hover:text-[#76ABAE]"
+    >
+      {label}
+      <ArrowUpDown
+        className={`h-3 w-3 ${
+          sortKey === key ? "text-[#76ABAE]" : "opacity-70"
+        }`}
+      />
+    </button>
+  </TableHead>
+);
 
   return (
     <>
@@ -72,31 +199,51 @@ export default function CarsManager({ cars }: { cars: Car[] }) {
 
         <AddCarForm open={open} setOpen={setOpen} />
 
+        <div className="mb-4 flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="relative w-full md:max-w-md">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+
+            <Input
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+              placeholder="Search cars by brand, model, fuel, type..."
+              className="dark pl-9"
+            />
+          </div>
+
+          <p className="text-sm text-gray-400">
+            Showing {paginatedCars.length} of {filteredAndSortedCars.length} cars
+          </p>
+        </div>
+        <div className="w-full overflow-x-auto rounded-2xl border border-white/10">
         <Table className="dark">
           <TableHeader>
             <TableRow>
-              <TableHead>Id</TableHead>
-              <TableHead>Created At</TableHead>
-              <TableHead>Brand</TableHead>
-              <TableHead>Model</TableHead>
-              <TableHead>Year</TableHead>
-              <TableHead>Type</TableHead>
+              {sortableHead("Id", "id")}
+              {sortableHead("Created At", "createdAt")}
+              {sortableHead("Brand", "brand")}
+              {sortableHead("Model", "model")}
+              {sortableHead("Year", "year")}
+              {sortableHead("Type", "type")}
               <TableHead>Description</TableHead>
-              <TableHead>Featured</TableHead>
-              <TableHead>Fuel Type</TableHead>
-              <TableHead>HP</TableHead>
-              <TableHead>Mileage</TableHead>
-              <TableHead>Seats</TableHead>
-              <TableHead>Transmission</TableHead>
-              <TableHead>Color</TableHead>
-              <TableHead>Available</TableHead>
-              <TableHead>Price per Day</TableHead>
+              {sortableHead("Featured", "featured")}
+              {sortableHead("Fuel Type", "fuelType")}
+              {sortableHead("HP", "hp")}
+              {sortableHead("Mileage", "mileage")}
+              {sortableHead("Seats", "seats")}
+              {sortableHead("Transmission", "transmission")}
+              {sortableHead("Color", "color")}
+              {sortableHead("Available", "available")}
+              {sortableHead("Price per Day", "pricePerDay")}
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {cars.map((car) => (
+            {paginatedCars.map((car) => (
               <TableRow key={car.id}>
                 <TableCell>{car.id}</TableCell>
                 <TableCell>{new Date(car.createdAt).toLocaleDateString()}</TableCell>
@@ -174,6 +321,34 @@ export default function CarsManager({ cars }: { cars: Car[] }) {
             ))}
           </TableBody>
         </Table>
+        </div>
+
+        <div className="mt-6 flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <p className="text-sm text-gray-400">
+            Page {page} of {totalPages}
+          </p>
+
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              disabled={page === 1}
+              onClick={() => setPage((current) => Math.max(current - 1, 1))}
+              className="dark cursor-pointer"
+            >
+              Previous
+            </Button>
+
+            <Button
+              variant="outline"
+              disabled={page === totalPages}
+              onClick={() => setPage((current) => Math.min(current + 1, totalPages))}
+              className="dark cursor-pointer"
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+        
       </div>
     </>
   )

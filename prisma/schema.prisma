@@ -26,6 +26,13 @@ enum RentalStatus {
   CANCELLED
 }
 
+enum MessageStatus {
+  UNREAD
+  READ
+  REPLIED
+  ARCHIVED
+}
+
 model User {
   id           Int       @id @default(autoincrement())
   username     String    @unique
@@ -35,6 +42,7 @@ model User {
   createdAt    DateTime  @default(now())
   role         Role      @default(USER)
   rank         Rank      @default(BRONZE)
+  active       Boolean   @default(true)
   totalRentals Int       @default(0)
   sessions     Session[]
   rentals      Rental[]
@@ -62,13 +70,14 @@ model Car {
 }
 
 model Messages {
-  id        Int      @id @default(autoincrement())
+  id        Int           @id @default(autoincrement())
   name      String
   email     String
-  phone     String   @default("")
-  type      String   @default("General Inquiry")
+  phone     String        @default("")
+  type      String        @default("General Inquiry")
+  status    MessageStatus @default(UNREAD)
   message   String
-  createdAt DateTime @default(now())
+  createdAt DateTime      @default(now())
 }
 
 model Session {

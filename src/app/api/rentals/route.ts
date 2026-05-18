@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
+import { getRankFromRentals } from "@/lib/rank";
 
 export async function POST(request: NextRequest) {
     try {
@@ -19,7 +20,15 @@ export async function POST(request: NextRequest) {
         });
 
         if (!session || session.expiresAt < new Date()) {
-            return NextResponse.json({ error: "Session expired." }, { status: 401 });
+            return NextResponse.json({ error: "Session expired. Please log in again." }, { status: 401 });
+        }
+
+        const user = await prisma.user.findUnique({
+            where: { id: session.userId },
+        });
+
+        if (!user || !user.active) {
+            return NextResponse.json({ error: "This account is currently disabled. Please contact support for assistance." }, { status: 403 });
         }
 
         const userId = session.userId;
@@ -51,30 +60,56 @@ export async function POST(request: NextRequest) {
                 { status: 400 }
             );
         }
-        console.log({
-            userId,
-            carId,
-            pickupDate,
-            returnDate,
-            pickupLocation,
-            totalPrice,
-        });
-        const rental = await prisma.rental.create({
-            data: {
-                userId: userId,
-                carId: Number(carId),
-                pickupDate: new Date(pickupDate),
-                returnDate: new Date(returnDate),
-                pickupLocation: pickupLocation,
-                totalPrice: Number(totalPrice),
-                status: "CONFIRMED",
-            },
-        });
+        
+        const result = await prisma.$transaction(async (tx) => {
+            const rental = await tx.rental.create({
+                data: {
+                    userId,
+                    carId: Number(carId),
+                    pickupDate: new Date(pickupDate),
+                    returnDate: new Date(returnDate),
+                    pickupLocation,
+                    totalPrice: Number(totalPrice),
+                    status: "CONFIRMED",
+                },
+            });
 
+            const totalRentals = await tx.rental.count({
+                where: {
+                    userId,
+                    status: "CONFIRMED",
+                },
+            });
+
+            const newRank = getRankFromRentals(totalRentals);
+
+            await tx.user.update({
+                where: {
+                    id: userId,
+                },
+                data: {
+                    totalRentals,
+                    rank: newRank,
+                },
+            });
+
+            return {
+                rental,
+                totalRentals,
+                newRank,
+            };
+        });
+        
         return NextResponse.json(
-            { message: "Rental created successfully.", rental },
+            {
+                message: "Rental created successfully.",
+                rental: result.rental,
+                totalRentals: result.totalRentals,
+                rank: result.newRank,
+            },
             { status: 201 }
-            );
+        );
+
         } catch (error) {
             console.error("RENTAL CREATE ERROR:", error);
 

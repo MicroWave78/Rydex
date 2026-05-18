@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
 import { useSearchParams } from "next/navigation"
+import { Button } from "@/components/ui/button"
 
 type CarCardProps = {
   id: number;
@@ -30,7 +31,10 @@ type CarCardProps = {
 export default function CarsGrid({ cars }: { cars: CarCardProps[] }) {
     const searchParams = useSearchParams();
 
-    const [search, setSearch] = useState("");
+    const [page, setPage] = useState(1);
+    const carsPerPage = 20;
+    
+    
     const [fuelFilter, setFuelFilter] = useState("all");
     const [transmissionFilter, setTransmissionFiler] = useState("all");
 
@@ -41,10 +45,13 @@ export default function CarsGrid({ cars }: { cars: CarCardProps[] }) {
 
     const initialType = searchParams.get("type")?.toLowerCase() || "all";
     const [typeFilter, setTypeFilter] = useState(initialType);
+    const initialSearch = searchParams.get("search")?.toLowerCase() || "";
+    const [search, setSearch] = useState(initialSearch);
 
     const types = Array.from(new Set(cars.map((car) => car.type.trim())));
     const fuelTypes = Array.from(new Set(cars.map((car) => car.fuelType.trim())));
     const transmissionType = Array.from(new Set(cars.map((car) => car.transmission.trim())));
+    
 
     const filteredCars = cars.filter((car) => {
         const matchesSearch =
@@ -66,6 +73,26 @@ export default function CarsGrid({ cars }: { cars: CarCardProps[] }) {
 
         return matchesSearch && matchesType && matchesFuel && matchesPrice && matchesTransmission;
     });
+
+    const totalPages = Math.ceil(filteredCars.length / carsPerPage);
+
+    const startIndex = (page - 1) * carsPerPage;
+
+    const paginatedCars = filteredCars.slice(
+        startIndex,
+        startIndex + carsPerPage
+    );
+
+    useEffect(() => {
+        setPage(1);
+    }, [
+        search,
+        typeFilter,
+        fuelFilter,
+        transmissionFilter,
+        minPrice,
+        maxPrice,
+    ]);
     
     const [scrollY, setScrollY] = useState(0)
     
@@ -184,9 +211,32 @@ export default function CarsGrid({ cars }: { cars: CarCardProps[] }) {
                         </div>
                     </div>
                 </div>
+                <div className="mt-2 flex items-center justify-center gap-4 pb-10">
+                    <Button
+                        variant="outline"
+                        disabled={page === 1}
+                        onClick={() => setPage((prev) => prev - 1)}
+                        className="dark cursor-pointer"
+                    >
+                        Previous
+                    </Button>
+
+                    <span className="text-sm text-[#EEEEEE]/70">
+                        Page {page} of {totalPages || 1}
+                    </span>
+
+                    <Button
+                        variant="outline"
+                        disabled={page === totalPages || totalPages === 0}
+                        onClick={() => setPage((prev) => prev + 1)}
+                        className="dark cursor-pointer"
+                    >
+                        Next
+                    </Button>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8 p-4">
                     <AnimatePresence mode="popLayout">
-                        {filteredCars.map((car) => (
+                        {paginatedCars.map((car) => (
                             <motion.div
                             key={car.id}
                             layout
@@ -200,7 +250,7 @@ export default function CarsGrid({ cars }: { cars: CarCardProps[] }) {
                             </motion.div>
                         ))}
                     </AnimatePresence>
-                    {filteredCars.length === 0 && (
+                    {paginatedCars.length === 0 && (
                         <motion.p
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -210,6 +260,7 @@ export default function CarsGrid({ cars }: { cars: CarCardProps[] }) {
                         </motion.p>
                     )}
                 </div>
+                
             </div>
         </div>
     );

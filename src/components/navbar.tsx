@@ -1,90 +1,158 @@
-import { House, CircleQuestionMark, UserRound, ReceiptText, Search, Menu, LogOut } from "lucide-react"
-import Link from "next/link";
 import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-  InputGroupText,
-  InputGroupTextarea,
-} from "@/components/ui/input-group"
-import { Button } from "./ui/button";
+  House,
+  CircleQuestionMark,
+  UserRound,
+  ReceiptText,
+  LogOut,
+  Car,
+} from "lucide-react";
+
+import Link from "next/link";
 import Image from "next/image";
+import { Button } from "./ui/button";
 import { getCurrentUser } from "@/lib/auth";
+
+import MobileNavbarMenu from "./mobileNavbar";
 
 export default async function Navbar() {
   const user = await getCurrentUser();
 
-  return (
-    <nav className="w-full fixed top-0 left-0 z-50 flex items-center justify-between px-6 py-3 backdrop-blur-lg shadow-md ">
-      
-      <Link href="/" className="flex items-center shrink-0 py-1 px-3">
-        <Image
-          src="/images/logo-white.png"
-          alt="Rydex Logo"
-          width={180}
-          height={70}
-          className="h-6 w-auto md:h-13 "
-          priority
-        />
-      </Link>
+  const rankColors: Record<string, string> = {
+    BRONZE: "bg-[#CD7F32]/20 text-[#CD7F32]",
+    SILVER: "bg-[#C0C0C0]/20 text-[#C0C0C0]",
+    GOLD: "bg-[#FFD700]/20 text-[#FFD700]",
+    PLATINUM: "bg-[#E5E4E2]/20 text-[#E5E4E2]",
+    DIAMOND: "bg-[#B9F2FF]/20 text-[#B9F2FF]",
+    VIP: "bg-[#76ABAE]/20 text-[#76ABAE]",
+  };
 
-      <div className="flex-1 flex justify-center hidden md:flex">
-        <InputGroup className="max-w-xs md:max-w-xl border-none focus-within:bg-[#222831] hover:bg-[#222831] transition duration-500">
-          <InputGroupInput placeholder="Search..." />
-          <InputGroupAddon>
-            <Search />
-          </InputGroupAddon>
-        </InputGroup>
+  const navLinks = [
+    {
+      href: "/",
+      label: "Home",
+      icon: House,
+    },
+    {
+      href: "/cars",
+      label: "Cars",
+      icon: Car,
+    },
+    {
+      href: "/about",
+      label: "About",
+      icon: CircleQuestionMark,
+    },
+    {
+      href: "/contact",
+      label: "Contact",
+      icon: ReceiptText,
+    },
+  ];
+
+  const dashboardHref = user?.role === "ADMIN" ? "/admin" : "/dashboard";
+  const dashboardLabel =
+    user?.role === "ADMIN" ? "Admin Dashboard" : "My Account";
+
+return (
+  <nav className="fixed left-0 top-0 z-50 h-24 w-full bg-[#222831]/70 px-6 text-[#EEEEEE] shadow-md backdrop-blur-lg">
+    <div className="relative flex h-full w-full items-center justify-between">
+      {/* LEFT: Logo */}
+      <div className="flex items-center shrink-0 py-4 px-2">
+        <Link href="/" className="inline-flex w-fit shrink-0 items-center">
+          <Image
+            src="/images/logo-white.png"
+            alt="Rydex Logo"
+            width={240}
+            height={100}
+            className="h-10 w-auto object-contain md:h-12"
+            priority
+          />
+        </Link>
       </div>
-      
 
-      <div className="flex flex-row gap-4 md:gap-10 md:flex items-center">
+      {/* CENTER: Desktop nav links */}
+      <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-10">
         
-        <Link href="/">
-          <House className="w-4 h-4 inline-block mb-1 mr-1"/>
-          Home
-        </Link>
-    
-        <Link href="/about">
-          <CircleQuestionMark className="w-4 h-4 inline-block mb-1 mr-1"/>
-          About
-        </Link>
-    
-        <Link href="/contact">
-          <ReceiptText className="w-4 h-4 inline-block mb-1 mr-1"/>
-          Contact
-        </Link>
-    
-        {user ? (
-          <div className="flex justify-center items-center gap-4">
-            <Link href={user.role === "ADMIN" ? "/admin" : "/dashboard"}>
-              <Button className="dark cursor-pointer rounded-full" variant={"default"}>
-                <UserRound className="w-4 h-4 inline-block"/>
-                {user.role === "ADMIN" ? "Admin Dashboard" : "My Account"}
-              </Button>
-            </Link>
+          {navLinks.map((link) => {
+            const Icon = link.icon;
 
-            <form action="/api/logout" method="POST" >
-              <Button className="dark cursor-pointer rounded-full" variant={"outline"} type="submit">
-                <LogOut className="w-4 h-4 inline-block"/>
-                Log Out
-              </Button>
-            </form>
-            
-          </div>
-        ) : (
-          <div className="flex justify-center items-center gap-4">
-            <Link href="/auth">
-              <Button className="dark cursor-pointer rounded-full" variant={"default"}>
-                <UserRound className="w-4 h-4 inline-block"/>
-                My Account
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="flex items-center gap-2 whitespace-nowrap text-md font-medium text-[#EEEEEE]/80 transition hover:text-[#76ABAE]"
+              >
+                <Icon className="h-4 w-4" />
+                {link.label}
+              </Link>
+            );
+          })}
+        
+      </div>
+
+      {/* RIGHT: Desktop account + mobile menu */}
+      <div className="flex shrink-0 items-center gap-4 justify-end">
+        
+          {user ? (
+            <>
+              <span
+                className={`hidden md:flex max-w-[130px] truncate rounded-full px-4 py-1 text-sm font-semibold ${
+                  rankColors[user.rank] || "bg-white/10 text-[#EEEEEE]/70"
+                }`}
+              >
+                {user.username || user.name || "User"}
+              </span>
+
+              <Link href={dashboardHref} className="hidden md:flex">
+                <Button className="dark cursor-pointer rounded-full">
+                  <UserRound className="h-4 w-4" />
+                  {dashboardLabel}
                 </Button>
+              </Link>
+
+              <form action="/api/logout" method="POST" className="hidden md:flex">
+                  <Button
+                      className="dark w-full cursor-pointer rounded-full"
+                      variant="outline"
+                  >
+                      <LogOut className="h-4 w-4" />
+                      Log Out
+                  </Button>
+              </form>
+            </>
+          ) : (
+            <Link href="/auth" className="hidden md:flex">
+              <Button className="dark cursor-pointer rounded-full">
+                <UserRound className="h-4 w-4" />
+                My Account
+              </Button>
             </Link>
-          </div>
-        )}
-        
+          )}
+
+        {/* Mobile menu trigger */}
+        <div className="md:hidden">
+          <MobileNavbarMenu
+            user={
+              user
+                ? {
+                    name: user.name,
+                    username: user.username,
+                    rank: user.rank,
+                    role: user.role,
+                  }
+                : null
+            }
+            dashboardHref={dashboardHref}
+            dashboardLabel={dashboardLabel}
+            rankClassName={
+              user
+                ? rankColors[user.rank] || "bg-white/10 text-[#EEEEEE]/70"
+                : "bg-white/10 text-[#EEEEEE]/70"
+            }
+          />
+        </div>
       </div>
-    </nav>
-  );
+    </div>
+  </nav>
+);
 }

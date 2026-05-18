@@ -1,17 +1,82 @@
-import { redirect } from "next/navigation"
-import { getCurrentUser } from "@/lib/auth"
+import prisma from "@/lib/prisma";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import DashboardClient from "./DashboardClient";
 
-export default async function Dashboard() {
-  const user = await getCurrentUser()
+export default async function DashboardPage() {
+  const cookieStore = await cookies();
+  const sessionToken = cookieStore.get("sessionToken")?.value;
 
-  if (!user) {
-    redirect("/login")
+  if (!sessionToken) {
+    redirect("/login");
   }
 
+  const session = await prisma.session.findUnique({
+    where: {
+      token: sessionToken,
+    },
+    include: {
+      user: {
+        include: {
+          rentals: {
+            orderBy: {
+              createdAt: "desc",
+            },
+            include: {
+              car: {
+                select: {
+                  id: true,
+                  brand: true,
+                  model: true,
+                  type: true,
+                  image: true,
+                  pricePerDay: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!session || session.expiresAt < new Date()) {
+    redirect("/login");
+  }
+
+  if (!session.user.active) {
+    redirect("/login");
+  }
+
+  const user = session.user;
+
+  const formattedUser = {
+    id: user.id,
+    name: user.name,
+    username: user.username,
+    email: user.email,
+    role: user.role,
+    rank: user.rank,
+    active: user.active,
+    totalRentals: user.totalRentals,
+    createdAt: user.createdAt.toISOString(),
+    rentals: user.rentals.map((rental) => ({
+      id: rental.id,
+      pickupDate: rental.pickupDate.toISOString(),
+      returnDate: rental.returnDate.toISOString(),
+      pickupLocation: rental.pickupLocation,
+      totalPrice: rental.totalPrice,
+      status: rental.status,
+      createdAt: rental.createdAt.toISOString(),
+      car: rental.car,
+    })),
+  };
+
   return (
-    <div className="container">
-      <h1>Dashboard</h1>
-      <p>Welcome to your account dashboard.</p>
-    </div>
+    <main className="min-h-screen bg-[#31363F] text-[#EEEEEE]">
+      <div className="mx-auto w-full max-w-6xl px-4 mt-24 py-10">
+        <DashboardClient user={formattedUser} />
+      </div>
+    </main>
   );
 }

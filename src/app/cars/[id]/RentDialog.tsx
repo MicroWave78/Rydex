@@ -21,7 +21,7 @@ type RentDialogProps = {
   carName: string;
   pricePerDay: number;
   available: boolean;
-  isLoggedIn: boolean
+  isLoggedIn: boolean;
 };
 
 const pickupPoints = [
@@ -36,7 +36,7 @@ export default function RentDialog({
   carName,
   pricePerDay,
   available,
-  isLoggedIn
+  isLoggedIn,
 }: RentDialogProps) {
   const [open, setOpen] = useState(false);
   const [pickupDate, setPickupDate] = useState("");
@@ -83,7 +83,7 @@ export default function RentDialog({
           throw new Error(data.error || "Something went wrong.");
         }
 
-        return
+        return data.rental;
   }
 
   const rentalDays = useMemo(() => {
@@ -118,13 +118,13 @@ export default function RentDialog({
       clearPaymentChecker();
 
       try {
-        await createRental();
+        const rental = await createRental();
 
         setProcessing(false);
         setOpen(false);
 
         setAlertType("success");
-        setAlertTitle("Booking Confirmed");
+        setAlertTitle(`Booking Confirmed (Rental ID: #${rental.id})`);
         setAlertMessage(
           <>
             Your payment was successful and your rental has been booked.
@@ -213,7 +213,7 @@ export default function RentDialog({
       message={alertMessage}
       open={openAlert}
       setOpen={setOpenAlert}
-      buttonText="OK"
+      buttonText={!isLoggedIn ? "Cancel" : "OK"}
       link=""
       secondaryButtonText={secondaryButtonText}
       onSecondaryConfirm={() => window.location.href = "/login"}

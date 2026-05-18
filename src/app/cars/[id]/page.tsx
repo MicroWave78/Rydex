@@ -164,7 +164,7 @@ export default async function CarDetailsPage({
 
             <ul className="mt-6 list-disc list-inside space-y-3 text-[#EEEEEE]/75">
               <li>Valid driving license required.</li>
-              <li>Minimum driver age: 21 years old.</li>
+              <li>Minimum driver age: 18 years old.</li>
               <li>Security deposit may apply.</li>
               <li>Return the car with the same fuel level.</li>
               <li>Free cancellation up to 24 hours before pickup.</li>

@@ -218,7 +218,7 @@ export default function EditCarForm({ car }: { car: Car }) {
             <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="min-h-28 w-full rounded-md border border-white/10 bg-transparent px-3 py-2 text-sm outline-none"
+            className="min-h-28 max-h-40 w-full rounded-md border border-white/10 bg-transparent px-3 py-2 text-sm outline-none"
             placeholder="Car description..."
             />
         </div>

@@ -25,6 +25,10 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "User or password is incorrect" }, { status: 401 });
         }
 
+        if (!user.active) {
+            return NextResponse.json({ error: "This account is currently disabled. Please contact support for assistance." }, { status: 403 });
+        }
+
         const token = randomUUID();
         const expiresAt = new Date();
         expiresAt.setDate(expiresAt.getDate() + 1); // Token expires in 1 day

@@ -11,6 +11,13 @@ import {
   FieldSet,
   FieldTitle,
 } from "@/components/ui/field"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -23,6 +30,7 @@ export default function Contact() {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [message, setMessage] = useState("");
+    const [type, setType] = useState("General Inquiry");
 
     const [open, setOpen] = useState(false);
     const [alertType, setAlertType] = useState<"success" | "error">("success");
@@ -44,7 +52,8 @@ export default function Contact() {
                 email,
                 phone,
                 name,
-                message
+                message,
+                type
             })
         });
 
@@ -106,6 +115,26 @@ export default function Contact() {
                             <Input autoComplete="off" type="tel" placeholder="(123) 456-7890" 
                             value={phone} onChange={(e) => setPhone(e.target.value)} />
                         </Field>
+
+                        <Field>
+                            <FieldLabel>Message type</FieldLabel>
+
+                            <Select value={type} onValueChange={setType}>
+                                <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select message type" />
+                                </SelectTrigger>
+
+                                <SelectContent>
+                                <SelectItem value="General Inquiry">General Inquiry</SelectItem>
+                                <SelectItem value="Rental Question">Rental Question</SelectItem>
+                                <SelectItem value="Payment Issue">Payment Issue</SelectItem>
+                                <SelectItem value="Technical Support">Technical Support</SelectItem>
+                                <SelectItem value="Partnership">Partnership</SelectItem>
+                                <SelectItem value="Complaint">Complaint</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </Field>
+
                         <Field orientation="horizontal">
                             <Textarea id="message" placeholder="Your message here..." className="w-full h-30 max-h-50"
                                 value={message} onChange={(e) => setMessage(e.target.value)} />
