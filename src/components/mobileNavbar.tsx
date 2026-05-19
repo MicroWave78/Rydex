@@ -10,6 +10,7 @@ import {
   LogOut,
   Car,
   Menu,
+  Gem,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -77,7 +78,7 @@ export default function MobileNavbarMenu({
         </Button>
       </DrawerTrigger>
 
-      <DrawerContent className="dark border-white/10 bg-[#222831] px-6 pb-8 text-[#EEEEEE]">
+      <DrawerContent className="dark border-none bg-[#222831] rounded-t-xl rounded-b-xl px-6 pb-8 text-[#EEEEEE]">
         <DrawerHeader>
           <DrawerTitle className="text-[#EEEEEE]">Rydex Menu</DrawerTitle>
           <DrawerDescription className="text-[#EEEEEE]/70">
@@ -106,10 +107,14 @@ export default function MobileNavbarMenu({
 
           {user ? (
             <>
-              <div
-                className={`w-fit rounded-full px-4 py-1 text-sm font-semibold ${rankClassName}`}
-              >
-                {user.username || user.name || "User"} · {user.rank}
+              <div className="flex justify-between">
+                <div
+                  className={`w-fit rounded-full px-4 py-2 text-sm font-semibold ${rankClassName}`}
+                >
+                  {user.username || user.name || "User"} · {user.rank}
+                  
+                </div>
+                
               </div>
 
               <DrawerClose asChild>
@@ -142,6 +147,7 @@ export default function MobileNavbarMenu({
               </Link>
             </DrawerClose>
           )}
+          
         </div>
       </DrawerContent>
     </Drawer>

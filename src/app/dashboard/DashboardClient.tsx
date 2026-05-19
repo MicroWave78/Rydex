@@ -252,7 +252,7 @@ export default function DashboardClient({ user }: { user: DashboardUser }) {
             setOpen={setOpenAlert}
         />
 
-        <section className="relative overflow-hidden pb-24">
+        <section className="relative overflow-hidden">
         
             <div className="mx-auto max-w-6xl">
                 <motion.div
@@ -381,6 +381,7 @@ export default function DashboardClient({ user }: { user: DashboardUser }) {
                                 src={rental.car.image}
                                 alt={`${rental.car.brand} ${rental.car.model}`}
                                 fill
+                                sizes=""
                                 className="object-cover"
                                 />
                             </div>
@@ -388,7 +389,7 @@ export default function DashboardClient({ user }: { user: DashboardUser }) {
                             <div>
                                 <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
                                 <div>
-                                    <Link href={`/cars/${rental.car.id}`} className="hover:underline">
+                                    <Link href={`/cars/${rental.car.id}`} className="hover:text-[#76ABAE]">
                                         <h3 className="text-lg font-bold">
                                         {rental.car.brand} {rental.car.model}
                                         </h3>
@@ -584,11 +585,12 @@ export default function DashboardClient({ user }: { user: DashboardUser }) {
                         </motion.div>
                     </div>
                     
+                    {/* danger zone */}
                     <motion.div
                         initial={{ opacity: 0, y: 24 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4 }}
-                        className="mb-20 rounded-3xl border border-red-500/20 bg-red-500/5 p-6"
+                        className=" rounded-3xl border border-red-500/20 bg-red-500/5 p-6"
                         >
                         <h2 className="text-2xl font-bold text-red-400">
                         Danger Zone

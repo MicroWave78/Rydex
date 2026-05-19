@@ -5,6 +5,7 @@ import {
   ReceiptText,
   LogOut,
   Car,
+  Gem,
 } from "lucide-react";
 
 import Link from "next/link";
@@ -54,7 +55,7 @@ export default async function Navbar() {
     user?.role === "ADMIN" ? "Admin Dashboard" : "My Account";
 
 return (
-  <nav className="fixed left-0 top-0 z-50 h-24 w-full bg-[#222831]/70 px-6 text-[#EEEEEE] shadow-md backdrop-blur-lg">
+  <nav className="fixed left-0 top-0 z-50 h-20 w-full  px-6 text-[#EEEEEE] shadow-md backdrop-blur-lg">
     <div className="relative flex h-full w-full items-center justify-between">
       {/* LEFT: Logo */}
       <div className="flex items-center shrink-0 py-4 px-2">

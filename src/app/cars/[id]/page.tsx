@@ -4,20 +4,26 @@ import Image from "next/image";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
   Calendar,
   Car,
   Fuel,
   Gauge,
-  Palette,
   Users,
   Wrench,
   Zap,
   Shield,
-  ArrowLeft
+  ArrowLeft,
+  Star
 } from "lucide-react";
 import { ClassNameValue } from "tailwind-merge";
 import RentDialog from "./RentDialog";
 import CarCard from "@/components/carCard";
+import ReviewForm from "./ReviewForm";
 
 export default async function CarDetailsPage({
   params,
@@ -28,9 +34,39 @@ export default async function CarDetailsPage({
 
   const car = await prisma.car.findUnique({
     where: { id: Number(id) },
+    include: {
+      reviews: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              username: true,
+              name: true,
+              rank: true,
+              _count: {
+                select: {
+                  rentals: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
   });
 
   if (!car) notFound();
+
+  const averageRating =
+  car.reviews.length > 0
+    ? (
+        car.reviews.reduce((acc, r) => acc + r.rating, 0) /
+        car.reviews.length
+      ).toFixed(1)
+    : "0.0";
 
   const cars = await prisma.car.findMany({
     where: {
@@ -57,6 +93,15 @@ export default async function CarDetailsPage({
     : null;
 
   const isLoggedIn = !!session && session.expiresAt > new Date();
+
+  const rankColors: Record<string, string> = {
+    BRONZE: "bg-[#CD7F32]/20 text-[#CD7F32]",
+    SILVER: "bg-[#C0C0C0]/20 text-[#C0C0C0]",
+    GOLD: "bg-[#FFD700]/20 text-[#FFD700]",
+    PLATINUM: "bg-[#E5E4E2]/20 text-[#E5E4E2]",
+    DIAMOND: "bg-[#B9F2FF]/20 text-[#B9F2FF]",
+    VIP: "bg-[#76ABAE]/20 text-[#76ABAE]",
+  };
 
   return (
     <main className="min-h-screen bg-[#31363F] px-4 py-28 text-[#EEEEEE]">
@@ -149,13 +194,62 @@ export default async function CarDetailsPage({
         {/* Booking / Policies */}
         <section className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-2">
           <div className="rounded-3xl bg-[#222831] p-6 shadow-2xl">
-            <h2 className="text-2xl font-bold">What's included?</h2>
+            <h2 className="text-2xl font-bold">What's included? Hover to see details</h2>
 
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Feature icon={Shield} title="Verified vehicle" />
-              <Feature icon={Calendar} title="Flexible booking" />
-              <Feature icon={Wrench} title="Roadside support" />
-              <Feature icon={Car} title="Clean interior" />
+              <Tooltip>
+                <TooltipContent side="top" className="bg-[#222831] border-none rounded-xl p-4 text-[#EEEEEE] w-64">
+                  <div className="">
+                    <p className="font-semibold">Verified Vehicle</p>
+                    <p className="text-sm text-[#EEEEEE]/75">
+                      This vehicle has been inspected and verified by our team to ensure it meets our quality standards for safety and reliability.
+                    </p>
+                  </div>
+                </TooltipContent>
+                <TooltipTrigger asChild>
+                  <Feature icon={Shield} title="Verified vehicle" />
+                </TooltipTrigger>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipContent side="top" className="bg-[#222831] border-none rounded-xl p-4 text-[#EEEEEE] w-64">
+                  <div className="">
+                    <p className="font-semibold">Flexible Booking</p>
+                    <p className="text-sm text-[#EEEEEE]/75">
+                      Change your booking up to 24 hours before pickup without any additional fees.
+                    </p>
+                  </div>
+                </TooltipContent>
+                <TooltipTrigger asChild>
+                  <Feature icon={Calendar} title="Flexible booking" />
+                </TooltipTrigger>
+              </Tooltip>
+              <Tooltip>
+                <TooltipContent side="bottom" className="bg-[#222831] border-none rounded-xl p-4 text-[#EEEEEE] w-64">
+                  <div className="">
+                    <p className="font-semibold">Roadside Support</p>
+                    <p className="text-sm text-[#EEEEEE]/75">
+                      24/7 roadside assistance included with your rental.
+                    </p>
+                  </div>
+                </TooltipContent>
+                <TooltipTrigger asChild>
+                  <Feature icon={Wrench} title="Roadside support" />
+                </TooltipTrigger>
+              </Tooltip>
+              <Tooltip>
+                <TooltipContent side="bottom" className="bg-[#222831] border-none rounded-xl p-4 text-[#EEEEEE] w-64">
+                  <div className="">
+                    <p className="font-semibold">Clean Interior</p>
+                    <p className="text-sm text-[#EEEEEE]/75">
+                      All vehicles are thoroughly cleaned and maintained for your comfort.
+                    </p>
+                  </div>
+                </TooltipContent>
+                <TooltipTrigger asChild>
+                  <Feature icon={Car} title="Clean interior" />
+                </TooltipTrigger>
+              </Tooltip>
             </div>
           </div>
 
@@ -171,6 +265,84 @@ export default async function CarDetailsPage({
             </ul>
           </div>
         </section>
+
+        {/* reviews section */}
+        <div className="mt-8 flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Star className="h-6 w-6 fill-yellow-400 text-yellow-400" />
+              <span className="text-2xl font-bold">{averageRating}</span>
+            </div>
+
+            <p className="text-[#EEEEEE]/60">
+              Based on {car.reviews.length} reviews
+            </p>
+        </div>
+        <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
+
+          
+
+          {car.reviews.map((review) => (
+            <div
+              key={review.id}
+              className="rounded-3xl border border-white/10 bg-[#222831] p-5 shadow-lg transition hover:border-[#76ABAE]/40"
+            >
+              <div className="flex items-start justify-between gap-4">
+                
+                {/* user info */}
+                <Link
+                  href={`/users/${review.user.id}`}
+                  className="group flex items-center gap-3"
+                >
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#76ABAE]/20 text-lg font-bold text-[#76ABAE]">
+                    {(review.user.username || review.user.name || "U")
+                      .charAt(0)
+                      .toUpperCase()}
+                  </div>
+
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <p className="font-semibold group-hover:text-[#76ABAE] transition">
+                        {review.user.username || review.user.name}
+                      </p>
+
+                      <span className={`rounded-full ${rankColors[review.user.rank] || "bg-[#76ABAE]/20"} px-2 py-0.5 text-xs`}>
+                        {review.user.rank}
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-[#EEEEEE]/50">
+                      {review.user._count.rentals} rentals
+                    </p>
+                  </div>
+                </Link>
+
+                {/* stars */}
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`h-4 w-4 ${
+                        i < review.rating
+                          ? "fill-yellow-400 text-yellow-400"
+                          : "text-gray-600"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <p className="mt-4 leading-relaxed text-[#EEEEEE]/75">
+                {review.comment}
+              </p>
+
+              <p className="mt-4 text-xs text-[#EEEEEE]/40">
+                {review.createdAt.toLocaleDateString()}
+              </p>
+            </div>
+          ))}
+          
+        </div>
+        <ReviewForm carId={car.id} />
 
         {recommendedCars.length > 0 && (
           <section className="mt-12">

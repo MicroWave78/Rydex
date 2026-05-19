@@ -16,7 +16,7 @@ export default function Register() {
         </div>
 
         <section className="min-h-screen flex items-center justify-center px-4 py-18">
-            <div className="w-full flex flex-col items-center text-center lg:-translate-y-14 xl:-translate-y-0">
+            <div className="w-full flex flex-col items-center text-center xl:mt-10">
                 <div
                     key={flipped ? "register" : "login"}
                     className="transition-all duration-500 animate-in fade-in slide-in-from-top-2"

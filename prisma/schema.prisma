@@ -46,6 +46,7 @@ model User {
   totalRentals Int       @default(0)
   sessions     Session[]
   rentals      Rental[]
+  reviews      Review[]
 }
 
 model Car {
@@ -67,6 +68,7 @@ model Car {
   available    Boolean  @default(true)
   createdAt    DateTime @default(now())
   rentals      Rental[]
+  reviews      Review[]
 }
 
 model Messages {
@@ -101,4 +103,21 @@ model Rental {
 
   user User @relation(fields: [userId], references: [id])
   car  Car  @relation(fields: [carId], references: [id])
+}
+
+model Review {
+  id Int @id @default(autoincrement())
+
+  rating  Int
+  comment String
+
+  createdAt DateTime @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  carId Int
+  car   Car @relation(fields: [carId], references: [id])
+
+  @@unique([userId, carId])
 }

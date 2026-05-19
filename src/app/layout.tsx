@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "../components/navbar";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/footer";
+import { TooltipProvider } from "@/components/ui/tooltip"
 
 const oswald = Oswald({
   variable: "--font-oswald",
@@ -38,7 +39,9 @@ export default function RootLayout({
       >
         <Navbar />
         <main className="flex-1">
-          {children}
+          <TooltipProvider>
+            {children}
+          </TooltipProvider>
         </main>
         <Toaster />
         

@@ -56,7 +56,7 @@ export default function BrowseCarsDrawer({
 }: BrowseCarsDrawerProps) {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerContent className="max-h-[90vh] bg-[#31363F] p-4 text-[#EEEEEE]">
+      <DrawerContent className="border-none bg-[#31363F] p-4 text-[#EEEEEE]">
         <DrawerHeader>
           <DrawerTitle className="relative text-center text-[#EEEEEE]">
             <span>Choose Type</span>
