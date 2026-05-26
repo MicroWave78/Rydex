@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Fuel, Cog, MoveUpRight, Users, Zap } from "lucide-react"
+import { Fuel, Cog, MoveUpRight, Users, Zap, Star } from "lucide-react"
 import { Button } from "./ui/button";
 
 
@@ -17,6 +17,9 @@ type CarCardProps = {
   transmission: string;
   fuelType: string;
   year: number;
+
+  averageRating?: number | null;
+  reviewCount?: number
 };
 
 export default function CarCard({
@@ -32,22 +35,26 @@ export default function CarCard({
   transmission,
   fuelType,
   year,
+  averageRating,
+  reviewCount,
 }: CarCardProps) {
   return (
     <div className="w-full h-full flex flex-col bg-[#EEEEEE] rounded-2xl overflow-hidden shadow-lg hover:-translate-y-1 hover:shadow-2xl transition duration-300">
       
       <div className="relative w-full h-52">
-        <Image
-          src={image}
-          alt={`${brand} ${model}`}
-          sizes="
-            (max-width: 768px) 100vw,
-            (max-width: 1024px) 50vw,
-            20vw
-            "
-          fill
-          className="object-cover"
-        />
+        <Link href={`/cars/${id}`} className="">
+          <Image
+            src={image}
+            alt={`${brand} ${model}`}
+            sizes="
+              (max-width: 768px) 100vw,
+              (max-width: 1024px) 50vw,
+              20vw
+              "
+            fill
+            className="object-cover"
+          />
+        </Link>
       </div>
 
       <div className="p-5 text-[#222831]">
@@ -59,6 +66,19 @@ export default function CarCard({
             <p className="text-sm text-gray-500">
               {year} • {type}
             </p>
+            <div className="mt-2 flex items-center gap-2">
+              <div className="flex items-center gap-1 rounded-full bg-yellow-400/10 px-2 py-1">
+                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+
+                <span className="text-sm font-semibold text-[#222831]">
+                  {averageRating ? averageRating.toFixed(1) : "New"}
+                </span>
+              </div>
+
+              <span className="text-xs text-gray-500">
+                ({reviewCount || 0} reviews)
+              </span>
+            </div>
           </div>
 
           <span className="text-lg font-bold text-[#76ABAE]">

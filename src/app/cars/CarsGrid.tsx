@@ -26,6 +26,8 @@ type CarCardProps = {
   transmission: string;
   fuelType: string;
   year: number;
+  averageRating?: number | null;
+  reviewCount?: number;
 };
 
 export default function CarsGrid({ cars }: { cars: CarCardProps[] }) {
@@ -93,28 +95,11 @@ export default function CarsGrid({ cars }: { cars: CarCardProps[] }) {
         minPrice,
         maxPrice,
     ]);
-    
-    const [scrollY, setScrollY] = useState(0)
-    
-    useEffect(() => {
-        const handleScroll = () => setScrollY(window.scrollY)
-        window.addEventListener("scroll", handleScroll)
-        return () => window.removeEventListener("scroll", handleScroll)
-    }, [])
-    
 
     return (
         <div className="w-full overflow-x-hidden">
-              <div className="fixed inset-0 -z-10">
-                <div
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
-                />
-                <div className="absolute inset-0 bg-black/35 backdrop-blur-sm" />
-              </div>
         
-              <section className="relative mt-16 flex min-h-[calc(100vh-100px)] md:min-h-[calc(100vh-50px)] flex-col items-center justify-center px-4 text-center">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#31363F]" />
+              <section className="relative mt-16 flex min-h-[20vh] md:min-h-[20vh] flex-col items-center justify-center px-4 text-center">
         
                 <div className="relative z-10">
                   <p className="mb-3 text-sm font-semibold uppercase tracking-[0.35em] text-[#76ABAE]">
@@ -127,19 +112,10 @@ export default function CarsGrid({ cars }: { cars: CarCardProps[] }) {
                   />
                 </div>
         
-                <div
-                  className="absolute bottom-6 transition-opacity duration-200"
-                  style={{
-                    opacity: Math.max(1 - scrollY / 100, 0),
-                    pointerEvents: scrollY > 100 ? "none" : "auto",
-                  }}
-                >
-                  <ArrowDown className="h-9 w-9 animate-bounce rounded-full bg-white p-1 text-black" />
-                </div>
               </section>
 
             <div className="w-full bg-[#31363F] text-[#EEEEEE] p-1">
-                <div className="w-full px-4 py-6">
+                <div className="w-full px-4 py-2">
                     <div className="mx-auto flex max-w-7xl flex-col gap-4 rounded-2xl bg-[#222831] p-4 shadow-xl md:flex-row md:items-center">
                         
                         <Input
@@ -234,7 +210,7 @@ export default function CarsGrid({ cars }: { cars: CarCardProps[] }) {
                         Next
                     </Button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8 p-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8 px-4 mb-8">
                     <AnimatePresence mode="popLayout">
                         {paginatedCars.map((car) => (
                             <motion.div

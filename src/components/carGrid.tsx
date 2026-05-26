@@ -1,137 +1,40 @@
-import Image from "next/image"
-import { BookmarkIcon, Gauge, Fuel, Cog, MoveUpRight, ChevronLeft, ChevronRight, Users } from "lucide-react"
-import { Toggle } from "@/components/ui/toggle"
-import { Button } from "@/components/ui/button"
-import { Badge } from "./ui/badge"
+import prisma from "@/lib/prisma";
+import FeaturedCarsCarousel from "./FeaturedCarsCarousel";
 
-const cars = [
-    {
-        name: "Ford Transit",
-        price: "$35",
-        miles: "2500 Miles",
-        fuel: "Diesel",
-        transmission: "Manual",
-        seats: "5 Seats",
-        img: "/images/demo-car-1.webp",
-        badge: "Great Price",
-        badgeColor: "bg-[#207d24]",
-        description: "4.0 D5 PowerPulse Momentum 5dr AWD"
+export default async function CarGrid() {
+  const cars = await prisma.car.findMany({
+    where: {
+      featured: true,
+      available: true,
     },
-    {
-        name: "New GLC",
-        price: "$50",
-        miles: "50 Miles",
-        fuel: "Petrol",
-        transmission: "Automatic",
-        seats: "5 Seats",
-        img: "/images/demo-car-1.webp",
-        badge: "Low Mileage",
-        badgeColor: "bg-[#2363b8]",
-        description: "4.0 D5 PowerPulse Momentum 5dr AWD"
+    orderBy: {
+      createdAt: "desc",
     },
-    {
-        name: "Audi A6 3.5",
-        price: "$48",
-        miles: "100 Miles",
-        fuel: "Petrol",
-        transmission: "Automatic",
-        seats: "5 Seats",
-        img: "/images/demo-car-1.webp",
-        description: "3.5 D5 PowerPulse Momentum 5dr AWD"
+    take: 8,
+    select: {
+      id: true,
+      brand: true,
+      model: true,
+      type: true,
+      description: true,
+      image: true,
+      pricePerDay: true,
+      seats: true,
+      hp: true,
+      transmission: true,
+      fuelType: true,
+      year: true,
+      mileage: true,
     },
-    {
-        name: "Ford Transit",
-        price: "$60",
-        miles: "15000 Miles",
-        fuel: "Diesel",
-        transmission: "Manual",
-        seats: "5 Seats",
-        img: "/images/demo-car-1.webp",
-        description: "3.5 D5 PowerPulse Momentum 5dr AWD"
-    }
-]
+  });
 
-export default function CarGrid() {
+  if (cars.length === 0) {
     return (
-        <>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4 mt-5">
-            {cars.map((car, i) => (
-                <div key={i}
-                className="rounded-2xl overflow-hidden border-none bg-[#0f172a] hover:scale-[1.02] transition duration-300 shadow-2xl hover:shadow-[#1d4f52]"
-                >
-                    {/* img */}
-                    <div className="relative">
-                        <img
-                            src={car.img}
-                            className="w-full h-auto md:h-70 object-cover"
-                            alt="demo car"
-                        />
+      <p className="mt-8 text-center text-[#EEEEEE]/60">
+        No featured cars available right now.
+      </p>
+    );
+  }
 
-                        {/* badge */}
-                        {car.badge && (
-                            <Badge className={`absolute top-3 left-3 ${car.badgeColor} text-white text-xs px-3 py-1 rounded-full`}>
-                                {car.badge}
-                            </Badge>
-                        )}
-
-                        {/* bookmark */}
-                        <Toggle aria-label="Toggle bookmark" size="sm" className="absolute top-3 right-3 p-1 rounded-full cursor-pointer">
-                            <BookmarkIcon className="group-data-[state=on]/toggle:fill-foreground" />
-                        </Toggle>
-
-                    </div>
-
-                    {/* Info */}
-                    <div className="p-4 text-white bg-gradient-to-b from-[#31363F] to-[#08383b]">
-                        <h3 className="font-semibold text-sm mb-1">
-                            {car.name}
-                        </h3>
-
-                        <p className="text-xs text-gray-300 mb-3">
-                            {car.description}
-                        </p>
-
-                        <div className="flex justify-between text-xs text-white mb-3 p-1">
-                            <span className="flex flex-col items-center">
-                                <Gauge className="w-5 h-5"/>
-                                {car.miles}
-                            </span>
-                            <span className="flex flex-col items-center">
-                                <Fuel className="w-5 h-5"/>
-                                {car.fuel}
-                            </span>
-                            <span className="flex flex-col items-center">
-                                <Cog className="w-5 h-5"/>
-                                {car.transmission}
-                            </span>
-                            <span className="flex flex-col items-center">
-                                <Users className="w-5 h-5"/>
-                                {car.seats}
-                            </span>
-                        </div>
-
-                        {/* footer */}
-                        <div className="flex justify-between items-center">
-                            <span className="text-lg font-bold">
-                                {car.price} / Day
-                            </span>
-
-                            <Button className="text-sm text-grey-300 hover:text-white cursor-pointer hover:-translate-y-1 transition duration-300">
-                                View Details <MoveUpRight className="w-1 h-1"/>
-                            </Button>
-
-                        </div>
-                    </div>
-
-                </div>
-            ))}
-            
-            
-        </div>
-        <div className="flex flex-row justify-center gap-2 mt-2">
-            <span className="p-2"><ChevronLeft className="cursor-pointer hover:text-[#76ABAE] transition duration-200"/></span>
-            <span className="p-2"><ChevronRight className="cursor-pointer hover:text-[#76ABAE] transition duration-200"/></span>
-        </div>
-        </>
-    )
+  return <FeaturedCarsCarousel cars={cars} />;
 }

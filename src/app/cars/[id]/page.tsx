@@ -24,6 +24,7 @@ import { ClassNameValue } from "tailwind-merge";
 import RentDialog from "./RentDialog";
 import CarCard from "@/components/carCard";
 import ReviewForm from "./ReviewForm";
+import DeleteReviewButton from "./DeleteReviewButton";
 
 export default async function CarDetailsPage({
   params,
@@ -94,6 +95,11 @@ export default async function CarDetailsPage({
 
   const isLoggedIn = !!session && session.expiresAt > new Date();
 
+  const isAdmin =
+    !!session &&
+    session.expiresAt > new Date() &&
+    session.user.role === "ADMIN";
+
   const rankColors: Record<string, string> = {
     BRONZE: "bg-[#CD7F32]/20 text-[#CD7F32]",
     SILVER: "bg-[#C0C0C0]/20 text-[#C0C0C0]",
@@ -106,7 +112,7 @@ export default async function CarDetailsPage({
   return (
     <main className="min-h-screen bg-[#31363F] px-4 py-28 text-[#EEEEEE]">
       <div className="mx-auto max-w-7xl">
-        <Link href="/cars" className="text-sm text-[#76ABAE] hover:underline">
+        <Link href="/cars#cars" className="text-sm text-[#76ABAE] hover:underline">
           <ArrowLeft className="inline-block w-4 h-4 mr-2" />
           Back to cars
         </Link>
@@ -285,14 +291,14 @@ export default async function CarDetailsPage({
             <div
               key={review.id}
               className="rounded-3xl border border-white/10 bg-[#222831] p-5 shadow-lg transition hover:border-[#76ABAE]/40"
-            >
+              >
               <div className="flex items-start justify-between gap-4">
                 
                 {/* user info */}
                 <Link
                   href={`/users/${review.user.id}`}
                   className="group flex items-center gap-3"
-                >
+                  >
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#76ABAE]/20 text-lg font-bold text-[#76ABAE]">
                     {(review.user.username || review.user.name || "U")
                       .charAt(0)
@@ -335,9 +341,14 @@ export default async function CarDetailsPage({
                 {review.comment}
               </p>
 
-              <p className="mt-4 text-xs text-[#EEEEEE]/40">
-                {review.createdAt.toLocaleDateString()}
-              </p>
+              <span className="mt-2 flex justify-between">
+                <p className="mt-4 text-xs text-[#EEEEEE]/40">
+                  {review.createdAt.toLocaleDateString()}
+                </p>
+                {isAdmin && (
+                  <DeleteReviewButton reviewId={review.id} />
+                )}
+              </span>
             </div>
           ))}
           

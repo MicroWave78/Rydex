@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
 import { getRankFromRentals } from "@/lib/rank";
+import { Rank } from "@prisma/client";
 
 export async function POST(request: NextRequest) {
     try {
@@ -81,7 +82,17 @@ export async function POST(request: NextRequest) {
                 },
             });
 
-            const newRank = getRankFromRentals(totalRentals);
+            const currentUser = await tx.user.findUnique({
+                where: {
+                    id: userId,
+                },
+                select: {
+                    rank: true,
+                },
+            });
+
+            const newRank = 
+                currentUser?.rank === Rank.VIP ? Rank.VIP : getRankFromRentals(totalRentals);
 
             await tx.user.update({
                 where: {

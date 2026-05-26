@@ -119,7 +119,7 @@ export default function MobileNavbarMenu({
 
               <DrawerClose asChild>
                 <Link href={dashboardHref}>
-                  <Button className="mt-2 w-full cursor-pointer rounded-full bg-[#76ABAE] hover:bg-[#5A8B8E]">
+                  <Button className="mt-2 w-full cursor-pointer rounded-full">
                     <UserRound className="h-4 w-4" />
                     {dashboardLabel}
                   </Button>
