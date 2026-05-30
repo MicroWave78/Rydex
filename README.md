@@ -1,2 +1,3 @@
 Lucrare de licenta 2026  
-Site web pentru inchiriere de masini.
+Site web de tip rent-a-car.
+Rydex
