@@ -74,7 +74,7 @@ export default function FeaturedCarsCarousel({
                 }}
                 className="w-full"
                 >
-                <CarouselContent className={`py-6 ${isSmallSet ? "justify-center" : ""}`}>
+                <CarouselContent className={`py-6 mb-8 ${isSmallSet ? "justify-center" : ""}`}>
                 {cars.map((car) => (
                     <CarouselItem key={car.id} className={getItemBasis()}>
                     <div className={`mx-auto h-full overflow-hidden rounded-2xl border-none bg-[#0f172a] shadow-2xl transition duration-300 hover:-translate-y-2 hover:shadow-[#1d4f52] ${

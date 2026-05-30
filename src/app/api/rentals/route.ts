@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
 import { getRankFromRentals } from "@/lib/rank";
 import { Rank } from "@prisma/client";
+import { sendBookingConfirmationEmail } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
     try {
@@ -110,6 +111,21 @@ export async function POST(request: NextRequest) {
                 newRank,
             };
         });
+
+        try {
+            await sendBookingConfirmationEmail({
+                to: user.email,
+                name: user.name || user.username,
+                rentalId: result.rental.id,
+                carName: `${car.brand} ${car.model}`,
+                pickupDate: result.rental.pickupDate,
+                returnDate: result.rental.returnDate,
+                pickupLocation: result.rental.pickupLocation,
+                totalPrice: result.rental.totalPrice,
+            });
+            } catch (emailError) {
+                console.error("BOOKING EMAIL ERROR:", emailError);
+        }
         
         return NextResponse.json(
             {

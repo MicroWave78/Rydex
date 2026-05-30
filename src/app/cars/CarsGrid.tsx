@@ -99,20 +99,20 @@ export default function CarsGrid({ cars }: { cars: CarCardProps[] }) {
     return (
         <div className="w-full overflow-x-hidden">
         
-              <section className="relative mt-16 flex min-h-[20vh] md:min-h-[20vh] flex-col items-center justify-center px-4 text-center">
-        
-                <div className="relative z-10">
-                  <p className="mb-3 text-sm font-semibold uppercase tracking-[0.35em] text-[#76ABAE]">
-                    More than rentals
-                  </p>
-        
-                  <TitleSubtitle
-                    title="Explore Our Car Collection"
-                    subtitle=""
-                  />
-                </div>
-        
-              </section>
+            <section className="relative mt-26 md:mt-16 flex min-h-[20vh] md:min-h-[20vh] flex-col items-center justify-center px-4 text-center">
+    
+            <div className="relative z-10">
+                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.35em] text-[#76ABAE]">
+                More than rentals
+                </p>
+    
+                <TitleSubtitle
+                title="Explore Our Car Collection"
+                subtitle=""
+                />
+            </div>
+    
+            </section>
 
             <div className="w-full bg-[#31363F] text-[#EEEEEE] p-1">
                 <div className="w-full px-4 py-2">

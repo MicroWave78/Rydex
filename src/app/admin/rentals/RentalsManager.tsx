@@ -29,6 +29,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import AdminManagerLayout from "@/components/admin/AdminManagerLayout";
 
 type Rental = {
   id: number;
@@ -42,6 +43,7 @@ type Rental = {
   pickupDate: string;
   returnDate: string;
   totalPrice: number;
+  status: string;
   createdAt: string;
 };
 
@@ -55,7 +57,8 @@ type SortKey =
   | "pickupDate"
   | "returnDate"
   | "days"
-  | "totalPrice";
+  | "totalPrice"
+  | "status";
 
 type SortDirection = "asc" | "desc";
 
@@ -193,20 +196,11 @@ export default function RentalsManager({ rentals }: { rentals: Rental[] }) {
 
   return (
     <>
-      <Link
-        href="/admin"
-        className="inline-block mt-24 px-6 py-2 text-white hover:underline"
+      <AdminManagerLayout
+        eyebrow="Rentals"
+        title="Manage Rentals"
+        description="View, search, and manage all customer rentals."
       >
-        <ArrowLeft className="mr-2 inline-block h-4 w-4" />
-        Back to Admin Panel
-      </Link>
-
-      <div className="flex w-full flex-col items-center px-8 py-15">
-        <h1 className="mb-2 text-3xl font-bold">Manage Rentals</h1>
-
-        <p className="mb-8 text-lg text-gray-400">
-          View bookings, customers, rented cars, pickup details, and rental dates.
-        </p>
 
         <div className="mb-4 flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div className="relative w-full md:max-w-md">
@@ -243,6 +237,7 @@ export default function RentalsManager({ rentals }: { rentals: Rental[] }) {
                 {sortableHead("Return Date", "returnDate")}
                 {sortableHead("Days", "days")}
                 {sortableHead("Total Price", "totalPrice")}
+                {sortableHead("Status", "status")}
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -267,6 +262,21 @@ export default function RentalsManager({ rentals }: { rentals: Rental[] }) {
                     <TableCell>{days}</TableCell>
                     <TableCell className="font-semibold text-[#76ABAE]">
                       €{rental.totalPrice}
+                    </TableCell>
+                    <TableCell>
+                      <span
+                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                          rental.status === "CANCELLED"
+                            ? "bg-red-500/10 text-red-400"
+                            : rental.status === "CONFIRMED"
+                            ? "bg-green-500/10 text-green-400"
+                            : rental.status === "COMPLETED"
+                            ? "bg-blue-500/10 text-blue-400"
+                            : "bg-yellow-500/10 text-yellow-400"
+                        }`}
+                        >
+                        {rental.status}
+                      </span>
                     </TableCell>
 
                     <TableCell>
@@ -377,7 +387,7 @@ export default function RentalsManager({ rentals }: { rentals: Rental[] }) {
             </Button>
           </div>
         </div>
-      </div>
+      </AdminManagerLayout>
     </>
   );
 }

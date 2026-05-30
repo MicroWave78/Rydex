@@ -79,6 +79,21 @@ export default async function AdminWrapper() {
                         </Link>
                     </CardFooter>
                 </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Check Analytics</CardTitle>
+                        <CardDescription>View and analyze your rental data.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-gray-500">Review reports and metrics for your car rental service.</p>
+                    </CardContent>
+                    <CardFooter className="justify-center">
+                        <Link href="/admin/analytics" className="inline-block bg-[#76ABAE] text-white px-4 py-2 rounded hover:bg-[#5A8B8E] transition">
+                            Go to Analytics
+                        </Link>
+                    </CardFooter>
+                </Card>
             </div>
         </div>
     )

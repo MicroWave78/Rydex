@@ -29,6 +29,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import AdminManagerLayout from "@/components/admin/AdminManagerLayout";
 
 type User = {
   id: number;
@@ -181,20 +182,11 @@ export default function UsersManager({ users }: { users: User[] }) {
 
   return (
     <>
-      <Link
-        href="/admin"
-        className="mt-24 inline-block px-6 py-2 text-white hover:underline"
+      <AdminManagerLayout
+        eyebrow="Users"
+        title="Manage Users"
+        description="View, edit, and delete user accounts. Monitor user activity and manage permissions."
       >
-        <ArrowLeft className="mr-2 inline-block h-4 w-4" />
-        Back to Admin Panel
-      </Link>
-
-      <div className="flex w-full flex-col items-center px-8 py-15">
-        <h1 className="mb-2 text-3xl font-bold">Manage Users</h1>
-
-        <p className="mb-8 text-lg text-gray-400">
-          View registered users, roles, and rental activity.
-        </p>
 
         <div className="mb-4 flex w-full flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div className="relative w-full md:max-w-md">
@@ -396,7 +388,7 @@ export default function UsersManager({ users }: { users: User[] }) {
                 </Button>
           </div>
         </div>
-      </div>
+      </AdminManagerLayout>
     </>
   );
 }

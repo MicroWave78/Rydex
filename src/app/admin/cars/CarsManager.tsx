@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react"
 import Link from "next/link"
-import { ArrowLeft, Trash2, ArrowUpDown, Search } from "lucide-react"
+import { ArrowLeft, Trash2, ArrowUpDown, Search, XCircle, Star, CheckCircle2, Car } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -27,6 +27,8 @@ import AddCarForm from "./AddCarForm"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
+import AdminManagerLayout from "@/components/admin/AdminManagerLayout"
+import AdminStatCard from "@/components/admin/AdminStatCard"
 
 type Car = {
   id: number
@@ -180,15 +182,14 @@ const sortableHead = (label: string, key: SortKey) => (
 
   return (
     <>
-      <Link href="/admin" className="inline-block mt-24 text-white px-6 py-2 cursor-pointer hover:underline">
-        <ArrowLeft className="inline-block w-4 h-4 mr-2" />
-        Back to Admin Panel
-      </Link>
 
-      <div className="w-full flex flex-col items-center py-15 px-8">
-        <h1 className="text-3xl font-bold mb-2">Manage Cars</h1>
-        <p className="text-lg text-gray-500 mb-8">Add, edit, or remove cars from your fleet.</p>
-
+      <AdminManagerLayout
+        eyebrow="Manage Cars"
+        title="Car Inventory"
+        description="Add, edit, or remove cars from your fleet."
+      >
+        
+      
         <Button
           variant={"outline"}
           className="dark mb-8 self-start cursor-pointer hidden md:block"
@@ -349,7 +350,7 @@ const sortableHead = (label: string, key: SortKey) => (
           </div>
         </div>
         
-      </div>
+      </AdminManagerLayout>
     </>
   )
 }

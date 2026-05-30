@@ -23,12 +23,20 @@ export default function PaymentPage() {
   const [alertTitle, setAlertTitle] = useState("");
   const [alertMessage, setAlertMessage] = useState<React.ReactNode>(null);
 
+  const paymentType = searchParams.get("type") || "rental";
+
   const carId = searchParams.get("carId");
-  const carName = searchParams.get("carName") || "Rydex Rental";
+  const itemName =
+    searchParams.get("itemName") ||
+    searchParams.get("carName") ||
+    "Rydex Payment";
+
   const price = Number(searchParams.get("price") || 0);
   const days = Number(searchParams.get("days") || 1);
 
-  const serviceFee = 10;
+  const isVipPayment = paymentType === "vip";
+
+  const serviceFee = isVipPayment ? 0 : 10;
   const total = price + serviceFee;
 
   const [processing, setProcessing] = useState(false);
@@ -39,8 +47,9 @@ export default function PaymentPage() {
       if (!paymentCompleteRef.current) {
         window.opener?.postMessage(
           {
-            type: "PAYMENT_CANCELLED",
+            type: isVipPayment ? "VIP_PAYMENT_CANCELLED" : "PAYMENT_CANCELLED",
             carId,
+            paymentType,
           },
           window.location.origin
         )
@@ -51,7 +60,7 @@ export default function PaymentPage() {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [carId]);
+  }, [carId, isVipPayment, paymentType]);
 
   const handlePayment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,9 +82,10 @@ export default function PaymentPage() {
 
         window.opener?.postMessage(
           {
-            type: "PAYMENT_SUCCESS",
+            type: isVipPayment ? "VIP_PAYMENT_SUCCESS" : "PAYMENT_SUCCESS",
             carId,
             paidAmount: total,
+            paymentType,
           },
           window.location.origin
         );
@@ -107,25 +117,29 @@ export default function PaymentPage() {
 
               <h1 className="text-2xl font-bold">Secure Payment</h1>
               <p className="mt-2 text-sm text-[#EEEEEE]/60">
-                Complete your booking for {carName}.
+                Complete your booking for {itemName}.
               </p>
             </div>
 
             <div className="mt-6 rounded-2xl bg-white/5 p-4">
               <div className="flex justify-between text-sm">
-                <span>{carName}</span>
+                <span>{itemName}</span>
                 <span>€{price.toFixed(2)}</span>
               </div>
 
-              <div className="mt-2 flex justify-between text-sm text-[#EEEEEE]/60">
-                <span>Rental days</span>
-                <span>{days}</span>
-              </div>
+              {!isVipPayment && (
+                <div className="mt-2 flex justify-between text-sm text-[#EEEEEE]/60">
+                  <span>Rental days</span>
+                  <span>{days}</span>
+                </div>
+              )}
 
-              <div className="mt-2 flex justify-between text-sm text-[#EEEEEE]/60">
-                <span>Service fee</span>
-                <span>€{serviceFee}</span>
-              </div>
+              {!isVipPayment && (
+                <div className="mt-2 flex justify-between text-sm text-[#EEEEEE]/60">
+                  <span>Service fee</span>
+                  <span>€{serviceFee}</span>
+                </div>
+              )}
 
               <div className="mt-4 flex justify-between border-t border-white/10 pt-4 text-lg font-bold">
                 <span>Total</span>
@@ -193,7 +207,9 @@ export default function PaymentPage() {
             <CheckCircle2 className="h-20 w-20 animate-pulse text-green-400" />
             <h1 className="mt-6 text-3xl font-bold">Payment Confirmed</h1>
             <p className="mt-3 text-[#EEEEEE]/70">
-              Your booking is being finalized.
+              {isVipPayment 
+              ? "Your VIP upgrade is successful." 
+              : "Your booking is being finalized."}
             </p>
           </div>
         )}

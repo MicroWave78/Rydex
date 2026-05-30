@@ -24,6 +24,8 @@ enum RentalStatus {
   PENDING
   CONFIRMED
   CANCELLED
+  ACTIVE
+  COMPLETED
 }
 
 enum MessageStatus {
@@ -98,7 +100,7 @@ model Rental {
   returnDate     DateTime
   pickupLocation String
   totalPrice     Int
-  status         RentalStatus @default(PENDING)
+  status         RentalStatus @default(CONFIRMED)
   createdAt      DateTime     @default(now())
 
   user User @relation(fields: [userId], references: [id])

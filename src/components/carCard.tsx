@@ -17,6 +17,7 @@ type CarCardProps = {
   transmission: string;
   fuelType: string;
   year: number;
+  available?: boolean;
 
   averageRating?: number | null;
   reviewCount?: number
@@ -37,6 +38,7 @@ export default function CarCard({
   year,
   averageRating,
   reviewCount,
+  available,
 }: CarCardProps) {
   return (
     <div className="w-full h-full flex flex-col bg-[#EEEEEE] rounded-2xl overflow-hidden shadow-lg hover:-translate-y-1 hover:shadow-2xl transition duration-300">
@@ -115,7 +117,11 @@ export default function CarCard({
             <MoveUpRight className="w-4 h-4 inline-block ml-1" />
           </Button>
         </Link>
-        
+        {available === false && (
+          <p className="text-red-500 text-sm mt-2">
+            This car is currently unavailable.
+          </p>
+        )}
       </div>
     </div>
   );

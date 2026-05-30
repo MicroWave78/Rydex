@@ -4,11 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
-import {
   Calendar,
   Car,
   Fuel,
@@ -200,62 +195,13 @@ export default async function CarDetailsPage({
         {/* Booking / Policies */}
         <section className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-2">
           <div className="rounded-3xl bg-[#222831] p-6 shadow-2xl">
-            <h2 className="text-2xl font-bold">What's included? Hover to see details</h2>
+            <h2 className="text-2xl font-bold">What's included?</h2>
 
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Tooltip>
-                <TooltipContent side="top" className="bg-[#222831] border-none rounded-xl p-4 text-[#EEEEEE] w-64">
-                  <div className="">
-                    <p className="font-semibold">Verified Vehicle</p>
-                    <p className="text-sm text-[#EEEEEE]/75">
-                      This vehicle has been inspected and verified by our team to ensure it meets our quality standards for safety and reliability.
-                    </p>
-                  </div>
-                </TooltipContent>
-                <TooltipTrigger asChild>
-                  <Feature icon={Shield} title="Verified vehicle" />
-                </TooltipTrigger>
-              </Tooltip>
-
-              <Tooltip>
-                <TooltipContent side="top" className="bg-[#222831] border-none rounded-xl p-4 text-[#EEEEEE] w-64">
-                  <div className="">
-                    <p className="font-semibold">Flexible Booking</p>
-                    <p className="text-sm text-[#EEEEEE]/75">
-                      Change your booking up to 24 hours before pickup without any additional fees.
-                    </p>
-                  </div>
-                </TooltipContent>
-                <TooltipTrigger asChild>
-                  <Feature icon={Calendar} title="Flexible booking" />
-                </TooltipTrigger>
-              </Tooltip>
-              <Tooltip>
-                <TooltipContent side="bottom" className="bg-[#222831] border-none rounded-xl p-4 text-[#EEEEEE] w-64">
-                  <div className="">
-                    <p className="font-semibold">Roadside Support</p>
-                    <p className="text-sm text-[#EEEEEE]/75">
-                      24/7 roadside assistance included with your rental.
-                    </p>
-                  </div>
-                </TooltipContent>
-                <TooltipTrigger asChild>
-                  <Feature icon={Wrench} title="Roadside support" />
-                </TooltipTrigger>
-              </Tooltip>
-              <Tooltip>
-                <TooltipContent side="bottom" className="bg-[#222831] border-none rounded-xl p-4 text-[#EEEEEE] w-64">
-                  <div className="">
-                    <p className="font-semibold">Clean Interior</p>
-                    <p className="text-sm text-[#EEEEEE]/75">
-                      All vehicles are thoroughly cleaned and maintained for your comfort.
-                    </p>
-                  </div>
-                </TooltipContent>
-                <TooltipTrigger asChild>
-                  <Feature icon={Car} title="Clean interior" />
-                </TooltipTrigger>
-              </Tooltip>
+              <Feature icon={Shield} title="Verified vehicle" />
+              <Feature icon={Calendar} title="Flexible booking" />
+              <Feature icon={Wrench} title="24/7 roadside assistance" />
+              <Feature icon={Car} title="Clean interior" />
             </div>
           </div>
 
@@ -284,8 +230,6 @@ export default async function CarDetailsPage({
             </p>
         </div>
         <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
-
-          
 
           {car.reviews.map((review) => (
             <div

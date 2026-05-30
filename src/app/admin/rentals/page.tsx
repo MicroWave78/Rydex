@@ -37,6 +37,7 @@ export default async function AdminRentalsPage() {
     pickupDate: rental.pickupDate.toISOString(),
     returnDate: rental.returnDate.toISOString(),
     totalPrice: rental.totalPrice,
+    status: rental.status,
     createdAt: rental.createdAt.toISOString(),
   }));
 

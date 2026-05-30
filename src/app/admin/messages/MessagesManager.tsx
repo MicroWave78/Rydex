@@ -56,6 +56,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import AdminManagerLayout from "@/components/admin/AdminManagerLayout";
 
 type Message = {
   id: number;
@@ -242,20 +243,11 @@ export default function MessagesManager({
 
   return (
     <>
-      <Link
-        href="/admin"
-        className="mt-24 inline-block px-6 py-2 text-white hover:underline"
+      <AdminManagerLayout
+        eyebrow="Manage Messages"
+        title="User Messages"
+        description="Review and respond to user messages."
       >
-        <ArrowLeft className="mr-2 inline-block h-4 w-4" />
-        Back to Admin Panel
-      </Link>
-
-      <div className="flex w-full flex-col items-center px-8 py-15">
-        <h1 className="mb-2 text-3xl font-bold">Manage Messages</h1>
-
-        <p className="mb-8 text-lg text-gray-400">
-          View, filter, reply to, archive, or delete customer messages.
-        </p>
 
         <div className="mb-8 grid w-full gap-4 md:grid-cols-4">
           <StatCard label="Total Messages" value={messages.length} />
@@ -451,8 +443,8 @@ export default function MessagesManager({
                                 Archive
                               </Button>
 
-                              <a
-                                href={`mailto:${message.email}?subject=Re:${encodeURIComponent(
+                              <a target="_blank"
+                                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${message.email}&su=${encodeURIComponent(
                                   message.type
                                 )}`}
                               >
@@ -581,7 +573,7 @@ export default function MessagesManager({
             </Button>
           </div>
         </div>
-      </div>
+      </AdminManagerLayout>
     </>
   );
 }

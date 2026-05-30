@@ -11,6 +11,7 @@ import {
   Car,
   Menu,
   Gem,
+  BotMessageSquare
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -60,6 +61,11 @@ const navLinks = [
     label: "Contact",
     icon: ReceiptText,
   },
+  {
+    href: "/assistant", 
+    label: "AI Assistant", 
+    icon: BotMessageSquare
+  }
 ];
 
 export default function MobileNavbarMenu({

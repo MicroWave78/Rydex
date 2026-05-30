@@ -74,7 +74,7 @@ export default async function DashboardPage() {
 
   return (
     <main className="min-h-screen bg-[#31363F] text-[#EEEEEE]">
-      <div className="mx-auto w-full max-w-6xl px-4 mt-24 py-10">
+      <div className="mx-auto mt-24 w-full max-w-[1500px] px-4 py-10">
         <DashboardClient user={formattedUser} />
       </div>
     </main>

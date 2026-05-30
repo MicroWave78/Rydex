@@ -6,19 +6,22 @@ import {
   LogOut,
   Car,
   Gem,
+  BotMessageSquare
 } from "lucide-react";
 
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { getCurrentUser } from "@/lib/auth";
+import { Rank } from "@prisma/client";
 
 import MobileNavbarMenu from "./mobileNavbar";
+import VipButton from "./vipButton";
 
 export default async function Navbar() {
   const user = await getCurrentUser();
 
-  const rankColors: Record<string, string> = {
+  const rankColors: Record<Rank, string> = {
     BRONZE: "bg-[#CD7F32]/20 text-[#CD7F32]",
     SILVER: "bg-[#C0C0C0]/20 text-[#C0C0C0]",
     GOLD: "bg-[#FFD700]/20 text-[#FFD700]",
@@ -48,6 +51,11 @@ export default async function Navbar() {
       label: "Contact",
       icon: ReceiptText,
     },
+    {
+      href: "/assistant", 
+      label: "AI Assistant", 
+      icon: BotMessageSquare
+    }
   ];
 
   const dashboardHref = user?.role === "ADMIN" ? "/admin" : "/dashboard";
@@ -96,6 +104,9 @@ return (
         
           {user ? (
             <>
+              {user.rank !== Rank.VIP && (
+                <VipButton />
+              )}
               <span
                 className={`hidden md:flex max-w-[130px] truncate rounded-full px-4 py-1 text-sm font-semibold ${
                   rankColors[user.rank] || "bg-white/10 text-[#EEEEEE]/70"
