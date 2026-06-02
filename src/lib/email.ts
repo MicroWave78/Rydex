@@ -11,6 +11,9 @@ type BookingEmailData = {
   returnDate: Date;
   pickupLocation: string;
   totalPrice: number;
+  baseTotalPrice?: number;
+  discountAmount?: number;
+  discountPercent?: number;
 };
 
 export async function sendBookingConfirmationEmail({
@@ -22,6 +25,9 @@ export async function sendBookingConfirmationEmail({
   returnDate,
   pickupLocation,
   totalPrice,
+  baseTotalPrice,
+  discountAmount,
+  discountPercent,
 }: BookingEmailData) {
   if (!process.env.RESEND_API_KEY) {
     console.warn("RESEND_API_KEY missing. Email not sent.");
@@ -49,7 +55,16 @@ export async function sendBookingConfirmationEmail({
             <p><strong>Pickup date:</strong> ${pickupDate.toLocaleDateString()}</p>
             <p><strong>Return date:</strong> ${returnDate.toLocaleDateString()}</p>
             <p><strong>Pickup location:</strong> ${pickupLocation}</p>
-            <p><strong>Total:</strong> €${totalPrice.toFixed(2)}</p>
+            
+            <hr style="border: none; border-top: 1px solid #dddddd; margin: 20px 0;" />
+
+            <p><strong>Base price:</strong> €${baseTotalPrice ?? totalPrice}</p>
+            <p><strong>Rank discount:</strong> ${
+              discountPercent && discountPercent > 0
+                ? `${discountPercent}% (-€${discountAmount})`
+                : "No discount"
+            }</p>
+            <p><strong>Final price:</strong> €${totalPrice}</p>
           </div>
 
           <p style="margin-top: 24px; color: #d6d6d6;">
@@ -106,7 +121,7 @@ export async function sendCancellationEmail({
           </div>
 
           <p style="margin-top: 24px; color: #d6d6d6;">
-            We're sorry to see you go.
+            Your payment will be refunded according to our cancellation policy. Please allow a few business days for the refund to process. Thank you for choosing Rydex, and we hope to serve you again in the future.
           </p>
 
           <p style="font-size: 12px; color: #888;">

@@ -168,7 +168,8 @@ export default async function CarDetailsPage({
               carName={`${car.brand} ${car.model}`}
               pricePerDay={car.pricePerDay} 
               available = {car.available}
-              isLoggedIn = {isLoggedIn} />
+              isLoggedIn = {isLoggedIn}
+              userRank={session?.user.rank ?? null} />
           </div>
         </section>
 

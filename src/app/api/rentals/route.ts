@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { getRankFromRentals } from "@/lib/rank";
 import { Rank } from "@prisma/client";
 import { sendBookingConfirmationEmail } from "@/lib/email";
+import { applyRankDiscount } from "@/lib/rankBenefits";
 
 export async function POST(request: NextRequest) {
     try {
@@ -36,9 +37,9 @@ export async function POST(request: NextRequest) {
         const userId = session.userId;
 
         const body = await request.json();
-        const { carId, pickupDate, returnDate, pickupLocation, totalPrice } = body;
+        const { carId, pickupDate, returnDate, pickupLocation} = body;
 
-        if (!carId || !pickupDate || !returnDate || !pickupLocation || totalPrice == null) {
+        if (!carId || !pickupDate || !returnDate || !pickupLocation) {
             return NextResponse.json(
                 { error: "Missing rental details." },
                 { status: 400 }
@@ -62,46 +63,110 @@ export async function POST(request: NextRequest) {
                 { status: 400 }
             );
         }
+
+        const pickup = new Date(pickupDate);
+        const dropoff = new Date(returnDate);
+
+        if (Number.isNaN(pickup.getTime()) || Number.isNaN(dropoff.getTime())) {
+            return NextResponse.json(
+                { error: "Invalid rental dates." },
+                { status: 400 }
+            );
+            }
+
+        if (dropoff <= pickup) {
+        return NextResponse.json(
+            { error: "Return date must be after pickup date." },
+            { status: 400 }
+        );
+        }
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const pickupDay = new Date(pickup);
+        pickupDay.setHours(0, 0, 0, 0);
+
+        if (pickupDay < today) {
+        return NextResponse.json(
+            { error: "Pickup date cannot be in the past." },
+            { status: 400 }
+        );
+        }
+
+        const rentalDays = Math.ceil(
+        (dropoff.getTime() - pickup.getTime()) / (1000 * 60 * 60 * 24)
+        );
+
+        const baseTotalPrice = rentalDays * car.pricePerDay;
+
+        const { discountPercent, discountAmount, finalPrice } = applyRankDiscount(
+            baseTotalPrice,
+            user.rank
+        );
         
         const result = await prisma.$transaction(async (tx) => {
+            const overlappingRental = await tx.rental.findFirst({
+                where: {
+                carId: Number(carId),
+                status: {
+                    in: ["CONFIRMED", "ACTIVE"],
+                },
+                pickupDate: {
+                    lt: dropoff,
+                },
+                returnDate: {
+                    gt: pickup,
+                },
+                },
+            });
+
+            if (overlappingRental) {
+                throw new Error("CAR_ALREADY_BOOKED");
+            }
+
             const rental = await tx.rental.create({
                 data: {
-                    userId,
-                    carId: Number(carId),
-                    pickupDate: new Date(pickupDate),
-                    returnDate: new Date(returnDate),
-                    pickupLocation,
-                    totalPrice: Number(totalPrice),
-                    status: "CONFIRMED",
+                userId,
+                carId: Number(carId),
+                pickupDate: pickup,
+                returnDate: dropoff,
+                pickupLocation,
+                totalPrice: finalPrice,
+                status: "CONFIRMED",
                 },
             });
 
             const totalRentals = await tx.rental.count({
                 where: {
-                    userId,
-                    status: "CONFIRMED",
+                userId,
+                status: {
+                    in: ["CONFIRMED", "ACTIVE", "COMPLETED"],
+                },
                 },
             });
 
             const currentUser = await tx.user.findUnique({
                 where: {
-                    id: userId,
+                id: userId,
                 },
                 select: {
-                    rank: true,
+                rank: true,
                 },
             });
 
-            const newRank = 
-                currentUser?.rank === Rank.VIP ? Rank.VIP : getRankFromRentals(totalRentals);
+            const newRank =
+                currentUser?.rank === Rank.VIP
+                ? Rank.VIP
+                : getRankFromRentals(totalRentals);
 
             await tx.user.update({
                 where: {
-                    id: userId,
+                id: userId,
                 },
                 data: {
-                    totalRentals,
-                    rank: newRank,
+                totalRentals,
+                rank: newRank,
                 },
             });
 
@@ -109,6 +174,10 @@ export async function POST(request: NextRequest) {
                 rental,
                 totalRentals,
                 newRank,
+                baseTotalPrice,
+                discountPercent,
+                discountAmount,
+                finalPrice,
             };
         });
 
@@ -122,6 +191,9 @@ export async function POST(request: NextRequest) {
                 returnDate: result.rental.returnDate,
                 pickupLocation: result.rental.pickupLocation,
                 totalPrice: result.rental.totalPrice,
+                baseTotalPrice: result.baseTotalPrice,
+                discountAmount: result.discountAmount,
+                discountPercent: result.discountPercent,
             });
             } catch (emailError) {
                 console.error("BOOKING EMAIL ERROR:", emailError);
@@ -133,12 +205,23 @@ export async function POST(request: NextRequest) {
                 rental: result.rental,
                 totalRentals: result.totalRentals,
                 rank: result.newRank,
+                baseTotalPrice: result.baseTotalPrice,
+                discountAmount: result.discountAmount,
+                discountPercent: result.discountPercent,
+                finalPrice: result.finalPrice,
             },
             { status: 201 }
         );
 
         } catch (error) {
             console.error("RENTAL CREATE ERROR:", error);
+
+            if (error instanceof Error && error.message === "CAR_ALREADY_BOOKED") {
+                return NextResponse.json(
+                { error: "This car is already booked for the selected dates." },
+                { status: 400 }
+                );
+            }
 
             return NextResponse.json(
                 { error: "Something went wrong while creating the rental." },

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Brain, Fuel, Gauge, Star, Users, Zap } from "lucide-react";
@@ -25,7 +25,7 @@ type RecommendedCar = {
 };
 
 const AI_RECOMMENDATIONS_CACHE_KEY = "rydex-ai-dashboard-recommendations";
-const AI_RECOMMENDATIONS_CACHE_TIME = 1000 * 60 * 30; // 30 minutes
+const AI_RECOMMENDATIONS_CACHE_TIME = 1000 * 60 * 60 * 24; // 24 hours
 
 type CachedRecommendations = {
     timestamp: number;
@@ -33,60 +33,64 @@ type CachedRecommendations = {
 };
 
 export default function AiRecommendations() {
-    const [cars, setCars] = useState<RecommendedCar[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+  const hasFetchedRef = useRef(false);
+  const [cars, setCars] = useState<RecommendedCar[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-    useEffect(() => {
-        const getRecommendations = async () => {
-            try {
-            const cached = sessionStorage.getItem(AI_RECOMMENDATIONS_CACHE_KEY);
+  useEffect(() => {
+    if (hasFetchedRef.current) return;
+    hasFetchedRef.current = true;
+    
+    const getRecommendations = async () => {
+      try {
+      const cached = sessionStorage.getItem(AI_RECOMMENDATIONS_CACHE_KEY);
 
-            if (cached) {
-                const parsedCache = JSON.parse(cached) as CachedRecommendations;
-                const isCacheStillValid =
-                Date.now() - parsedCache.timestamp < AI_RECOMMENDATIONS_CACHE_TIME;
+      if (cached) {
+        const parsedCache = JSON.parse(cached) as CachedRecommendations;
+        const isCacheStillValid =
+        Date.now() - parsedCache.timestamp < AI_RECOMMENDATIONS_CACHE_TIME;
 
-                if (isCacheStillValid) {
-                setCars(parsedCache.recommendations);
-                setLoading(false);
-                return;
-                }
+        if (isCacheStillValid) {
+        setCars(parsedCache.recommendations);
+        setLoading(false);
+        return;
+        }
 
-                sessionStorage.removeItem(AI_RECOMMENDATIONS_CACHE_KEY);
-            }
+        sessionStorage.removeItem(AI_RECOMMENDATIONS_CACHE_KEY);
+      }
 
-            const res = await fetch("/api/ai/recommendations");
-            const data = await res.json();
+      const res = await fetch("/api/ai/recommendations");
+      const data = await res.json();
 
-            if (!res.ok) {
-                throw new Error(data.error || "Failed to load recommendations.");
-            }
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to load recommendations.");
+      }
 
-            const recommendations = data.recommendations || [];
+      const recommendations = data.recommendations || [];
 
-            setCars(recommendations);
+      setCars(recommendations);
 
-            sessionStorage.setItem(
-                AI_RECOMMENDATIONS_CACHE_KEY,
-                JSON.stringify({
-                timestamp: Date.now(),
-                recommendations,
-                })
-            );
-            } catch (error) {
-            setError(
-                error instanceof Error
-                ? error.message
-                : "Could not load AI recommendations."
-            );
-            } finally {
-            setLoading(false);
-            }
-        };
+      sessionStorage.setItem(
+        AI_RECOMMENDATIONS_CACHE_KEY,
+        JSON.stringify({
+        timestamp: Date.now(),
+        recommendations,
+        })
+      );
+      } catch (error) {
+      setError(
+        error instanceof Error
+        ? error.message
+        : "Could not load AI recommendations."
+      );
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        getRecommendations();
-    }, []);
+    getRecommendations();
+  }, []);
 
   return (
     <section className="rounded-3xl border border-white/10 bg-[#222831] p-6 shadow-2xl">

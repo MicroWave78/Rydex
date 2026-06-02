@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import AlertMessage from "@/components/alertMessage";
+import { applyRankDiscount } from "@/lib/rankBenefits";
 
 type RentDialogProps = {
   carId: number;
@@ -22,6 +23,7 @@ type RentDialogProps = {
   pricePerDay: number;
   available: boolean;
   isLoggedIn: boolean;
+  userRank?: string | null;
 };
 
 const pickupPoints = [
@@ -37,6 +39,7 @@ export default function RentDialog({
   pricePerDay,
   available,
   isLoggedIn,
+  userRank,
 }: RentDialogProps) {
   const [open, setOpen] = useState(false);
   const [pickupDate, setPickupDate] = useState("");
@@ -73,7 +76,6 @@ export default function RentDialog({
             pickupDate,
             returnDate,
             pickupLocation,
-            totalPrice,
           }),
         });
 
@@ -98,7 +100,10 @@ export default function RentDialog({
     return days > 0 ? days : 0;
   }, [pickupDate, returnDate]);
 
-  const totalPrice = rentalDays * pricePerDay;
+  const baseTotalPrice = rentalDays * pricePerDay;
+  const { discountPercent, discountAmount, finalPrice } = useMemo(() => {
+    return applyRankDiscount(baseTotalPrice, userRank);
+  }, [baseTotalPrice, userRank]);
 
   useEffect(() => {
     const handlePaymentMessage = async (event: MessageEvent) => {
@@ -155,7 +160,7 @@ export default function RentDialog({
       window.removeEventListener("message", handlePaymentMessage);
       clearPaymentChecker();
     };
-  }, [carId, pickupDate, returnDate, pickupLocation, totalPrice]);
+  }, [carId, pickupDate, returnDate, pickupLocation]);
 
   const handleConfirm = () => {
     if (!pickupDate || !returnDate || !pickupLocation) {
@@ -180,7 +185,7 @@ export default function RentDialog({
     
 
     const paymentWindow = window.open(
-      `/payment?carId=${carId}&carName=${encodeURIComponent(carName)}&price=${totalPrice}&days=${rentalDays}`,
+      `/payment?carId=${carId}&carName=${encodeURIComponent(carName)}&price=${finalPrice}&days=${rentalDays}`,
       "_blank",
       "width=720, height=860"
     );
@@ -321,11 +326,31 @@ export default function RentDialog({
                   <span>{rentalDays}</span>
                 </div>
 
-                <div className="mt-4 flex justify-between border-t border-white/10 pt-4 text-lg font-bold">
-                  <span>Total</span>
-                  <span className="text-[#76ABAE]">€{totalPrice}</span>
+                <div className="mt-2 flex justify-between">
+                  <span>Base price</span>
+                  <span>€{baseTotalPrice}</span>
                 </div>
+
+                <div className="mt-2 flex justify-between text-[#76ABAE]">
+                  <span>
+                    Rank discount {userRank ? `(${userRank})` : ""}
+                  </span>
+                  <span>
+                    {discountPercent > 0
+                      ? `-${discountPercent}% / €${discountAmount}`
+                      : "No discount"}
+                  </span>
+                </div>
+
+                <div className="mt-4 flex justify-between border-t border-white/10 pt-4 text-lg font-bold">
+                  <span>Final total</span>
+                  <span className="text-[#76ABAE]">€{finalPrice}</span>
+                </div>
+
               </div>
+              <p className="text-center text-sm font-light text-[#EEEEEE]/70">
+                Fees may apply.
+              </p>
             </div>
           </div>
         </div>
@@ -346,7 +371,7 @@ export default function RentDialog({
                 Processing payment...
               </span>
             ) : (
-              "Confirm Booking"
+              `Pay €${finalPrice}`
             )}
             
           </Button>

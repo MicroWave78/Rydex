@@ -70,7 +70,7 @@ const rankFaqData = [
     },
     {
         question: "Is there a way to check my current rank?",
-        answer: "Yes, you can check your current rank by logging into your account and navigating to the 'My Profile' section. Your rank will be displayed along with your rental history and feedback.",
+        answer: "Yes, you can check your current rank by logging into your account and navigating to the 'My Account' section. Your rank will be displayed along with your rental history",
         value: "checkRank"
     },
     {

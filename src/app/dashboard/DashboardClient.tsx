@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import CancelRentalButton from "@/components/CancelRentalButton";
+import { getRankDiscount } from "@/lib/rankBenefits";
 import {
   CalendarDays,
   Car,
@@ -99,6 +100,8 @@ export default function DashboardClient({ user }: { user: DashboardUser }) {
   const [alertType, setAlertType] = useState<"success" | "error">("success");
   const [alertTitle, setAlertTitle] = useState("");
   const [alertMessage, setAlertMessage] = useState<React.ReactNode>(null);
+
+  const rankDiscount = getRankDiscount(user.rank);
 
   const totalSpent = useMemo(() => {
     return user.rentals
@@ -337,7 +340,16 @@ export default function DashboardClient({ user }: { user: DashboardUser }) {
                   >
                   {user.rank}
                   </span>
+
+                  <p className="mt-6 rounded-2xl border border-[#76ABAE]/20 bg-[#76ABAE]/10 p-3 text-sm text-[#EEEEEE]/70">
+                    Your current rank gives you{" "}
+                    <span className="font-semibold text-[#76ABAE]">
+                      {rankDiscount}% discount
+                    </span>{" "}
+                    on every rental.
+                  </p>
                 </div>
+                
               </motion.div>
 
                 <StatCard
@@ -380,42 +392,46 @@ export default function DashboardClient({ user }: { user: DashboardUser }) {
                 </div>
 
                 {paginatedRentals.length === 0 ? (
-                    <div className="flex min-h-[220px] flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-white/5 p-8 py-10 text-center text-[#EEEEEE]/60">
-                        <Car className="mb-3 h-10 w-10 text-[#76ABAE]" />
-                        <p className="font-semibold text-[#EEEEEE]">No rentals yet</p>
-                        <p className="mt-1 text-sm text-[#EEEEEE]/50">
-                          Your booked cars will appear here after your first rental.
-                        </p>
-                    </div>
+                  <div className="flex min-h-[220px] flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-white/5 p-8 py-10 text-center text-[#EEEEEE]/60">
+                      <Car className="mb-3 h-10 w-10 text-[#76ABAE]" />
+                      <p className="font-semibold text-[#EEEEEE]">No rentals yet</p>
+                      <p className="mt-1 text-sm text-[#EEEEEE]/50">
+                        Your booked cars will appear here after your first rental.
+                      </p>
+                  </div>
                 ) : (
-                    <div className="space-y-4">
-                    {paginatedRentals.map((rental) => (
+                  <div className="space-y-4">
+                    {paginatedRentals.map((rental) => {
+                      const rentalDays = getRentalDays(rental.pickupDate, rental.returnDate);
+                      const basePrice = rentalDays * rental.car.pricePerDay;
+                      const savedAmount = Math.max(basePrice - rental.totalPrice, 0);
+                      return (
                         <div
-                        key={rental.id}
-                        className="grid gap-4 rounded-2xl bg-white/5 p-4 md:grid-cols-[160px_1fr]"
-                        >
-                        <div className="relative h-32 overflow-hidden rounded-xl bg-black/20">
+                          key={rental.id}
+                          className="grid gap-4 rounded-2xl bg-white/5 p-4 md:grid-cols-[160px_1fr]"
+                          >
+                          <div className="relative h-32 overflow-hidden rounded-xl bg-black/20">
                             <Image
-                            src={rental.car.image}
-                            alt={`${rental.car.brand} ${rental.car.model}`}
-                            fill
-                            sizes=""
-                            className="object-cover"
+                              src={rental.car.image}
+                              alt={`${rental.car.brand} ${rental.car.model}`}
+                              fill
+                              sizes=""
+                              className="object-cover"
                             />
-                        </div>
+                          </div>
 
-                        <div>
+                          <div>
                             <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
                               <div>
-                                  <Link href={`/cars/${rental.car.id}`} className="hover:text-[#76ABAE]">
-                                      <h3 className="text-lg font-bold">
-                                      {rental.car.brand} {rental.car.model}
-                                      </h3>
-                                  </Link>
+                                <Link href={`/cars/${rental.car.id}`} className="hover:text-[#76ABAE]">
+                                  <h3 className="text-lg font-bold">
+                                    {rental.car.brand} {rental.car.model}
+                                  </h3>
+                                </Link>
 
-                                  <p className="text-sm text-[#EEEEEE]/50">
+                                <p className="text-sm text-[#EEEEEE]/50">
                                   Rental #{rental.id} · {rental.car.type}
-                                  </p>
+                                </p>
                               </div>
 
                               <div className="flex flex-col items-start gap-2 md:items-end">
@@ -454,24 +470,38 @@ export default function DashboardClient({ user }: { user: DashboardUser }) {
                               <div>
                                 Days:{" "}
                                 <span className="font-semibold text-[#EEEEEE]">
-                                {getRentalDays(
-                                    rental.pickupDate,
-                                    rental.returnDate
-                                )}
+                                {rentalDays}
                                 </span>
                               </div>
 
                               <div>
-                                Total:{" "}
+                                Base price:{" "}
                                 <span className="font-semibold text-[#76ABAE]">
-                                €{rental.totalPrice}
+                                €{basePrice}
                                 </span>
                               </div>
-                              
+
+                              {savedAmount > 0 && (
+                                <div>
+                                  Rank discount:{" "}
+                                  <span className="font-semibold text-green-400">
+                                    -€{savedAmount}
+                                  </span>
+                                </div>
+                              )}
+
+                              <div className="font-bold">
+                                Final total:{" "}
+                                <span className="font-semibold text-[#76ABAE]">
+                                  €{rental.totalPrice}
+                                </span>
+                              </div>
+                                
                             </div>
+                          </div>
                         </div>
-                        </div>
-                    ))}
+                     );
+                    })}
                     </div>
                 )}
                 {totalPages > 1 && (

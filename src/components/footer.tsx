@@ -8,7 +8,6 @@ export default function Footer() {
     links: [
       { label: "About Us", href: "/about" },
       { label: "FAQs", href: "/about#faq" },
-      { label: "Terms", href: "/" },
       { label: "Contact Us", href: "/contact" },
     ],
   },
@@ -16,8 +15,6 @@ export default function Footer() {
     title: "Quick Links",
     links: [
       { label: "Get in Touch", href: "/contact" },
-      { label: "Help Center", href: "/help" },
-      { label: "Live Chat", href: "/contact" },
       { label: "How It Works", href: "/#howto" },
     ],
   },

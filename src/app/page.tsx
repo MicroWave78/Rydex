@@ -1,15 +1,8 @@
-import TitleSubtitle from "@/components/titleSubtitle";
 import { Button } from "@/components/ui/button";
 import CarsCarousel from "@/components/carsCarousel";
 import CarGrid from "@/components/carGrid";
 import Link from "next/link";
 import HomeHero from "@/components/HomeHero";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-} from "@/components/ui/input-group";
 import {
   Calendar,
   Car,
@@ -184,11 +177,12 @@ export default function Home() {
             </div>
           </div>
         </section>
-
+        
+        {/* Reviews */}
         <Reviews />
 
         {/* CTA */}
-        <section className="relative mx-4 my-20 overflow-hidden rounded-3xl bg-[#222831] px-6 py-20 text-center shadow-2xl">
+        <section className="relative mx-4 overflow-hidden rounded-3xl bg-[#222831] px-6 py-20 text-center shadow-2xl">
           <div className="absolute inset-0 bg-gradient-to-r from-[#76ABAE]/20 via-transparent to-[#76ABAE]/20" />
           <div className="absolute left-1/2 top-0 h-40 w-40 -translate-x-1/2 rounded-full bg-[#76ABAE]/30 blur-3xl" />
 
@@ -226,27 +220,9 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        {/* Newsletter */}
-        <section className="mx-auto flex max-w-3xl flex-col items-center gap-5 px-4 pb-20 text-center">
-          <div>
-            <h2 className="text-2xl font-semibold">Join Rydex</h2>
-            <p className="mt-2 text-[#EEEEEE]/70">
-              Receive pricing updates, shopping tips, and rental inspiration.
-            </p>
-          </div>
-
-          <div className="w-full max-w-md">
-            <InputGroup className="border-white/10 bg-[#222831]">
-              <InputGroupInput type="email" placeholder="example@gmail.com" />
-              <InputGroupAddon align="inline-end">
-                <InputGroupButton className="bg-[#76ABAE] hover:bg-[#5A8B8E] text-white">
-                  Sign Up
-                </InputGroupButton>
-              </InputGroupAddon>
-            </InputGroup>
-          </div>
-        </section>
+        
+        <div className="p-16" />
+        
       </main>
     </div>
   );
