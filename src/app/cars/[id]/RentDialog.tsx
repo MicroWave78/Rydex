@@ -162,7 +162,32 @@ export default function RentDialog({
     };
   }, [carId, pickupDate, returnDate, pickupLocation]);
 
-  const handleConfirm = () => {
+  const checkAvailability = async () => {
+    const res = await fetch("/api/rentals/check-availability", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        carId,
+        pickupDate,
+        returnDate,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Could not check car availability.");
+    }
+
+    return data as {
+      available: boolean;
+      message: string;
+    };
+  };
+
+  const handleConfirm = async () => {
     if (!pickupDate || !returnDate || !pickupLocation) {
       setAlertType("error");
       setAlertTitle("Missing Details");
@@ -179,10 +204,42 @@ export default function RentDialog({
       return;
     }
 
+    setProcessing(true);
+
+    try {
+      const availability = await checkAvailability();
+
+      if (!availability.available) {
+        setProcessing(false);
+
+        setAlertType("error");
+        setAlertTitle("Car Already Booked");
+        setAlertMessage(
+          <>
+            This car is already booked for the selected period.
+            <br />
+            Please choose different dates or select another car.
+          </>
+        );
+        setOpenAlert(true);
+        return;
+      }
+    } catch (error) {
+      setProcessing(false);
+
+      setAlertType("error");
+      setAlertTitle("Availability Check Failed");
+      setAlertMessage(
+        error instanceof Error
+          ? error.message
+          : "Could not check car availability."
+      );
+      setOpenAlert(true);
+      return;
+    }
+
     paymentFinishedRef.current = false;
     clearPaymentChecker();
-
-    
 
     const paymentWindow = window.open(
       `/payment?carId=${carId}&carName=${encodeURIComponent(carName)}&price=${finalPrice}&days=${rentalDays}`,
