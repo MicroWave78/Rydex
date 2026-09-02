@@ -56,7 +56,7 @@ export default function CancelRentalButton({
 
       setTimeout(() => {
         router.refresh();
-      }, 2000);
+      }, 3000);
     } catch (error) {
       setAlertType("error");
       setAlertTitle("Cancellation Failed");

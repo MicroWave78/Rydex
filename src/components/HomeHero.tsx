@@ -51,12 +51,13 @@ export default function HomeHero() {
       </div>
 
       <div
-        className="absolute bottom-6 transition-opacity duration-200"
+        className="flex flex-col items-center absolute bottom-6 transition-opacity duration-200"
         style={{
           opacity: Math.max(1 - scrollY / 100, 0),
           pointerEvents: scrollY > 100 ? "none" : "auto",
         }}
       >
+        <p className="text-sm text-[#EEEEEE]/70 mb-6">Scroll down to explore</p>
         <ArrowDown className="h-9 w-9 animate-bounce rounded-full bg-white p-1 text-black" />
       </div>
 
