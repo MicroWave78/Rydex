@@ -302,44 +302,59 @@ type GeminiClient = InstanceType<typeof GoogleGenAI>;
 
 async function generateWithFallback(ai: GeminiClient, prompt: string) {
     const models = [
-        "gemini-2.5-flash",
-        "gemini-2.5-flash-lite",
+      "gemini-3.8-flash",
+      "gemini-3.7-flash",
+      "gemini-3.6-flash",
+      "gemini-3.5-flash",
+      "gemini-3.5-flash-lite",
+      "gemini-3.1-flash-lite",
+      "gemini-2.5-flash",
+      "gemini-2.5-flash-lite",
     ];
 
     let lastError: unknown = null;
 
     for (const model of models) {
         try {
-        const response = await ai.models.generateContent({
-            model,
-            contents: prompt,
-        });
+            console.log(`Trying Gemini model: ${model}`);
 
-        return {
-            response,
-            usedModel: model,
-        };
+            const response = await ai.models.generateContent({
+                model,
+                contents: prompt,
+            });
+
+            console.log(`Successfully used model: ${model}`);
+
+            return {
+                response,
+                usedModel: model,
+            };
         } catch (error) {
-        lastError = error;
+            lastError = error;
 
-        if (!isRateLimitError(error)) {
-            throw error;
-        }
+            if (!isRetryableGeminiError(error)) {
+                throw error;
+            }
 
-        console.warn(`Model ${model} hit rate limit. Trying fallback...`);
+            console.warn(
+                `Model ${model} is unavailable/rate limited. Trying fallback...`
+            );
         }
     }
 
-    throw lastError;
-    }
+    throw lastError ?? new Error("All Gemini models failed.");
+}
 
-    function isRateLimitError(error: unknown) {
+function isRetryableGeminiError(error: unknown) {
     const text = JSON.stringify(error).toLowerCase();
 
     return (
         text.includes("429") ||
         text.includes("quota") ||
         text.includes("rate limit") ||
-        text.includes("resource_exhausted")
+        text.includes("resource_exhausted") ||
+        text.includes("503") ||
+        text.includes("unavailable") ||
+        text.includes("high demand")
     );
 }

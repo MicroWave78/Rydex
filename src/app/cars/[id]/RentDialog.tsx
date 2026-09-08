@@ -244,7 +244,7 @@ export default function RentDialog({
     const paymentWindow = window.open(
       `/payment?carId=${carId}&carName=${encodeURIComponent(carName)}&price=${finalPrice}&days=${rentalDays}`,
       "_blank",
-      "width=720, height=860"
+      "width=680, height=840"
     );
 
     if (!paymentWindow) {
