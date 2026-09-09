@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import AlertMessage from "@/components/alertMessage";
 import { Eye, EyeClosed, LogIn } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 type LoginFormProps = {
   onSwitch?: () => void;
   isActive?: boolean;
@@ -13,6 +13,8 @@ type LoginFormProps = {
 
 export default function LoginForm({ onSwitch, isActive = false }: LoginFormProps) {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get("callbackUrl") || "/";
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -47,14 +49,14 @@ export default function LoginForm({ onSwitch, isActive = false }: LoginFormProps
         } else {
             if (data.role === "USER") {
                 setTimeout(() => {
-                    router.push("/");
+                    router.push(callbackUrl);
                     router.refresh();
                 }, 3000);   // Redirect after 3 seconds
                 setEmail("");
                 setPassword("");
                 setAlertType("success");
                 setAlertTitle("Login Successful");
-                setAlertMessage("You have successfully logged in! Redirecting you to home page...");
+                setAlertMessage("You have successfully logged in! Redirecting you back...");
                 setLink("/#main");
                 setButtonText("");
                 setOpen(true);

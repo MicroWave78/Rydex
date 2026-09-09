@@ -318,7 +318,7 @@ function AssistantCarCard({ car }: { car: RecommendedCar }) {
           )}
         </div>
 
-        <p className="mt-4 text-sm leading-6 text-[#EEEEEE]/60">
+        <p className="mt-4 text-sm leading-6 line-clamp-2 text-[#EEEEEE]/60">
           {car.reason}
         </p>
 

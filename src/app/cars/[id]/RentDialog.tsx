@@ -278,7 +278,7 @@ export default function RentDialog({
       buttonText={!isLoggedIn ? "Cancel" : "OK"}
       link=""
       secondaryButtonText={secondaryButtonText}
-      onSecondaryConfirm={() => window.location.href = "/login"}
+      onSecondaryConfirm={() => window.location.href = `/login?callbackUrl=${encodeURIComponent(window.location.pathname)}`}
     />
 
     <Button

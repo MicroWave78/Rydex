@@ -302,7 +302,6 @@ type GeminiClient = InstanceType<typeof GoogleGenAI>;
 
 async function generateWithFallback(ai: GeminiClient, prompt: string) {
     const models = [
-      "gemini-3.8-flash",
       "gemini-3.7-flash",
       "gemini-3.6-flash",
       "gemini-3.5-flash",
